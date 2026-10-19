@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Leaderboard - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="badge">RANKING</div>
+    <h2 class="page-title"><i class="fa-solid fa-trophy"></i> Leaderboard</h2>
+    <p class="page-desc">Saldo tertinggi, bot paling sering dipakai, dan statistik menu bot.</p>
+
+    <div class="api-form-card">
+      <h3 style="font-size:15px;margin:0 0 12px;color:#FFC107;"><i class="fa-solid fa-wallet"></i> Top saldo</h3>
+      <div id="lbSaldo"><div class="nd-loading"><span></span><span></span></div></div>
+    </div>
+
+    <div class="api-form-card">
+      <h3 style="font-size:15px;margin:0 0 12px;color:#FFC107;"><i class="fa-brands fa-whatsapp"></i> Bot paling sering dipakai</h3>
+      <div id="lbBot"><div class="nd-loading"><span></span><span></span></div></div>
+    </div>
+
+    <div class="api-form-card">
+      <h3 style="font-size:15px;margin:0 0 12px;color:#FFC107;"><i class="fa-solid fa-chart-pie"></i> Statistik menu bot</h3>
+      <div id="lbStats"><div class="nd-loading"><span></span><span></span></div></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="balance.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    function row(rank, title, sub, val, gold) {
+      return '<div class="lb-row"><div class="lb-rank' + (gold ? ' gold' : '') + '">' + rank +
+        '</div><div class="lb-info"><h4>' + title + '</h4><p>' + sub + '</p></div><div class="lb-val">' + val + '</div></div>';
+    }
+
+    // Saldo: demo + user sendiri
+    var mySaldo = 0;
+    try {
+      if (window.NailongBalance && NailongBalance.get) mySaldo = NailongBalance.get() || 0;
+      else mySaldo = parseInt(localStorage.getItem('nailong_saldo') || '0', 10) || 0;
+    } catch(e) {}
+    var saldoList = [
+      { name: 'Kamu', val: mySaldo },
+      { name: 'User A***', val: Math.max(mySaldo + 50000, 120000) },
+      { name: 'User B***', val: 85000 },
+      { name: 'User C***', val: 42000 },
+      { name: 'User D***', val: 15000 }
+    ].sort(function(a,b){ return b.val - a.val; });
+    document.getElementById('lbSaldo').innerHTML = saldoList.map(function(u,i){
+      return row(i+1, u.name, 'Saldo tersedia', 'Rp ' + u.val.toLocaleString('id-ID'), i===0);
+    }).join('');
+
+    // Bot stats
+    var labels = { jpm: 'Bot JPM', jaga: 'Bot Jaga Grup', dual: 'Bot Dual', fun: 'Bot Fun' };
+    var st = {};
+    try { st = JSON.parse(localStorage.getItem('nailong_bot_stats') || '{}'); } catch(e) {}
+    var botRows = ['jpm','jaga','dual','fun'].map(function(k){
+      return { k: k, pick: st[k]||0, run: st['run_'+k]||0 };
+    }).sort(function(a,b){ return (b.run+b.pick) - (a.run+a.pick); });
+    document.getElementById('lbBot').innerHTML = botRows.map(function(b,i){
+      return row(i+1, labels[b.k]||b.k, 'Dipilih ' + b.pick + 'x · Dijalankan ' + b.run + 'x', (b.run+b.pick) + ' pt', i===0);
+    }).join('') || '<p style="color:#8aa0b8;font-size:13px;">Belum ada data pemakaian bot.</p>';
+
+    document.getElementById('lbStats').innerHTML = botRows.map(function(b){
+      var total = botRows.reduce(function(s,x){ return s + x.pick + x.run; }, 0) || 1;
+      var pct = Math.round(((b.pick+b.run)/total)*100);
+      return '<div style="margin-bottom:10px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:#cfd8dc;margin-bottom:4px;"><span>' +
+        (labels[b.k]||b.k) + '</span><span>' + pct + '%</span></div>' +
+        '<div style="height:6px;background:#1a2740;border-radius:4px;overflow:hidden;"><div style="height:100%;width:' + pct +
+        '%;background:linear-gradient(90deg,#FFC107,#FF8F00);"></div></div></div>';
+    }).join('');
+  </script>
+  <script src="nailong-anim.js"></script>
+</body>
+</html>

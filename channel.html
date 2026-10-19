@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Channel Testimoni - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content" style="padding-bottom:160px;">
+    <div class="badge">CHANNEL</div>
+    <h2 class="page-title"><i class="fa-solid fa-comments"></i> Channel Testimoni</h2>
+    <p class="page-desc">
+      Semua member yang daftar otomatis masuk channel ini.
+      Order dari akun mana pun muncul sebagai testimoni.
+      <b>Chat hanya admin + member terverifikasi</b> (sudah order / kirim testimoni).
+    </p>
+
+    <div class="ch-feed" id="chFeed">
+      <div class="nd-loading" style="justify-content:center;padding:24px;"><span></span><span></span></div>
+    </div>
+  </div>
+
+  <div class="ch-compose" id="chCompose">
+    <textarea id="chInput" placeholder="Tulis testimoni / balasan…" maxlength="500"></textarea>
+    <div class="ch-compose-row">
+      <span class="ch-hint" id="chHint">Login &amp; verifikasi untuk chat</span>
+      <button type="button" id="chSend"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="channel.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="nailong-anim.js"></script>
+  <script>
+    function currentUser() {
+      try {
+        return window.VoxyyAuth && VoxyyAuth.getCurrentUser ? VoxyyAuth.getCurrentUser() : null;
+      } catch (e) { return null; }
+    }
+
+    function refreshUI() {
+      var user = currentUser();
+      var hint = document.getElementById('chHint');
+      var input = document.getElementById('chInput');
+      var send = document.getElementById('chSend');
+      var compose = document.getElementById('chCompose');
+      if (!user) {
+        hint.textContent = 'Login dulu untuk bergabung & chat';
+        input.disabled = true; send.disabled = true;
+        compose.classList.add('locked');
+      } else if (window.NailongChannel && NailongChannel.canChat(user)) {
+        hint.textContent = NailongChannel.isAdminUser(user) ? 'Mode admin — bisa chat' : 'Terverifikasi — bisa kirim testimoni';
+        input.disabled = false; send.disabled = false;
+        compose.classList.remove('locked');
+      } else {
+        hint.textContent = 'Order dulu agar terverifikasi, lalu bisa chat';
+        input.disabled = true; send.disabled = true;
+        compose.classList.add('locked');
+      }
+      if (window.NailongChannel) NailongChannel.renderFeed(document.getElementById('chFeed'));
+    }
+
+    document.getElementById('chSend').onclick = function () {
+      var user = currentUser();
+      var text = document.getElementById('chInput').value;
+      var res = NailongChannel.postMessage(text, user);
+      if (!res.ok) { alert(res.error); return; }
+      document.getElementById('chInput').value = '';
+      NailongChannel.renderFeed(document.getElementById('chFeed'));
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(refreshUI, 400);
+      if (window.VoxyyAuth && VoxyyAuth.onAuthChange) {
+        VoxyyAuth.onAuthChange(function () { refreshUI(); });
+      }
+      setInterval(function () {
+        if (window.NailongChannel) NailongChannel.renderFeed(document.getElementById('chFeed'));
+      }, 8000);
+    });
+  </script>
+</body>
+</html>

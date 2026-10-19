@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Detail Produk - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+  <div class="page-content" id="prodDetail">
+    <div class="nd-loading" style="padding:40px;justify-content:center;"><span></span><span></span></div>
+  </div>
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="toko.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+    document.addEventListener('DOMContentLoaded', async function() {
+      var id = new URLSearchParams(location.search).get('id');
+      var el = document.getElementById('prodDetail');
+      var p = await NailongToko.getProduct(id);
+      if (!p) { el.innerHTML = '<p style="color:#aaa;padding:20px;">Produk tidak ditemukan. <a href="index.html" style="color:#FFC107;">Kembali</a></p>'; return; }
+      var store = await NailongToko.getStore(p.storeId);
+      var avg = store ? NailongToko.storeAvgRating(store) : 0;
+      var reports = store ? (store.reportCount || 0) : 0;
+      var statusToko = store ? (store.status === 'blocked' ? 'Diblokir' : (store.status === 'review' ? 'Pemeriksaan' : 'Aktif')) : '-';
+      var reviews = store ? await NailongToko.getReviews(store.storeId) : [];
+
+      el.innerHTML =
+        '<div class="api-form-card">' +
+        (p.img ? '<img src="'+esc(p.img)+'" style="width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin-bottom:12px;" onerror="this.style.display=\'none\'">' : '') +
+        '<h2 style="margin:0 0 6px;font-size:18px;color:#fff;">'+esc(p.title)+'</h2>' +
+        '<div style="font-size:22px;font-weight:800;color:#FFC107;margin-bottom:10px;">'+NailongToko.formatRp(p.price)+'</div>' +
+        '<p style="font-size:13px;color:#cfd8dc;line-height:1.5;">'+esc(p.desc||'Tidak ada deskripsi.')+'</p>' +
+        '<div style="margin-top:12px;padding:12px;background:rgba(0,0,0,0.25);border-radius:12px;font-size:12px;color:#cfd8dc;">' +
+        '<div><i class="fa-solid fa-store" style="color:#FFC107;"></i> Toko: <a href="toko-detail.html?id='+encodeURIComponent(p.storeId)+'" style="color:#FFC107;font-weight:700;">'+esc(p.storeName||store&&store.name||'-')+'</a></div>' +
+        '<div style="margin-top:4px;">ID Toko: <code style="color:#8aa0b8;">'+esc(p.storeId)+'</code></div>' +
+        '<div style="margin-top:4px;">Rating: '+NailongToko.stars(avg)+' '+avg+' ('+(store&&store.ratingCount||0)+' ulasan)</div>' +
+        '<div style="margin-top:4px;">Laporan: '+(reports ? reports+' laporan' : 'Tidak ada laporan')+' · Status: '+statusToko+'</div>' +
+        '</div>' +
+        '<div style="display:flex;gap:8px;margin-top:14px;">' +
+        '<button type="button" class="btn-pesan" id="btnCart" style="flex:1;"><i class="fa-solid fa-cart-plus"></i> Keranjang</button>' +
+        '<a href="keranjang.html" class="btn-topup" style="display:flex;align-items:center;"><i class="fa-solid fa-cart-shopping"></i></a>' +
+        '</div></div>' +
+
+        '<div class="api-form-card"><h3 style="font-size:14px;color:#FFC107;margin:0 0 8px;">Ulasan toko</h3>' +
+        (reviews.length ? reviews.slice(0,8).map(function(r){
+          return '<div style="padding:8px 0;border-bottom:1px solid #1a2740;font-size:12px;"><b style="color:#fff;">'+esc(r.name)+'</b> '+NailongToko.stars(r.rating)+
+            '<div style="color:#cfd8dc;margin-top:2px;">'+esc(r.text)+'</div></div>';
+        }).join('') : '<p style="color:#8aa0b8;font-size:12px;">Belum ada ulasan.</p>') +
+        '<div style="margin-top:12px;"><label style="font-size:12px;">Beri rating</label>' +
+        '<select id="rvRate" class="form-input"><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option></select>' +
+        '<textarea id="rvText" class="form-input" rows="2" placeholder="Ulasan..." style="margin-top:8px;"></textarea>' +
+        '<button type="button" class="btn-topup" id="btnReview" style="margin-top:8px;">Kirim ulasan</button></div></div>' +
+
+        '<div class="api-form-card"><h3 style="font-size:14px;color:#ff8a80;margin:0 0 8px;"><i class="fa-solid fa-flag"></i> Laporkan toko</h3>' +
+        '<textarea id="repReason" class="form-input" rows="2" placeholder="Alasan laporan..."></textarea>' +
+        '<button type="button" class="btn-topup" id="btnReport" style="margin-top:8px;background:rgba(229,57,53,0.25);color:#ff8a80;">Kirim laporan</button>' +
+        '<p style="font-size:11px;color:#6b7a90;margin-top:8px;line-height:1.4;">Laporan diperiksa dulu. ≥8 laporan + rating buruk → pemeriksaan khusus. Penipuan terbukti → blokir permanen. Banding tersedia.</p></div>';
+
+      document.getElementById('btnCart').onclick = function() {
+        NailongToko.addToCart(p, 1);
+        alert('Masuk keranjang');
+      };
+      document.getElementById('btnReview').onclick = async function() {
+        var res = await NailongToko.addReview(p.storeId, document.getElementById('rvRate').value, document.getElementById('rvText').value);
+        if (!res.ok) { alert(res.error); return; }
+        alert('Ulasan terkirim'); location.reload();
+      };
+      
+      // tanya via WA + chat website
+      var chatHtml = '<div class="api-form-card"><h3 style="font-size:14px;color:#FFC107;margin:0 0 8px;"><i class="fa-solid fa-comments"></i> Tanya penjual</h3>' +
+        '<p style="font-size:12px;color:#8aa0b8;margin:0 0 8px;">Sudah bayar / mau tanya produk? Chat di sini atau WhatsApp.</p>' +
+        (store && store.wa ? '<a class="btn-pesan" style="display:block;text-align:center;margin-bottom:10px;" href="https://wa.me/'+String(store.wa).replace(/\D/g,'')+'?text='+encodeURIComponent('Halo, saya tertarik produk: '+p.title)+'" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Tanya via WhatsApp</a>' : '<p style="font-size:11px;color:#6b7a90;">Penjual belum set nomor WA toko.</p>') +
+        '<div id="prodChatList" style="max-height:180px;overflow:auto;margin-bottom:8px;font-size:12px;"></div>' +
+        '<textarea id="prodChatIn" class="form-input" rows="2" placeholder="Tulis pesan ke penjual..."></textarea>' +
+        '<button type="button" class="btn-topup" id="btnChatProd" style="margin-top:8px;">Kirim chat website</button></div>';
+      el.insertAdjacentHTML('beforeend', chatHtml);
+      function renderChats() {
+        var list = NailongToko.getProductChats(p.productId);
+        var box = document.getElementById('prodChatList');
+        if (!list.length) { box.innerHTML = '<p style="color:#8aa0b8;">Belum ada chat.</p>'; return; }
+        box.innerHTML = list.map(function(m){
+          return '<div style="padding:6px 0;border-bottom:1px solid #1a2740;"><b style="color:'+(m.from==='seller'?'#69f0ae':'#FFC107')+'">'+(m.name||m.from)+'</b>: '+String(m.text||'').replace(/</g,'')+'</div>';
+        }).join('');
+      }
+      renderChats();
+      document.getElementById('btnChatProd').onclick = async function(){
+        var res = await NailongToko.sendProductChat(p.productId, p.storeId, document.getElementById('prodChatIn').value, 'buyer');
+        if (!res.ok) { alert(res.error); return; }
+        document.getElementById('prodChatIn').value = '';
+        renderChats();
+      };
+
+      document.getElementById('btnReport').onclick = async function() {
+        var res = await NailongToko.reportStore(p.storeId, document.getElementById('repReason').value);
+        if (!res.ok) { alert(res.error); return; }
+        alert('Laporan dikirim. Tim akan memeriksa.');
+      };
+    });
+  </script>
+</body>
+</html>

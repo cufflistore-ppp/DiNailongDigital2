@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sewa Bot - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="badge">SEWA BOT</div>
+    <h2 class="page-title"><i class="fa-brands fa-whatsapp"></i> Sewa Bot WhatsApp</h2>
+    <p class="page-desc">Satu halaman: pilih tipe bot, ikut tutorial, pantau status, dan kelola bot berjalan.</p>
+
+    <!-- Pilih tipe -->
+    <div class="api-form-card">
+      <label>Pilih tipe bot</label>
+      <div class="topup-packages" id="botTypePick">
+        <button type="button" class="topup-pkg active" data-type="jpm">Bot JPM</button>
+        <button type="button" class="topup-pkg" data-type="jb">Bot JB</button>
+        <button type="button" class="topup-pkg" data-type="jaga">Bot Jaga Grup</button>
+        <button type="button" class="topup-pkg" data-type="push">Push Kontak</button>
+      </div>
+      <p id="botTypeDesc" style="font-size:12px;color:#8aa0b8;margin-top:8px;">Bot JPM — mode JPM otomatis (broadcast/promosi).</p>
+      <p style="font-size:11px;color:#6b7a90;margin-top:6px;">Pilih JPM → otomatis mode JPM. Pilih JB → otomatis mode JB. Push Kontak membuka form khusus.</p>
+    </div>
+
+    <!-- Tutorial -->
+    <div class="api-form-card">
+      <h3 style="font-size:15px;margin:0 0 10px;color:#FFC107;"><i class="fa-solid fa-book"></i> Cara pakai</h3>
+      <ol style="margin:0;padding-left:18px;font-size:13px;color:#cfd8dc;line-height:1.7;">
+        <li>Pilih tipe bot di atas.</li>
+        <li>Isi data (nomor / link grup bila diminta).</li>
+        <li>Bayar via WijayaPay atau saldo.</li>
+        <li>Salin <b>kode pairing</b> yang muncul, buka WhatsApp → Perangkat tertaut → Tautkan dengan nomor telepon.</li>
+        <li>Tempel kode pairing, tunggu bot online di monitor.</li>
+      </ol>
+    </div>
+
+    <!-- Form order singkat -->
+    <div class="api-form-card">
+      <label>Nomor WhatsApp (untuk pairing)</label>
+      <input type="tel" id="botWa" class="form-input" placeholder="628xxxxxxxxxx" inputmode="numeric">
+      <label style="margin-top:10px;">Catatan / link grup (opsional)</label>
+      <textarea id="botNote" class="form-input" rows="2" placeholder="Link grup / catatan"></textarea>
+      <button type="button" class="btn-pesan" id="btnOrderBot" style="width:100%;margin-top:12px;">
+        <i class="fa-solid fa-bolt"></i> Order & dapatkan pairing
+      </button>
+    </div>
+
+    <!-- Pairing box -->
+    <div class="api-form-card" id="pairingBox" style="display:none;">
+      <h3 style="font-size:15px;margin:0 0 8px;color:#69f0ae;"><i class="fa-solid fa-link"></i> Kode pairing</h3>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <code id="pairingCode" style="flex:1;background:#0a0e18;padding:12px;border-radius:10px;font-size:18px;letter-spacing:2px;color:#FFC107;text-align:center;">------</code>
+        <button type="button" class="btn-topup" id="btnCopyPair" style="flex-shrink:0;"><i class="fa-solid fa-copy"></i></button>
+      </div>
+      <p style="font-size:11px;color:#8aa0b8;margin-top:8px;">Langsung tempel di WhatsApp → Perangkat tertaut. Tidak perlu ribet.</p>
+    </div>
+
+    <!-- Monitor -->
+    <div class="api-form-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h3 style="font-size:15px;margin:0;color:#FFC107;"><i class="fa-solid fa-desktop"></i> Monitor bot</h3>
+        <span class="nd-loading" id="botLoading" style="display:none;"><span></span><span></span></span>
+      </div>
+      <div class="bot-monitor" id="botMonitor">
+        <div class="log-line">[sistem] Siap. Order bot untuk mulai monitor.</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <button type="button" class="btn-topup" id="btnStartBot" style="flex:1;"><i class="fa-solid fa-play"></i> Start</button>
+        <button type="button" class="btn-topup" id="btnStopBot" style="flex:1;background:rgba(229,57,53,0.2);color:#ff8a80;"><i class="fa-solid fa-stop"></i> Stop</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item active" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    var botType = 'jpm';
+    var descs = {
+      jpm: 'Bot JPM — otomatis mode JPM (broadcast/promosi).',
+      jb: 'Bot JB — otomatis mode JB (jual beli / format JB).',
+      jaga: 'Bot Jaga Grup — pantau & jaga grup otomatis.',
+      push: 'Push Kontak — buka halaman push kontak otomatis.'
+    };
+    document.querySelectorAll('#botTypePick .topup-pkg').forEach(function(btn) {
+      btn.onclick = function() {
+        document.querySelectorAll('#botTypePick .topup-pkg').forEach(function(b){ b.classList.remove('active'); });
+        btn.classList.add('active');
+        botType = btn.getAttribute('data-type');
+        document.getElementById('botTypeDesc').textContent = descs[botType] || '';
+        if (botType === 'push') { location.href = 'push-kontak.html'; return; }
+        try {
+          var st = JSON.parse(localStorage.getItem('nailong_bot_stats') || '{}');
+          st[botType] = (st[botType] || 0) + 1;
+          localStorage.setItem('nailong_bot_stats', JSON.stringify(st));
+        } catch(e) {}
+      };
+    });
+
+    function logMon(msg) {
+      var el = document.getElementById('botMonitor');
+      var t = new Date().toLocaleTimeString('id-ID');
+      el.innerHTML += '<div class="log-line">[' + t + '] ' + msg + '</div>';
+      el.scrollTop = el.scrollHeight;
+    }
+
+    function makePairing() {
+      var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      var s = '';
+      for (var i = 0; i < 8; i++) s += chars[Math.floor(Math.random() * chars.length)];
+      return s.slice(0,4) + '-' + s.slice(4);
+    }
+
+    document.getElementById('btnOrderBot').onclick = function() {
+      var wa = (document.getElementById('botWa').value || '').replace(/\D/g, '');
+      if (wa.length < 10) { alert('Nomor WhatsApp minimal 10 digit'); return; }
+      var code = makePairing();
+      document.getElementById('pairingBox').style.display = 'block';
+      document.getElementById('pairingCode').textContent = code;
+      logMon('Order bot ' + botType + ' untuk ' + wa);
+      logMon('Pairing: ' + code + ' — salin & tempel di WA');
+      try {
+        var st = JSON.parse(localStorage.getItem('nailong_bot_stats') || '{}');
+        st['run_' + botType] = (st['run_' + botType] || 0) + 1;
+        localStorage.setItem('nailong_bot_stats', JSON.stringify(st));
+        localStorage.setItem('nailong_last_pairing', code);
+      } catch(e) {}
+      // arahkan bayar
+      var paket = 'Sewa Bot ' + botType.toUpperCase();
+      location.href = 'pembayaran.html?paket=' + encodeURIComponent(paket) + '&total=15000&bot=' + botType;
+    };
+
+    document.getElementById('btnCopyPair').onclick = function() {
+      var t = document.getElementById('pairingCode').textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(t);
+      else {
+        var i = document.createElement('input'); i.value = t; document.body.appendChild(i); i.select(); document.execCommand('copy'); i.remove();
+      }
+      alert('Pairing disalin: ' + t);
+    };
+
+    document.getElementById('btnStartBot').onclick = function() {
+      document.getElementById('botLoading').style.display = 'inline-flex';
+      logMon('Start bot ' + botType + '…');
+      setTimeout(function() {
+        logMon('Bot online · menunggu perintah');
+        document.getElementById('botLoading').style.display = 'none';
+      }, 1200);
+    };
+    document.getElementById('btnStopBot').onclick = function() {
+      logMon('Bot dihentikan.');
+      document.getElementById('botLoading').style.display = 'none';
+    };
+  </script>
+  <script src="nailong-anim.js"></script>
+  <script src="protect.js"></script>
+</body>
+</html>

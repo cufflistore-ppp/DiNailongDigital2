@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Keranjang - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="badge">CART</div>
+    <h2 class="page-title"><i class="fa-solid fa-cart-shopping"></i> Keranjang</h2>
+    <p class="page-desc">Harga tetap sama (tanpa potongan/perak). Setelah bayar, saldo penjual bertambah utuh.</p>
+    <div id="cartBox"><div class="nd-loading" style="padding:20px;justify-content:center;"><span></span><span></span></div></div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="toko.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    function render() {
+      var cart = NailongToko.getCart();
+      var el = document.getElementById('cartBox');
+      if (!cart.length) {
+        el.innerHTML = '<div class="api-form-card" style="text-align:center;color:#8aa0b8;"><i class="fa-solid fa-cart-shopping" style="font-size:36px;opacity:0.4;"></i><p>Keranjang kosong.</p><a href="index.html" style="color:#FFC107;">Belanja dulu</a></div>';
+        return;
+      }
+      var html = cart.map(function (item) {
+        return '<div class="api-form-card" style="padding:12px;display:flex;gap:10px;align-items:center;">' +
+          (item.img ? '<img src="' + item.img.replace(/"/g,'') + '" style="width:56px;height:56px;object-fit:cover;border-radius:8px;" onerror="this.style.display=\'none\'">' : '<div style="width:56px;height:56px;background:#1a2740;border-radius:8px;"></div>') +
+          '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:700;color:#fff;">' + (item.title||'') + '</div>' +
+          '<div style="font-size:11px;color:#8aa0b8;">' + (item.storeName||'') + ' · x' + item.qty + '</div>' +
+          '<div style="color:#FFC107;font-weight:800;font-size:13px;">' + NailongToko.formatRp(item.price * item.qty) + '</div></div>' +
+          '<button type="button" class="btn-topup" data-rm="' + item.productId + '" style="padding:8px;"><i class="fa-solid fa-trash"></i></button></div>';
+      }).join('');
+      html += '<div class="api-form-card"><div style="display:flex;justify-content:space-between;align-items:center;">' +
+        '<span style="color:#8aa0b8;">Total</span><span style="font-size:20px;font-weight:800;color:#FFC107;">' + NailongToko.formatRp(NailongToko.cartTotal()) + '</span></div>' +
+        '<button type="button" class="btn-pesan" id="btnCheckout" style="width:100%;margin-top:12px;"><i class="fa-solid fa-qrcode"></i> Bayar (harga utuh)</button></div>';
+      el.innerHTML = html;
+      el.querySelectorAll('[data-rm]').forEach(function (btn) {
+        btn.onclick = function () { NailongToko.removeFromCart(btn.getAttribute('data-rm')); render(); };
+      });
+      document.getElementById('btnCheckout').onclick = async function () {
+        var total = NailongToko.cartTotal();
+        var res = await NailongToko.checkoutCart();
+        if (!res.ok) { alert(res.error); return; }
+        // lanjut ke pembayaran wijayapay
+        location.href = 'pembayaran.html?paket=' + encodeURIComponent('Belanja Toko') + '&total=' + total + '&type=toko';
+      };
+    }
+    document.addEventListener('DOMContentLoaded', render);
+  </script>
+</body>
+</html>

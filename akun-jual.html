@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Akun Jual - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <meta name="description" content="Jual beli akun game Nailong Digital — Free Fire, ML, PUBG, dll.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nailong Digital">
+  <meta property="og:title" content="Akun Game | Nailong Digital">
+  <meta property="og:description" content="Akun FF, ML, PUBG dan lainnya. Harga terbaik, flash sale rutin.">
+  <meta property="og:image" content="/og-banner.jpg">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .flash-banner {
+      background: linear-gradient(90deg, #e53935, #FF8F00);
+      color: #fff; font-weight: 800; font-size: 13px;
+      padding: 10px 14px; border-radius: 12px; margin-bottom: 14px;
+      text-align: center; letter-spacing: 0.3px;
+      animation: flashPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes flashPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(229,57,53,0.4); }
+      50% { box-shadow: 0 0 16px 4px rgba(255,143,0,0.45); }
+    }
+    .akun-card {
+      display: flex; gap: 12px;
+      background: rgba(16,24,42,0.75);
+      border: 1px solid rgba(255,193,7,0.15);
+      border-radius: 16px; padding: 12px; margin-bottom: 12px;
+      backdrop-filter: blur(10px);
+    }
+    .akun-card.sold { opacity: 0.65; }
+    .akun-img {
+      width: 88px; height: 88px; border-radius: 12px; overflow: hidden;
+      position: relative; flex-shrink: 0; background: #0a0e18;
+    }
+    .akun-img img { width: 100%; height: 100%; object-fit: cover; }
+    .akun-badge {
+      position: absolute; bottom: 4px; left: 4px;
+      background: rgba(255,111,0,0.95); color: #fff;
+      font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px;
+    }
+    .akun-flash {
+      position: absolute; top: 4px; right: 4px;
+      background: #e53935; color: #fff;
+      font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px;
+    }
+    .akun-body { flex: 1; min-width: 0; }
+    .akun-game { font-size: 11px; color: #8aa0b8; font-weight: 600; margin-bottom: 2px; }
+    .akun-body h3 { font-size: 14px; margin: 0 0 4px; color: #fff; }
+    .akun-body p { font-size: 12px; color: #8aa0b8; margin: 0 0 6px; line-height: 1.35; }
+    .akun-harga-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+    .harga-kuning {
+      color: #FFC107 !important;
+      font-size: 18px; font-weight: 800;
+      text-shadow: 0 0 12px rgba(255,193,7,0.35);
+    }
+    .harga-coret {
+      color: #6b7a90; font-size: 12px; text-decoration: line-through;
+    }
+    .akun-meta { font-size: 11px; color: #6b7a90; margin-bottom: 8px; }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Beranda</a>
+    <h2 class="page-title"><i class="fa-solid fa-gamepad"></i> Akun Nailong Digital</h2>
+    <p class="page-desc">Jual akun game: Free Fire, ML, PUBG, dll. Harga kuning = harga aktif. Flash sale otomatis 2% di Jumat & hari nasional; admin bisa atur manual.</p>
+
+    <div id="akunList"></div>
+
+    <div class="info-box" style="margin-top:8px;">
+      <h4>Keamanan</h4>
+      <p>Setelah bayar, data akun dikirim via chat admin / Riwayat. Ganti password segera setelah terima.</p>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa">
+      <span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span>
+      <span>Botwa</span>
+    </a>
+    <a href="joki.html" class="nav-item" data-nav="joki">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span>
+      <span>Joki Kontak</span>
+    </a>
+    <a href="index.html" class="nav-item active" data-nav="home">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span>
+      <span>Home</span>
+    </a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span>
+      <span>JasWeb</span>
+    </a>
+    <a href="akun.html" class="nav-item" data-nav="akun">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span>
+      <span>Akun</span>
+    </a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="akun-produk.js"></script>
+  <script src="nav.js"></script>
+  <script src="chat-system.js"></script>
+  <script src="presence.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.NailongAkun) NailongAkun.render('akunList');
+    });
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nailong-anim.js"></script>
+</body>
+</html>

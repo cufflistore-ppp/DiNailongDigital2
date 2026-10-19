@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="description" content="Nailong Digital — Botwa, Joki, Produk Digital & Jasweb. Order online, bayar QRIS atau saldo.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nailong Digital">
+  <meta property="og:title" content="Nailong Digital | Botwa, Joki & Produk Digital">
+  <meta property="og:description" content="Nailong Digital menyediakan Botwa, Joki, Produk Digital & Jasweb terpercaya. Order online, bayar QRIS atau saldo, cek riwayat pesanan.">
+  <meta property="og:image" content="/og-banner.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nailong Digital">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nailong Digital">
+  <meta name="twitter:description" content="Pusat layanan Nailong Digital. Order online, bayar QRIS atau saldo.">
+  <meta name="twitter:image" content="/og-banner.jpg">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="apple-touch-icon" href="nailong-digital-logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+    <div class="brand">
+      <img src="logo.png" alt="Nailong" class="logo"  >
+      <div>
+        <h1>𝗡Λ𝗜𝗟𝗢𝗡𝗚々𝗝𝗢𝗞𝗜 𝗘𝗟𝗜𝗧𝗘 <img src="secure.gif" alt="✓" class="verified-img" style="width:18px;height:18px;vertical-align:middle;margin-left:4px;"></h1>
+        <p>Pusat Layanan Nailong</p>
+      </div>
+    </div>
+  </header>
+  <!-- Notif (hanya muncul jika ada order real) -->
+  <div class="top-notif" id="topNotif" style="display:none;"></div>
+
+
+  <div class="page-content">
+    <div class="badge">JASA JOKI KONTAK</div>
+    <h2 class="page-title">Paket Joki Kontak.</h2>
+    <p class="page-desc">Pilih paket dinamis dari admin, isi data promo, lalu bayar dari website.</p>
+
+    <div class="warning-box">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div class="marquee">
+        <span>KANG JOKI KONTAK DILARANG ORDER JOKI KONTAK DI SINI. JIKA KETAHUAN, TIDAK DILAYANI! &nbsp;&nbsp;&nbsp; KANG JOKI KONTAK DILARANG ORDER JOKI KONTAK DI SINI. JIKA KETAHUAN, TIDAK DILAYANI!</span>
+      </div>
+    </div>
+
+    <!-- Daftar Paket (diisi JS) -->
+    
+    <div class="api-form-card" id="jokiFormatCard">
+      <h3 style="font-size:15px;margin:0 0 10px;color:#FFC107;"><i class="fa-solid fa-file-lines"></i> Format Joki Kontak (auto)</h3>
+      <p style="font-size:12px;color:#8aa0b8;margin:0 0 10px;">Isi nama store &amp; nomor SV — format langsung berubah. <b>Tidak bisa disalin/disimpan</b> (proteksi).</p>
+      <label>Nama store</label>
+      <input type="text" id="jkStore" class="form-input" placeholder="Nama store kamu" autocomplete="off">
+      <label style="margin-top:8px;">Nomor joki / SV (bisa lebih dari 1, satu baris satu nomor)</label>
+      <textarea id="jkNums" class="form-input" rows="3" placeholder="62812xxxxxxxx"></textarea>
+      <div class="joki-format-box" id="jkPreview" style="margin-top:12px;">
+        Isi nama store &amp; nomor di atas…
+      </div>
+      <p style="font-size:10px;color:#6b7a90;margin-top:8px;">Wa.me tetap ada. Nama &amp; nomor otomatis diganti saat kamu mengetik.</p>
+    </div>
+
+    <div id="paketList"></div>
+  </div>
+
+  <!-- Form order pindah ke pesan.html / detail.html -->
+
+  <a href="laporan.html" class="floating-laporan"><i class="fa-solid fa-exclamation-circle"></i> Laporan</a>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa">
+      <span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span>
+      <span>Botwa</span>
+    </a>
+    <a href="joki.html" class="nav-item active" data-nav="joki">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span>
+      <span>Joki Kontak</span>
+    </a>
+    <a href="index.html" class="nav-item" data-nav="home">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span>
+      <span>Home</span>
+    </a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span>
+      <span>JasWeb</span>
+    </a>
+    <a href="akun.html" class="nav-item" data-nav="akun">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span>
+      <span>Akun</span>
+    </a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="joki-produk.js"></script>
+  <script src="telegram.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="account-widget.js"></script>
+
+  <script src="chat-system.js"></script>
+  <script src="presence.js"></script>
+  <script src="wijayapay.js"></script>
+  <script src="pay-choice.js"></script>
+
+  <script src="ui-enhance.js"></script>
+  <script src="nav.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nailong-anim.js"></script>
+
+  <script>
+  (function(){
+    function build(){
+      var store = (document.getElementById('jkStore')||{}).value || 'NAMA STORE';
+      var raw = (document.getElementById('jkNums')||{}).value || '';
+      var nums = raw.split(/[\n,;]+/).map(function(s){return s.replace(/\D/g,'');}).filter(function(s){return s.length>=10;});
+      if (!nums.length) nums = ['628xxxxxxxxxx'];
+      var lines = nums.map(function(n,i){
+        if (n.charAt(0)==='0') n = '62'+n.slice(1);
+        return 'SV ' + (i+1) + ' : https://wa.me/' + n;
+      });
+      var html = '<div style="pointer-events:none;">' +
+        '<b style="color:#FFC107;">JOKI KONTAK</b><br>' +
+        'Store : <b>' + store.replace(/</g,'') + '</b><br>' +
+        lines.join('<br>') +
+        '<br><br><span style="color:#8aa0b8;font-size:11px;">Format terlindungi · tidak bisa disalin</span></div>';
+      var box = document.getElementById('jkPreview');
+      if (box) box.innerHTML = html;
+    }
+    document.addEventListener('DOMContentLoaded', function(){
+      var a = document.getElementById('jkStore');
+      var b = document.getElementById('jkNums');
+      if (a) a.addEventListener('input', build);
+      if (b) b.addEventListener('input', build);
+      build();
+      // block copy on format box
+      var box = document.getElementById('jkPreview');
+      if (box) {
+        box.addEventListener('copy', function(e){ e.preventDefault(); });
+        box.addEventListener('cut', function(e){ e.preventDefault(); });
+        box.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+      }
+    });
+  })();
+  </script>
+  <script src="protect.js"></script>
+</body>
+</html>

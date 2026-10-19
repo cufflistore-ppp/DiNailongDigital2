@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Grup - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="description" content="Nailong Digital — Botwa, Joki, Produk Digital & Jasweb. Order online, bayar QRIS atau saldo.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nailong Digital">
+  <meta property="og:title" content="Nailong Digital | Botwa, Joki & Produk Digital">
+  <meta property="og:description" content="Nailong Digital menyediakan Botwa, Joki, Produk Digital & Jasweb terpercaya. Order online, bayar QRIS atau saldo, cek riwayat pesanan.">
+  <meta property="og:image" content="/og-banner.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nailong Digital">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nailong Digital">
+  <meta name="twitter:description" content="Pusat layanan Nailong Digital. Order online, bayar QRIS atau saldo.">
+  <meta name="twitter:image" content="/og-banner.jpg">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="apple-touch-icon" href="nailong-digital-logo.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .online-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,200,100,0.15); border: 1px solid rgba(0,200,100,0.35);
+      color: #69f0ae; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;
+    }
+    .online-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #69f0ae;
+      box-shadow: 0 0 8px #69f0ae; animation: pulseDot 1.5s infinite;
+    }
+    @keyframes pulseDot { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .member-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .member-row {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(10,14,24,0.55); border: 1px solid rgba(255,193,7,0.12);
+      border-radius: 12px; padding: 10px 12px;
+    }
+    .member-av {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(145deg,#FFD54F,#FF8F00); color: #0a0e18;
+      display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;
+      overflow: hidden; flex-shrink: 0;
+    }
+    .member-av img { width: 100%; height: 100%; object-fit: cover; }
+    .member-name { font-size: 13px; font-weight: 600; flex: 1; }
+    .member-status { font-size: 11px; color: #69f0ae; }
+    .member-status.off { color: #6b7a90; }
+    .stat-row { display: flex; gap: 10px; margin-bottom: 14px; }
+    .stat-box {
+      flex: 1; text-align: center; padding: 14px 8px;
+      background: rgba(10,14,24,0.55); border: 1px solid rgba(255,193,7,0.12); border-radius: 14px;
+    }
+    .stat-box .num { font-size: 22px; font-weight: 800; color: #FFC107; }
+    .stat-box .lbl { font-size: 11px; color: #8aa0b8; margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Beranda</a>
+    <h2 class="page-title"><i class="fa-solid fa-users"></i> Grup Nailong</h2>
+    <p class="page-desc">Grup di dalam website — bukan WhatsApp. Join di sini, member bertambah otomatis.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="num" id="cntMember">0</div>
+        <div class="lbl">Total Member</div>
+      </div>
+      <div class="stat-box">
+        <div class="num" id="cntOnline">0</div>
+        <div class="lbl">Online Sekarang</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <span class="online-badge"><span class="online-dot"></span> <span id="onlineText">0 online di website</span></span>
+    </div>
+
+    <button type="button" class="btn-primary full" id="btnJoinGrup" style="margin-bottom:16px;">
+      <i class="fa-solid fa-user-plus"></i> Masuk / Join Grup
+    </button>
+    <div id="joinStatus" class="result-box" style="display:none;"></div>
+
+    <h3 style="font-size:14px;color:#FF8F00;margin-bottom:8px;">Anggota Grup</h3>
+    <div class="member-list" id="memberList">
+      <div class="empty-state"><i class="fa-solid fa-users"></i><p>Belum ada member. Jadi yang pertama!</p></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa">
+      <span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span>
+      <span>Botwa</span>
+    </a>
+    <a href="joki.html" class="nav-item" data-nav="joki">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span>
+      <span>Joki Kontak</span>
+    </a>
+    <a href="index.html" class="nav-item active" data-nav="home">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span>
+      <span>Home</span>
+    </a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span>
+      <span>JasWeb</span>
+    </a>
+    <a href="akun.html" class="nav-item" data-nav="akun">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span>
+      <span>Akun</span>
+    </a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="presence.js"></script>
+  <script src="nav.js"></script>
+  
+  <script src="chat-system.js"></script>
+  <script src="presence.js"></script>
+  <script src="wijayapay.js"></script>
+  <script src="pay-choice.js"></script>
+
+  <script src="ui-enhance.js"></script>
+  <script>
+    document.getElementById('btnJoinGrup').addEventListener('click', function() {
+      if (!window.NailongPresence) return alert('Sistem belum siap');
+      var user = null;
+      try { user = firebase.auth().currentUser; } catch(e) {}
+      if (!user) {
+        alert('Login dulu supaya bisa join grup');
+        location.href = 'akun.html';
+        return;
+      }
+      NailongPresence.joinGroup(user).then(function(ok) {
+        var box = document.getElementById('joinStatus');
+        box.style.display = 'block';
+        box.innerHTML = ok
+          ? '<div class="result-ok"><i class="fa-solid fa-check-circle"></i> Berhasil join grup! Member +1</div>'
+          : '<div class="result-ok"><i class="fa-solid fa-info-circle"></i> Kamu sudah jadi member grup.</div>';
+        NailongPresence.refreshMembers();
+      });
+    });
+  </script>
+  <script src="header-bar.js"></script>
+  <script src="nailong-anim.js"></script>
+</body>
+</html>

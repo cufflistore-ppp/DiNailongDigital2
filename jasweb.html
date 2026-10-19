@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Jasweb - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <meta name="description" content="Jasa website Nailong Digital — landing page, toko online, company profile.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nailong Digital">
+  <meta property="og:title" content="Jasweb | Nailong Digital">
+  <meta property="og:description" content="Jasa pembuatan website: landing page, toko online, company profile. Bayar QRIS / saldo.">
+  <meta property="og:image" content="/og-banner.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Beranda</a>
+    <h2 class="page-title"><i class="fa-solid fa-globe"></i> Produk Jasweb</h2>
+    <p class="page-desc">Jasa pembuatan & maintenance website. Pilih paket, bayar QRIS atau saldo.</p>
+
+    <div id="jaswebList" class="produk-list"></div>
+
+    <div class="info-box" style="margin-top:16px;">
+      <h4>Cara order</h4>
+      <p>1. Pilih paket / varian<br>2. Bayar QRIS atau saldo<br>3. Konfirmasi detail via chat admin</p>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa">
+      <span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span>
+      <span>Botwa</span>
+    </a>
+    <a href="joki.html" class="nav-item" data-nav="joki">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span>
+      <span>Joki Kontak</span>
+    </a>
+    <a href="index.html" class="nav-item" data-nav="home">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span>
+      <span>Home</span>
+    </a>
+    <a href="jasweb.html" class="nav-item active" data-nav="jasweb">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span>
+      <span>JasWeb</span>
+    </a>
+    <a href="akun.html" class="nav-item" data-nav="akun">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span>
+      <span>Akun</span>
+    </a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="jasweb-produk.js"></script>
+  <script src="nav.js"></script>
+  <script src="chat-system.js"></script>
+  <script src="presence.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nailong-anim.js"></script>
+</body>
+</html>

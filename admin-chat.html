@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Chat Inbox Admin - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="description" content="Nailong Digital — Botwa, Joki, Produk Digital & Jasweb. Order online, bayar QRIS atau saldo.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nailong Digital">
+  <meta property="og:title" content="Nailong Digital | Botwa, Joki & Produk Digital">
+  <meta property="og:description" content="Nailong Digital menyediakan Botwa, Joki, Produk Digital & Jasweb terpercaya. Order online, bayar QRIS atau saldo, cek riwayat pesanan.">
+  <meta property="og:image" content="/og-banner.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nailong Digital">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nailong Digital">
+  <meta name="twitter:description" content="Pusat layanan Nailong Digital. Order online, bayar QRIS atau saldo.">
+  <meta name="twitter:image" content="/og-banner.jpg">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="apple-touch-icon" href="nailong-digital-logo.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .thread-list { display: flex; flex-direction: column; gap: 8px; }
+    .thread-item {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(10,14,24,0.55); border: 1px solid rgba(255,193,7,0.12);
+      border-radius: 12px; padding: 12px; cursor: pointer; text-align: left; width: 100%;
+      color: #fff; border: 1px solid rgba(255,193,7,0.15);
+    }
+    .thread-item:active { border-color: #FFC107; }
+    .thread-av {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(145deg,#FFD54F,#FF8F00); color: #0a0e18;
+      display: flex; align-items: center; justify-content: center; font-weight: 800; overflow: hidden; flex-shrink: 0;
+    }
+    .thread-av img { width: 100%; height: 100%; object-fit: cover; }
+    .thread-body { flex: 1; min-width: 0; }
+    .thread-name { font-size: 14px; font-weight: 700; }
+    .thread-preview { font-size: 12px; color: #8aa0b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .thread-badge {
+      background: #e53935; color: #fff; font-size: 11px; font-weight: 700;
+      min-width: 20px; height: 20px; border-radius: 999px; display: flex; align-items: center; justify-content: center; padding: 0 6px;
+    }
+    .chat-reply-bar { display: flex; gap: 8px; padding: 10px; background: rgba(15,20,35,0.9); border-top: 1px solid rgba(255,193,7,0.15); }
+    .chat-reply-bar input { flex: 1; background: #1a2740; border: 1px solid #2a3550; border-radius: 20px; padding: 10px 14px; color: #fff; outline: none; }
+    .chat-reply-bar button { background: #00a884; border: none; border-radius: 50%; width: 42px; height: 42px; color: #fff; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content" id="inboxView">
+    <a href="admin.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Panel Admin</a>
+    <h2 class="page-title"><i class="fa-solid fa-inbox"></i> Inbox Chat</h2>
+    <p class="page-desc">Baca chat user satu per satu. Banyak yang chat — pilih thread-nya.</p>
+    <div class="thread-list" id="threadList">
+      <div class="empty-state"><i class="fa-solid fa-comments"></i><p>Belum ada chat masuk.</p></div>
+    </div>
+  </div>
+
+  <div class="chat-modal" id="adminChatView">
+    <div class="chat-header">
+      <button type="button" class="back-chat" id="btnBackInbox"><i class="fa-solid fa-arrow-left"></i></button>
+      <div class="chat-header-avatar" id="adminChatAv">A</div>
+      <div class="chat-header-info"><h4 id="adminChatName">User</h4><span id="adminChatMeta">Chat</span></div>
+    </div>
+    <div class="chat-body" id="adminChatBody"></div>
+    <div class="chat-reply-bar">
+      <input type="text" id="adminReplyInput" placeholder="Balas pesan...">
+      <button type="button" id="btnAdminReply"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script src="chat-system.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script>
+    var currentUid = null;
+
+    function renderInbox() {
+      var list = document.getElementById('threadList');
+      if (!window.NailongChat) return;
+      var threads = NailongChat.listThreads();
+      if (!threads.length) {
+        list.innerHTML = '<div class="empty-state"><i class="fa-solid fa-comments"></i><p>Belum ada chat masuk.</p></div>';
+        return;
+      }
+      list.innerHTML = threads.map(function(t) {
+        var last = (t.messages && t.messages.length) ? t.messages[t.messages.length - 1] : null;
+        var preview = last ? (last.img ? '[Foto] ' : '') + (last.text || '') : '(kosong)';
+        var av = t.photo ? '<img src="' + t.photo + '">' : (t.name || 'U').charAt(0).toUpperCase();
+        var badge = t.unreadAdmin ? '<span class="thread-badge">' + t.unreadAdmin + '</span>' : '';
+        return '<button type="button" class="thread-item" data-uid="' + t.uid + '">' +
+          '<div class="thread-av">' + av + '</div>' +
+          '<div class="thread-body"><div class="thread-name">' + (t.name || 'User') + '</div>' +
+          '<div class="thread-preview">' + preview + '</div></div>' + badge + '</button>';
+      }).join('');
+      list.querySelectorAll('.thread-item').forEach(function(btn) {
+        btn.addEventListener('click', function() { openThread(this.dataset.uid); });
+      });
+    }
+
+    function openThread(uid) {
+      currentUid = uid;
+      var t = NailongChat.getThread(uid);
+      if (!t) return;
+      NailongChat.markRead(uid);
+      document.getElementById('adminChatName').textContent = t.name || 'User';
+      document.getElementById('adminChatMeta').textContent = t.messages.length + ' pesan';
+      var av = document.getElementById('adminChatAv');
+      av.innerHTML = t.photo ? '<img src="' + t.photo + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover">' : (t.name || 'U').charAt(0).toUpperCase();
+      var body = document.getElementById('adminChatBody');
+      body.innerHTML = '';
+      (t.messages || []).forEach(function(m) {
+        var div = document.createElement('div');
+        div.className = 'chat-bubble ' + (m.from === 'admin' ? 'me' : 'them');
+        var html = '';
+        if (m.img) html += '<img src="' + m.img + '" alt="foto">';
+        if (m.text) html += m.text;
+        var d = new Date(m.ts || Date.now());
+        html += '<div class="time">' + d.getHours() + ':' + String(d.getMinutes()).padStart(2,'0') + '</div>';
+        div.innerHTML = html;
+        body.appendChild(div);
+      });
+      body.scrollTop = body.scrollHeight;
+      document.getElementById('adminChatView').classList.add('show');
+      document.getElementById('inboxView').style.display = 'none';
+    }
+
+    document.getElementById('btnBackInbox').onclick = function() {
+      document.getElementById('adminChatView').classList.remove('show');
+      document.getElementById('inboxView').style.display = 'block';
+      renderInbox();
+    };
+
+    document.getElementById('btnAdminReply').onclick = function() {
+      var inp = document.getElementById('adminReplyInput');
+      var txt = (inp.value || '').trim();
+      if (!txt || !currentUid) return;
+      NailongChat.sendFromAdmin(currentUid, txt);
+      inp.value = '';
+      openThread(currentUid);
+    };
+    document.getElementById('adminReplyInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') document.getElementById('btnAdminReply').click();
+    });
+
+    renderInbox();
+    setInterval(renderInbox, 5000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Detail Toko - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+  <div class="page-content" id="storeBox">
+    <div class="nd-loading" style="padding:40px;justify-content:center;"><span></span><span></span></div>
+  </div>
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="toko.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+    document.addEventListener('DOMContentLoaded', async function() {
+      var id = new URLSearchParams(location.search).get('id');
+      var el = document.getElementById('storeBox');
+      var s = await NailongToko.getStore(id);
+      if (!s) { el.innerHTML = '<p style="color:#aaa;padding:20px;">Toko tidak ditemukan.</p>'; return; }
+      var avg = NailongToko.storeAvgRating(s);
+      var prods = await NailongToko.getProductsByStore(s.storeId);
+      var st = s.status === 'blocked' ? '⛔ Diblokir permanen' : (s.status === 'review' ? '🔍 Pemeriksaan khusus' : '✅ Aktif');
+      var ban = '<div class="toko-banner-wrap">' +
+        (s.banner ? '<img class="toko-banner" src="'+esc(s.banner)+'" alt="">' : '<div style="width:100%;height:100%;background:linear-gradient(135deg,#1a2740,#0d1220);"></div>') +
+        (s.logo ? '<img class="toko-banner-logo" src="'+esc(s.logo)+'" alt="">' : '<div class="toko-banner-logo ph">'+esc((s.name||'T').charAt(0))+'</div>') +
+        '</div>';
+      el.innerHTML =
+        '<div class="api-form-card">' + ban +
+        '<h2 style="margin:0;color:#fff;">'+esc(s.name)+'</h2>' +
+        '<p style="font-size:11px;color:#8aa0b8;margin:4px 0;">ID: <code style="color:#FFC107;">'+esc(s.storeId)+'</code></p>' +
+        '<p style="font-size:13px;color:#cfd8dc;">'+NailongToko.stars(avg)+' '+avg+' · '+(s.ratingCount||0)+' ulasan · Laporan: '+(s.reportCount||0)+'</p>' +
+        '<p style="font-size:12px;color:#8aa0b8;margin-top:6px;">'+st+'</p>' +
+        '<p style="font-size:13px;color:#aaa;margin-top:8px;">'+esc(s.desc||'')+'</p>' +
+        (s.link ? '<p style="margin-top:8px;"><a href="'+esc(s.link)+'" target="_blank" rel="noopener" style="color:#FFC107;font-size:13px;"><i class="fa-solid fa-link"></i> Kunjungi link toko</a></p>' : '') +
+        '</div>' +
+        '<h3 style="font-size:14px;color:#FFC107;margin:8px 4px;">Produk toko</h3>' +
+        '<div class="produk-grid" id="stProds"></div>';
+      var grid = document.getElementById('stProds');
+      if (!prods.length) grid.innerHTML = '<p style="color:#8aa0b8;padding:12px;">Belum ada produk.</p>';
+      else grid.innerHTML = prods.map(function(p) {
+        return '<div class="produk-card produk-card-glass">' +
+          (p.img ? '<img src="'+esc(p.img)+'" alt="" onerror="this.src=\'logo.png\'">' : '<img src="logo.png" alt="">') +
+          '<div class="produk-info"><small style="color:#8aa0b8;font-size:10px;">'+esc(s.name)+'</small>' +
+          '<h4>'+esc(p.title)+'</h4><div class="harga">'+NailongToko.formatRp(p.price)+'</div>' +
+          '<div style="display:flex;gap:6px;margin-top:8px;">' +
+          '<a href="produk-toko.html?id='+encodeURIComponent(p.productId)+'" class="btn" style="flex:1;font-size:11px;">Detail</a>' +
+          '<button type="button" class="btn" data-add="'+esc(p.productId)+'" style="flex:1;font-size:11px;border:none;cursor:pointer;">+ Cart</button></div></div></div>';
+      }).join('');
+      grid.querySelectorAll('[data-add]').forEach(function(btn) {
+        btn.onclick = async function() {
+          var prod = await NailongToko.getProduct(btn.getAttribute('data-add'));
+          if (prod) { NailongToko.addToCart(prod, 1); alert('Masuk keranjang'); }
+        };
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nailong Digital - Pusat Layanan</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="description" content="Nailong Digital — Botwa, Joki, Produk Digital & Jasweb. Order online, bayar QRIS atau saldo.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nailong Digital">
+  <meta property="og:title" content="Nailong Digital | Botwa, Joki & Produk Digital">
+  <meta property="og:description" content="Nailong Digital menyediakan Botwa, Joki, Produk Digital & Jasweb terpercaya. Order online, bayar QRIS atau saldo, cek riwayat pesanan.">
+  <meta property="og:image" content="/og-banner.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nailong Digital">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nailong Digital">
+  <meta name="twitter:description" content="Pusat layanan Nailong Digital. Order online, bayar QRIS atau saldo.">
+  <meta name="twitter:image" content="/og-banner.jpg">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="apple-touch-icon" href="nailong-digital-logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="banner">
+    <img src="banner.jpg" alt="Selamat Datang di Nailong Digital" class="banner-full">
+  </div>
+  <div class="top-notif" id="topNotif" style="display:none;"></div>
+
+  <div id="homeProfileCard"></div>
+
+  <!-- Saldo & Top Up -->
+  <div class="saldo-card" id="saldoCard">
+    <div class="saldo-left">
+      <span class="saldo-label">Saldo Anda</span>
+      <span class="saldo-amount" id="saldoAmount">Rp 0</span>
+    </div>
+    <a href="topup.html" class="btn-topup"><i class="fa-solid fa-plus"></i> Top Up</a>
+  </div>
+
+  <!-- Menu utama -->
+  
+  <div style="padding:0 12px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+    <span class="online-badge" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,200,100,0.15);border:1px solid rgba(0,200,100,0.35);color:#69f0ae;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:600;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#69f0ae;box-shadow:0 0 8px #69f0ae;"></span>
+      <span id="globalOnlineCount">1</span> online
+    </span>
+    <a href="grup.html" style="color:#FFC107;font-size:12px;font-weight:600;text-decoration:none;"><i class="fa-solid fa-users"></i> Masuk Grup</a>
+  </div>
+
+  <div class="menu-grid menu-grid-4">
+    <a href="botwa.html" class="menu-item">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span>Sewa Bot</span>
+    </a>
+    <a href="push-kontak.html" class="menu-item">
+      <i class="fa-solid fa-paper-plane"></i>
+      <span>Push Kontak</span>
+    </a>
+    <a href="joki.html" class="menu-item">
+      <i class="fa-solid fa-shield-halved"></i>
+      <span>Joki</span>
+    </a>
+    <a href="leaderboard.html" class="menu-item">
+      <i class="fa-solid fa-trophy"></i>
+      <span>Leaderboard</span>
+    </a>
+    <a href="channel.html" class="menu-item">
+      <i class="fa-solid fa-comments"></i>
+      <span>Channel</span>
+    </a>
+    <a href="tools.html" class="menu-item">
+      <i class="fa-solid fa-screwdriver-wrench"></i>
+      <span>Tools</span>
+    </a>
+    <a href="baca.html" class="menu-item">
+      <i class="fa-solid fa-book-open"></i>
+      <span>Baca</span>
+    </a>
+    <a href="game.html" class="menu-item">
+      <i class="fa-solid fa-gamepad"></i>
+      <span>Game</span>
+    </a>
+    <a href="digital.html" class="menu-item">
+      <i class="fa-solid fa-box"></i>
+      <span>Produk Digital</span>
+    </a>
+    <a href="jasweb.html" class="menu-item">
+      <i class="fa-solid fa-globe"></i>
+      <span>Jasweb</span>
+    </a>
+    <a href="buka-toko.html" class="menu-item">
+      <i class="fa-solid fa-store"></i>
+      <span>Buka Toko</span>
+    </a>
+    <a href="keranjang.html" class="menu-item">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span>Keranjang</span>
+    </a>
+    <a href="donasi.html" class="menu-item">
+      <i class="fa-solid fa-hand-holding-heart"></i>
+      <span>Donasi</span>
+    </a>
+    <a href="topup.html" class="menu-item">
+      <i class="fa-solid fa-wallet"></i>
+      <span>Top Up</span>
+    </a>
+    <a href="akun-jual.html" class="menu-item">
+      <i class="fa-solid fa-gamepad"></i>
+      <span>Akun Game</span>
+    </a>
+    <a href="https://wa.me/6285124697215" class="menu-item">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span>Wa Utama</span>
+    </a>
+  </div>
+
+  
+  <section class="produk-section" id="tokoMarketSection">
+    <h3>TOKO MEMBER</h3>
+    <p class="subtitle">Produk dari toko publik · <a href="buka-toko.html" style="color:#FFC107">Buka toko</a> · <a href="keranjang.html" style="color:#FFC107">Keranjang (<span id="cartBadgeTop">0</span>)</a></p>
+    <div class="produk-grid" id="tokoMarketGrid"></div>
+  </section>
+
+  <section class="produk-section">
+    <h3>PRODUK DIGITAL</h3>
+    <p class="subtitle">APK & produk digital. Untuk jasa website lihat menu <a href="jasweb.html" style="color:#FFC107">Jasweb</a>.</p>
+    <div class="produk-grid" id="produkGrid"></div>
+  </section>
+
+  <div class="info-box">
+    <h4>Website jadi pusat proses order.</h4>
+    <p>Order Botwa, Joki & produk digital terpusat. Saldo berkurang otomatis saat order. Riwayat hanya untuk Anda.</p>
+  </div>
+
+  <div style="padding:0 12px 24px;">
+    <a href="laporan.html" class="btn-laporan"><i class="fa-solid fa-exclamation-circle"></i> Laporan</a>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa">
+      <span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span>
+      <span>Botwa</span>
+    </a>
+    <a href="joki.html" class="nav-item" data-nav="joki">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span>
+      <span>Joki Kontak</span>
+    </a>
+    <a href="index.html" class="nav-item active" data-nav="home">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span>
+      <span>Home</span>
+    </a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span>
+      <span>JasWeb</span>
+    </a>
+    <a href="akun.html" class="nav-item" data-nav="akun">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span>
+      <span>Akun</span>
+    </a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="produk.js"></script>
+  <script src="toko.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="balance.js"></script>
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="account-widget.js"></script>
+  <script src="nav.js"></script>
+
+  <script src="chat-system.js"></script>
+  <script src="presence.js"></script>
+  <script src="wijayapay.js"></script>
+  <script src="pay-choice.js"></script>
+
+  <script src="ui-enhance.js"></script>
+  <script src="channel.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nailong-anim.js"></script>
+  <script>
+    async function renderTokoMarket() {
+      var grid = document.getElementById('tokoMarketGrid');
+      if (!grid || !window.NailongToko) return;
+      var badge = document.getElementById('cartBadgeTop');
+      if (badge) badge.textContent = NailongToko.cartCount();
+      var list = await NailongToko.getPublicProducts();
+      if (!list.length) {
+        grid.innerHTML = '<p style="grid-column:1/-1;color:#8aa0b8;font-size:13px;padding:8px;">Belum ada produk toko. <a href="buka-toko.html" style="color:#FFC107;">Jadi penjual</a></p>';
+        return;
+      }
+      grid.innerHTML = list.slice(0, 12).map(function(p) {
+        function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+        return '<div class="produk-card produk-card-glass">' +
+          '<img src="' + esc(p.img || 'logo.png') + '" alt="" onerror="this.src=\'logo.png\'">' +
+          '<div class="produk-info">' +
+          '<small style="color:#8aa0b8;font-size:10px;"><i class="fa-solid fa-store"></i> ' + esc(p.storeName) + '</small>' +
+          '<h4>' + esc(p.title) + '</h4>' +
+          '<div class="harga">' + NailongToko.formatRp(p.price) + '</div>' +
+          '<div style="display:flex;gap:6px;margin-top:8px;">' +
+          '<a href="produk-toko.html?id=' + encodeURIComponent(p.productId) + '" class="btn" style="flex:1;font-size:11px;padding:6px;">Detail</a>' +
+          '<button type="button" class="btn btn-add-cart" data-pid="' + esc(p.productId) + '" style="flex:1;font-size:11px;padding:6px;border:none;cursor:pointer;">+ Cart</button>' +
+          '</div></div></div>';
+      }).join('');
+      grid.querySelectorAll('.btn-add-cart').forEach(function(btn) {
+        btn.onclick = async function() {
+          var prod = await NailongToko.getProduct(btn.getAttribute('data-pid'));
+          if (prod) { NailongToko.addToCart(prod, 1); if (badge) badge.textContent = NailongToko.cartCount(); alert('Masuk keranjang'); }
+        };
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(renderTokoMarket, 600); });
+  </script>
+  <script src="home-profile.js"></script>
+  <script src="protect.js"></script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Top Up - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="description" content="Nailong Digital — Botwa, Joki, Produk Digital & Jasweb. Order online, bayar QRIS atau saldo.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nailong Digital">
+  <meta property="og:title" content="Nailong Digital | Botwa, Joki & Produk Digital">
+  <meta property="og:description" content="Nailong Digital menyediakan Botwa, Joki, Produk Digital & Jasweb terpercaya. Order online, bayar QRIS atau saldo, cek riwayat pesanan.">
+  <meta property="og:image" content="/og-banner.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nailong Digital">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nailong Digital">
+  <meta name="twitter:description" content="Pusat layanan Nailong Digital. Order online, bayar QRIS atau saldo.">
+  <meta name="twitter:image" content="/og-banner.jpg">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="apple-touch-icon" href="nailong-digital-logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="saldo-card">
+      <div class="saldo-left">
+        <span class="saldo-label">Saldo Saat Ini</span>
+        <span class="saldo-amount" id="saldoAmount">Rp 0</span>
+      </div>
+    </div>
+
+    <h2 class="page-title"><i class="fa-solid fa-wallet"></i> Top Up Saldo</h2>
+    <p class="page-desc">Top up <strong>tidak wajib</strong>. Kalau ada saldo cukup, order langsung potong saldo (tanpa QRIS). Kalau tidak ada saldo, bayar pakai QRIS. Top up via Wijaya Pay supaya nanti order lebih cepat.</p>
+
+    <div class="topup-packages">
+      <button type="button" class="topup-pkg" data-amount="10000">Rp 10.000</button>
+      <button type="button" class="topup-pkg" data-amount="25000">Rp 25.000</button>
+      <button type="button" class="topup-pkg active" data-amount="50000">Rp 50.000</button>
+      <button type="button" class="topup-pkg" data-amount="100000">Rp 100.000</button>
+      <button type="button" class="topup-pkg" data-amount="200000">Rp 200.000</button>
+      <button type="button" class="topup-pkg" data-amount="500000">Rp 500.000</button>
+    </div>
+
+    <div class="api-form-card">
+      <label>Atau nominal custom</label>
+      <input type="number" id="customAmount" class="form-input" placeholder="Min. 10.000" min="10000" step="1000">
+
+      <label>Metode</label>
+      <div class="pay-methods">
+        <label class="pay-method active"><input type="radio" name="pay" value="qris" checked> QRIS</label>
+        <label class="pay-method"><input type="radio" name="pay" value="tf"> Transfer Bank</label>
+        <label class="pay-method"><input type="radio" name="pay" value="ewallet"> E-Wallet</label>
+      </div>
+
+      <button type="button" class="btn-primary full" id="btnBayar">
+        <i class="fa-solid fa-lock"></i> Bayar via Wijaya Pay
+      </button>
+    </div>
+
+    <div id="payResult" class="result-box" style="display:none;"></div>
+
+    <div class="link-list">
+      <a href="topup-status.html" class="link-row"><i class="fa-solid fa-receipt"></i> Status / Riwayat Top Up <i class="fa-solid fa-chevron-right"></i></a>
+    </div>
+
+    <div class="info-box">
+      <h4>Wijaya Pay</h4>
+      <p>Setelah klik bayar, Anda diarahkan ke gateway Wijaya Pay (QRIS / VA / e-wallet). Setelah pembayaran berhasil, saldo akan ditambahkan. Jika belum masuk dalam 5 menit, hubungi admin dengan bukti transfer.</p>
+    </div>
+  
+    <div class="api-form-card" style="margin-top:16px;">
+      <h3 style="font-size:15px;margin:0 0 8px;color:#FFC107;"><i class="fa-solid fa-money-bill-transfer"></i> Tarik saldo</h3>
+      <p style="font-size:13px;color:#cfd8dc;line-height:1.5;margin:0 0 12px;">
+        Mau tarik saldo? Langsung <b>PM admin</b> via WhatsApp / Telegram / chat website.
+        Admin cek pengeluaran akun dulu (biar tidak ada klaim bohong).
+      </p>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <a href="https://wa.me/6285124697215?text=Halo%20admin%2C%20saya%20mau%20tarik%20saldo" target="_blank" rel="noopener" class="btn-pesan" style="text-align:center;">
+          <i class="fa-brands fa-whatsapp"></i> WA Admin
+        </a>
+        <a href="https://t.me/" target="_blank" rel="noopener" class="btn-topup" style="text-align:center;display:block;">
+          <i class="fa-brands fa-telegram"></i> Telegram Admin
+        </a>
+        <a href="admin-chat.html" class="btn-topup" style="text-align:center;display:block;">
+          <i class="fa-solid fa-comments"></i> Chat di Website
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa">
+      <span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span>
+      <span>Botwa</span>
+    </a>
+    <a href="joki.html" class="nav-item" data-nav="joki">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span>
+      <span>Joki Kontak</span>
+    </a>
+    <a href="index.html" class="nav-item active" data-nav="home">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span>
+      <span>Home</span>
+    </a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span>
+      <span>JasWeb</span>
+    </a>
+    <a href="akun.html" class="nav-item" data-nav="akun">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span>
+      <span>Akun</span>
+    </a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="balance.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    var selected = 50000;
+    document.querySelectorAll('.topup-pkg').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.topup-pkg').forEach(function(b) { b.classList.remove('active'); });
+        this.classList.add('active');
+        selected = parseInt(this.dataset.amount, 10);
+        document.getElementById('customAmount').value = '';
+      });
+    });
+    document.getElementById('customAmount').addEventListener('input', function() {
+      selected = parseInt(this.value, 10) || 0;
+      document.querySelectorAll('.topup-pkg').forEach(function(b) { b.classList.remove('active'); });
+    });
+    document.querySelectorAll('.pay-method').forEach(function(lab) {
+      lab.addEventListener('click', function() {
+        document.querySelectorAll('.pay-method').forEach(function(l) { l.classList.remove('active'); });
+        this.classList.add('active');
+      });
+    });
+    document.getElementById('btnBayar').addEventListener('click', async function() {
+      var amount = selected;
+      if (document.getElementById('customAmount').value) {
+        amount = parseInt(document.getElementById('customAmount').value, 10) || 0;
+      }
+      if (amount < 10000) {
+        alert('Minimal top up Rp 10.000');
+        return;
+      }
+      // Simulasi Wijaya Pay — di production redirect ke gateway
+      var box = document.getElementById('payResult');
+      box.style.display = 'block';
+      box.innerHTML = '<div class="result-ok"><i class="fa-solid fa-spinner fa-spin"></i> Menghubungkan ke Wijaya Pay...<br><small>Nominal: Rp ' + amount.toLocaleString('id-ID') + '</small></div>';
+      // Demo: setelah 1.5s anggap sukses & tambah saldo
+      setTimeout(async function() {
+        if (window.NailongBalance && NailongBalance.credit) {
+          await NailongBalance.credit(amount, 'Top Up Wijaya Pay');
+          box.innerHTML = '<div class="result-ok"><i class="fa-solid fa-check-circle"></i> Pembayaran berhasil (demo). Saldo +Rp ' + amount.toLocaleString('id-ID') + '</div>';
+          if (NailongBalance.refresh) NailongBalance.refresh();
+        } else {
+          box.innerHTML = '<div class="result-ok">Simulasi OK. Hubungkan Firebase balance untuk real.</div>';
+        }
+      }, 1500);
+    });
+  </script>
+
+  <script src="chat-system.js"></script>
+  <script src="presence.js"></script>
+  <script src="wijayapay.js"></script>
+  <script src="pay-choice.js"></script>
+
+  <script src="ui-enhance.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nailong-anim.js"></script>
+</body>
+</html>

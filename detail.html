@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="description" content="Nailong Digital — Botwa, Joki, Produk Digital & Jasweb. Order online, bayar QRIS atau saldo.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nailong Digital">
+  <meta property="og:title" content="Nailong Digital | Botwa, Joki & Produk Digital">
+  <meta property="og:description" content="Nailong Digital menyediakan Botwa, Joki, Produk Digital & Jasweb terpercaya. Order online, bayar QRIS atau saldo, cek riwayat pesanan.">
+  <meta property="og:image" content="/og-banner.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nailong Digital">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nailong Digital">
+  <meta name="twitter:description" content="Pusat layanan Nailong Digital. Order online, bayar QRIS atau saldo.">
+  <meta name="twitter:image" content="/og-banner.jpg">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="apple-touch-icon" href="nailong-digital-logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <img src="logo.png" alt="Nailong" class="logo"  >
+      <div>
+        <h1>𝗡Λ𝗜𝗟𝗢𝗡𝗚々𝗝𝗢𝗞𝗜 𝗘𝗟𝗜𝗧𝗘 <img src="secure.gif" alt="✓" class="verified-img" style="width:18px;height:18px;vertical-align:middle;margin-left:4px;"></h1>
+        <p>Detail Paket</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="top-notif" id="topNotif" style="display:none;"></div>
+
+  <div class="page-content">
+    <a href="joki.html" class="back"><i class="fa-solid fa-arrow-left"></i> Kembali ke Paket</a>
+
+    <div id="detailPaket">
+      <!-- diisi JS -->
+    </div>
+  </div>
+
+  <a href="laporan.html" class="floating-laporan"><i class="fa-solid fa-exclamation-circle"></i> Laporan</a>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa">
+      <span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span>
+      <span>Botwa</span>
+    </a>
+    <a href="joki.html" class="nav-item" data-nav="joki">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span>
+      <span>Joki Kontak</span>
+    </a>
+    <a href="index.html" class="nav-item active" data-nav="home">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span>
+      <span>Home</span>
+    </a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span>
+      <span>JasWeb</span>
+    </a>
+    <a href="akun.html" class="nav-item" data-nav="akun">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span>
+      <span>Akun</span>
+    </a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="joki-produk.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="account-widget.js"></script>
+  <script>
+    function loadDetail() {
+      const params = new URLSearchParams(window.location.search);
+      const id = parseInt(params.get("id") || "1", 10);
+      
+      // pastikan paket sudah load
+      if (typeof loadPaketFromStorage === "function") loadPaketFromStorage();
+      
+      const paket = (typeof paketJoki !== "undefined") 
+        ? paketJoki.find(p => p.id === id) 
+        : null;
+
+      const el = document.getElementById("detailPaket");
+      if (!paket) {
+        el.innerHTML = "<p style='color:#aaa;'>Paket tidak ditemukan. <a href='joki.html' style='color:#FFC107;'>Kembali</a></p>";
+        return;
+      }
+
+      const formatRp = (n) => "Rp " + Number(n).toLocaleString("id-ID");
+
+      el.innerHTML = `
+        <div class="order-header" style="margin-bottom:16px;">
+          <img src="logo.png" class="order-logo" alt="Nailong">
+          <div>
+            <h3>${paket.judul}</h3>
+            <p>Nailong · <span class="tag">${paket.label || "Joki"}</span> · <span class="tag aman">Aman</span></p>
+          </div>
+        </div>
+
+        <div class="badge">JASA JOKI KONTAK</div>
+
+        <div class="paket-card" style="margin-top:12px;">
+          <div class="paket-label">${paket.label}</div>
+          <h3 style="font-size:20px;">${paket.judul}</h3>
+          <p>${paket.deskripsi}</p>
+          <ul style="margin:14px 0;">
+            ${paket.fitur.map(f => `<li><img src="secure.gif" alt="✓" class="check-img" style="width:14px;height:14px;vertical-align:middle;margin-right:6px;"> ${f}</li>`).join("")}
+          </ul>
+          <div class="harga" style="font-size:26px;">${formatRp(paket.harga)}</div>
+          <a href="pesan.html?id=${paket.id}" class="btn-pesan" style="display:block;text-align:center;text-decoration:none;margin-top:12px;">
+            Pesan Sekarang
+          </a>
+        </div>
+
+        <div class="info-box" style="margin:16px 0 0;">
+          <h4>Cara order</h4>
+          <p>1. Klik <b>Pesan Sekarang</b><br>
+          2. Isi teks joki (ganti NAMA STORE & nomor WA di format)<br>
+          3. Bayar via QRIS<br>
+          4. Konfirmasi pembayaran<br>
+          5. Pantau status di Antrian</p>
+        </div>
+      `;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      setTimeout(loadDetail, 50);
+    });
+  </script>
+
+  <script src="chat-system.js"></script>
+  <script src="presence.js"></script>
+  <script src="wijayapay.js"></script>
+  <script src="pay-choice.js"></script>
+
+  <script src="ui-enhance.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>

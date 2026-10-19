@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="description" content="Nailong Digital — Botwa, Joki, Produk Digital & Jasweb. Order online, bayar QRIS atau saldo.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nailong Digital">
+  <meta property="og:title" content="Nailong Digital | Botwa, Joki & Produk Digital">
+  <meta property="og:description" content="Nailong Digital menyediakan Botwa, Joki, Produk Digital & Jasweb terpercaya. Order online, bayar QRIS atau saldo, cek riwayat pesanan.">
+  <meta property="og:image" content="/og-banner.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nailong Digital">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nailong Digital">
+  <meta name="twitter:description" content="Pusat layanan Nailong Digital. Order online, bayar QRIS atau saldo.">
+  <meta name="twitter:image" content="/og-banner.jpg">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="apple-touch-icon" href="nailong-digital-logo.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .about-hero {
+      text-align: center;
+      padding: 8px 0 20px;
+    }
+    .about-hero img {
+      width: 88px;
+      height: 88px;
+      border-radius: 20px;
+      object-fit: cover;
+      border: 2px solid rgba(0,229,160,0.35);
+      box-shadow: 0 6px 20px rgba(33, 150, 243, 0.15);
+      margin-bottom: 12px;
+      background: #1e2a45;
+    }
+    .about-hero h2 {
+      font-size: 20px;
+      color: #FF6F00;
+      margin: 0 0 4px;
+      font-weight: 800;
+    }
+    .about-hero .badge-elite {
+      display: inline-block;
+      background: linear-gradient(135deg, #FFC107, #FF8F00);
+      color: #0a0e1a;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    .about-card {
+      background: #12182a;
+      border: 1px solid #1e2a45;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 18px;
+      line-height: 1.65;
+      font-size: 13px;
+      color: #ccc;
+    }
+    .about-card p { margin: 0 0 10px; }
+    .about-card p:last-child { margin-bottom: 0; }
+    .about-card strong { color: #FF6F00; }
+    .section-title {
+      color: #FF6F00;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0 0 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-sub {
+      color: #888;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .contact-list { margin-top: 4px; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #12182a;
+      border: 1px solid #1e2a45;
+      border-radius: 12px;
+      padding: 14px 14px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .contact-item:active {
+      border-color: #FF6F0066;
+      background: #322800;
+    }
+    .contact-item .icon-wrap {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .contact-item .icon-wrap.wa { background: #075e5433; color: #25d366; }
+    .contact-item .icon-wrap.group { background: #075e5433; color: #25d366; }
+    .contact-item .icon-wrap.channel { background: #075e5433; color: #25d366; }
+    .contact-item .icon-wrap.tg { background: #0088cc22; color: #2aabee; }
+    .contact-item strong {
+      display: block;
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .contact-item small {
+      display: block;
+      color: #999;
+      font-size: 12px;
+    }
+    .contact-item .arrow {
+      margin-left: auto;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <img src="logo.png" class="logo"   alt="Nailong">
+      <div>
+        <h1>𝗡Λ𝗜𝗟𝗢𝗡𝗚々𝗝𝗢𝗞𝗜 𝗘𝗟𝗜𝗧𝗘 <img src="secure.gif" alt="✓" class="verified-img" style="width:18px;height:18px;vertical-align:middle;margin-left:4px;"></h1>
+        <p>Nailong Joki Elite</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="top-notif" id="topNotif" style="display:none;"></div>
+
+  <div class="page-content">
+    <!-- Hero -->
+    <div class="about-hero">
+      <img src="logo.png" alt="Nailong Joki Elite" onerror="this.style.background='#1e2a45'">
+      <div class="badge-elite">ELITE</div>
+      <h2>Nailong Joki Elite</h2>
+      <p style="color:#aaa;font-size:13px;margin:0;">Joki Kontak & Produk Digital Terpercaya</p>
+    </div>
+
+    <!-- Tentang -->
+    <div class="about-card">
+      <p>
+        <strong>Nailong Joki Elite</strong> adalah pusat layanan joki kontak dan produk digital yang dirancang agar proses order, pembayaran, serta pemantauan antrian jadi lebih rapi dan terpusat di satu website.
+      </p>
+      <p>
+        Kami fokus pada layanan <strong>Joki Kontak</strong>, <strong>Paket Views + Kontak</strong>, dengan sistem order yang jelas, konfirmasi pembayaran via bot, serta status antrian yang bisa dipantau kapan saja.
+      </p>
+      <p>
+        Semua transaksi diproses secara profesional. Gunakan jasa admin / MC resmi agar terhindar dari penipuan.
+      </p>
+      <p>
+        Sejak awal beroperasi, Nailong Joki Elite berkomitmen memberikan pelayanan yang transparan, cepat, dan aman. Setiap order yang masuk akan langsung tercatat di sistem, sehingga kamu tidak perlu khawatir kehilangan data atau status pesanan.
+      </p>
+      <p>
+        Kami memahami kebutuhan seller, store, maupun personal yang ingin meningkatkan views status, memperluas jangkauan kontak, atau mempromosikan akun secara lebih luas. Karena itu, kami menyediakan berbagai paket yang bisa disesuaikan dengan kebutuhan dan budget kamu.
+      </p>
+    </div>
+
+    <!-- Kenapa pilih kami -->
+    <div class="section-title" style="margin-top:8px;">
+      <i class="fa-solid fa-star"></i> Kenapa Pilih Nailong Joki Elite?
+    </div>
+    <div class="about-card">
+      <p>
+        <strong>1. Proses Order Terpusat</strong><br>
+        Semua tahap mulai dari pilih paket, isi data, bayar, sampai pantau antrian ada di satu website. Tidak perlu bolak-balik chat yang membingungkan.
+      </p>
+      <p>
+        <strong>2. Pembayaran Aman & Otomatis</strong><br>
+        Sistem pembayaran menggunakan QRIS dinamis. Setelah bayar, kamu bisa langsung konfirmasi dan status akan diperbarui oleh admin.
+      </p>
+      <p>
+        <strong>3. Status Antrian Real-time</strong><br>
+        Kamu bisa cek kode antrian kapan saja di halaman Antrian. Tidak perlu tanya-tanya berulang kali ke admin.
+      </p>
+      <p>
+        <strong>4. Layanan Lengkap</strong><br>
+        Dari joki kontak harian, paket views + kontak, hingga jasa post akun ke channel & grup — semua tersedia dalam satu tempat.
+      </p>
+      <p>
+        <strong>5. Support Resmi</strong><br>
+        Ada CS WhatsApp, grup info, dan saluran resmi. Semua komunikasi penting hanya melalui channel yang tertera di website ini.
+      </p>
+    </div>
+
+    <!-- Cara Order -->
+    <div class="section-title">
+      <i class="fa-solid fa-list-ol"></i> Cara Order
+    </div>
+    <div class="about-card">
+      <p>
+        <strong>Langkah 1</strong> — Pilih layanan di halaman Home atau Joki (Joki Kontak / Jasa Post Akun).
+      </p>
+      <p>
+        <strong>Langkah 2</strong> — Isi data yang diminta dengan lengkap dan benar (nama, nomor WhatsApp, format push, atau data akun).
+      </p>
+      <p>
+        <strong>Langkah 3</strong> — Lakukan pembayaran melalui QRIS yang muncul di halaman pembayaran.
+      </p>
+      <p>
+        <strong>Langkah 4</strong> — Setelah transfer, klik konfirmasi bayar. Order akan masuk antrian dan diproses admin.
+      </p>
+      <p>
+        <strong>Langkah 5</strong> — Pantau status pesanan di halaman Antrian menggunakan kode order kamu.
+      </p>
+      <p style="margin-top:8px;color:#FFC107;">
+        ⚠️ Pastikan hanya order melalui website resmi. Jangan transfer ke rekening pribadi yang tidak tercantum di sistem.
+      </p>
+    </div>
+
+    <!-- Jam Operasional -->
+    <div class="section-title">
+      <i class="fa-solid fa-clock"></i> Jam Operasional
+    </div>
+    <div class="about-card">
+      <p>
+        <strong>Hari Biasa</strong><br>
+        15.00 - 20.00
+      </p>
+      <p>
+        <strong>Hari Libur</strong><br>
+        08.00 - 21.00
+      </p>
+    </div>
+
+    <!-- Website Resmi -->
+    <div class="section-title">
+      <i class="fa-solid fa-globe"></i> Website Resmi
+    </div>
+    <p class="section-sub">Hanya order melalui website resmi di bawah ini.</p>
+
+    <div class="contact-list">
+      <a href="https://wresminailongjoki.vercel.app" class="contact-item" target="_blank" rel="noopener">
+        <div class="icon-wrap wa" style="background:#1a2740;color:#FF6F00;"><i class="fa-solid fa-globe"></i></div>
+        <div>
+          <strong>Website Resmi 𝗡Λ𝗜𝗟𝗢𝗡𝗚々𝗝𝗢𝗞𝗜 𝗘𝗟𝗜𝗧𝗘</strong>
+          <small>wresminailongjoki.vercel.app</small>
+        </div>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+      </a>
+
+      <a href="https://buyer-fresh-nailongjoki.vercel.app" class="contact-item" target="_blank" rel="noopener">
+        <div class="icon-wrap wa" style="background:#1a2740;color:#FF6F00;"><i class="fa-solid fa-globe"></i></div>
+        <div>
+          <strong>Website Buyer fresh 𝗡Λ𝗜𝗟𝗢𝗡𝗚々𝗝𝗢𝗞𝗜 𝗘𝗟𝗜𝗧𝗘</strong>
+          <small>[Manen, Bulanan, Mingguan] · buyer-fresh-nailongjoki.vercel.app</small>
+        </div>
+        <i class="fa-solid fa-chevron-right arrow"></i>
+      </a>
+    </div>
+
+    <p style="text-align:center;color:#666;font-size:11px;margin-top:20px;line-height:1.5;">
+      © Nailong Joki Elite · Order hanya melalui website resmi
+    </p>
+  </div>
+
+  <a href="laporan.html" class="floating-laporan"><i class="fa-solid fa-exclamation-circle"></i> Laporan</a>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa">
+      <span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span>
+      <span>Botwa</span>
+    </a>
+    <a href="joki.html" class="nav-item" data-nav="joki">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span>
+      <span>Joki Kontak</span>
+    </a>
+    <a href="index.html" class="nav-item active" data-nav="home">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span>
+      <span>Home</span>
+    </a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span>
+      <span>JasWeb</span>
+    </a>
+    <a href="akun.html" class="nav-item" data-nav="akun">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span>
+      <span>Akun</span>
+    </a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="account-widget.js"></script>
+
+  <script src="chat-system.js"></script>
+  <script src="presence.js"></script>
+  <script src="wijayapay.js"></script>
+  <script src="pay-choice.js"></script>
+
+  <script src="ui-enhance.js"></script>
+  <script src="nav.js"></script>
+</body>
+</html>

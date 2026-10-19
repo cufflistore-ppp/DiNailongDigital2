@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Buka Toko - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="badge">MARKETPLACE</div>
+    <h2 class="page-title"><i class="fa-solid fa-store"></i> Buka Toko</h2>
+    <p class="page-desc">Semua akun terdaftar bisa buka toko <b>tanpa identitas</b>. Nama toko bebas. Produk publik (lintas akun/device). Harga jual <b>utuh tanpa potongan</b>.</p>
+
+    <div id="tokoPanel">
+      <div class="nd-loading" style="padding:20px;justify-content:center;"><span></span><span></span></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="toko.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="nailong-anim.js"></script>
+  <script>
+    async function render() {
+      var el = document.getElementById('tokoPanel');
+      var my = await NailongToko.getMyStore();
+      if (!my) {
+        el.innerHTML =
+          '<div class="api-form-card">' +
+          '<label>Nama toko (bebas)</label>' +
+          '<input type="text" id="stName" class="form-input" placeholder="Contoh: Nailong Store" maxlength="40">' +
+          '<label style="margin-top:10px;">Deskripsi toko (bebas)</label>' +
+          '<textarea id="stDesc" class="form-input" rows="3" placeholder="Ceritakan tokomu..."></textarea>' +
+          '<label style="margin-top:10px;">Foto logo toko</label>' +
+          '<div class="upload-row"><input type="file" id="stLogoFile" accept="image/*"><img id="stLogoPrev" class="preview-sm" style="display:none;"></div>' +
+          '<label style="margin-top:10px;">Banner (latar belakang logo)</label>' +
+          '<div class="upload-row"><input type="file" id="stBannerFile" accept="image/*"><img id="stBannerPrev" class="preview-sm" style="display:none;width:80px;height:40px;"></div>' +
+          '<label style="margin-top:10px;">Nomor WhatsApp toko (untuk chat pembeli)</label>' +
+          '<input type="tel" id="stWa" class="form-input" placeholder="628xxxxxxxxxx">' +
+          '<label style="margin-top:10px;">Link (opsional — sosial / website)</label>' +
+          '<input type="url" id="stLink" class="form-input" placeholder="https://... (boleh dikosongkan)">' +
+          '<button type="button" class="btn-pesan" id="btnCreate" style="width:100%;margin-top:14px;"><i class="fa-solid fa-store"></i> Buka Toko Sekarang</button>' +
+          '</div>';
+        window._stLogoData = '';
+        window._stBannerData = '';
+        function readFile(input, cb, prevId) {
+          input.onchange = function () {
+            var f = input.files && input.files[0];
+            if (!f) return;
+            if (f.size > 1.5e6) { alert('Max 1.5MB'); return; }
+            var r = new FileReader();
+            r.onload = function () {
+              cb(r.result);
+              var prev = document.getElementById(prevId);
+              if (prev) { prev.src = r.result; prev.style.display = 'block'; }
+            };
+            r.readAsDataURL(f);
+          };
+        }
+        readFile(document.getElementById('stLogoFile'), function (d) { window._stLogoData = d; }, 'stLogoPrev');
+        readFile(document.getElementById('stBannerFile'), function (d) { window._stBannerData = d; }, 'stBannerPrev');
+        document.getElementById('btnCreate').onclick = async function () {
+          var res = await NailongToko.createStore({
+            name: document.getElementById('stName').value,
+            desc: document.getElementById('stDesc').value,
+            logo: window._stLogoData || '',
+            banner: window._stBannerData || '',
+            link: document.getElementById('stLink').value,
+            wa: document.getElementById('stWa').value
+          });
+          if (!res.ok) { alert(res.error); return; }
+          alert('Toko dibuat!\nID: ' + res.store.storeId);
+          render();
+        };
+        return;
+      }
+
+      var avg = NailongToko.storeAvgRating(my);
+      var bal = NailongToko.getSellerBalance(my.storeId);
+      var prods = await NailongToko.getProductsByStore(my.storeId);
+      var statusLabel = my.status === 'blocked' ? '⛔ Diblokir' : (my.status === 'review' ? '🔍 Pemeriksaan' : '✅ Aktif');
+
+      var bannerHtml = '<div class="toko-banner-wrap">' +
+        (my.banner ? '<img class="toko-banner" src="' + escapeH(my.banner) + '" alt="">' : '<div class="toko-banner" style="width:100%;height:100%;background:linear-gradient(135deg,#1a2740,#0d1220);"></div>') +
+        (my.logo ? '<img class="toko-banner-logo" src="' + escapeH(my.logo) + '" alt="">' : '<div class="toko-banner-logo ph">' + escapeH((my.name||'T').charAt(0)) + '</div>') +
+        '</div>';
+      el.innerHTML =
+        '<div class="api-form-card">' + bannerHtml +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">' +
+        '<div><h3 style="margin:0;color:#fff;font-size:16px;">' + escapeH(my.name) + '</h3>' +
+        '<p style="margin:4px 0 0;font-size:11px;color:#8aa0b8;">ID: <code style="color:#FFC107;">' + my.storeId + '</code></p>' +
+        '<p style="margin:4px 0 0;font-size:12px;color:#cfd8dc;">' + NailongToko.stars(avg) + ' ' + avg + ' · Laporan: ' + (my.reportCount||0) + ' · ' + statusLabel + '</p></div>' +
+        '<a href="toko-detail.html?id=' + encodeURIComponent(my.storeId) + '" class="btn-topup" style="font-size:11px;">Lihat publik</a></div>' +
+        '<p style="font-size:13px;color:#aaa;margin:10px 0 0;">' + escapeH(my.desc || '') + '</p>' +
+        (my.link ? '<p style="margin:8px 0 0;"><a href="' + escapeH(my.link) + '" target="_blank" rel="noopener" style="color:#FFC107;font-size:12px;"><i class="fa-solid fa-link"></i> ' + escapeH(my.link) + '</a></p>' : '') +
+        '<div style="margin-top:12px;"><label style="font-size:12px;">Update logo / banner / deskripsi / link</label>' +
+        '<textarea id="editDesc" class="form-input" rows="2" placeholder="Deskripsi">' + escapeH(my.desc||'') + '</textarea>' +
+        '<input type="tel" id="editWa" class="form-input" placeholder="No WA toko" value="' + escapeH(my.wa||'') + '" style="margin-top:6px;">' +
+        '<input type="url" id="editLink" class="form-input" placeholder="Link opsional" value="' + escapeH(my.link||'') + '" style="margin-top:6px;">' +
+        '<div class="upload-row"><input type="file" id="editLogo" accept="image/*"> <input type="file" id="editBanner" accept="image/*"></div>' +
+        '<button type="button" class="btn-topup" id="btnSaveStore" style="margin-top:8px;">Simpan profil toko</button></div>' +
+        '<div style="margin-top:12px;padding:12px;background:rgba(255,193,7,0.08);border-radius:12px;">' +
+        '<div style="font-size:12px;color:#8aa0b8;">Saldo penjualan (harga utuh, tanpa potongan)</div>' +
+        '<div style="font-size:22px;font-weight:800;color:#FFC107;">' + NailongToko.formatRp(bal) + '</div>' +
+        '<button type="button" class="btn-pesan" id="btnTarik" style="width:100%;margin-top:10px;"><i class="fa-solid fa-money-bill-transfer"></i> Tarik saldo → PM Admin</button>' +
+        '</div></div>' +
+
+        '<div class="api-form-card">' +
+        '<h3 style="font-size:15px;margin:0 0 10px;color:#FFC107;"><i class="fa-solid fa-plus"></i> Tambah produk</h3>' +
+        '<label>Nama produk</label><input type="text" id="pTitle" class="form-input" placeholder="Nama barang">' +
+        '<label style="margin-top:8px;">Harga (Rp)</label><input type="number" id="pPrice" class="form-input" min="100" placeholder="10000">' +
+        '<label style="margin-top:8px;">URL foto produk</label><input type="url" id="pImg" class="form-input" placeholder="https://...">' +
+        '<label style="margin-top:8px;">Deskripsi</label><textarea id="pDesc" class="form-input" rows="2"></textarea>' +
+        '<button type="button" class="btn-pesan" id="btnAddProd" style="width:100%;margin-top:12px;">Simpan produk</button>' +
+        '</div>' +
+
+        '<div class="api-form-card"><h3 style="font-size:15px;margin:0 0 10px;color:#FFC107;"><i class="fa-solid fa-comments"></i> Chat dari buyer</h3><div id="sellerChatBox" style="max-height:160px;overflow:auto;font-size:12px;"></div></div>' +
+        '<div class="api-form-card"><h3 style="font-size:15px;margin:0 0 10px;color:#FFC107;">Produk toko (' + prods.length + ')</h3>' +
+        '<div id="myProds"></div></div>' +
+
+        (my.status === 'blocked' || my.status === 'review' ?
+          '<div class="api-form-card"><h3 style="font-size:14px;color:#ff8a80;">Ajukan banding</h3>' +
+          '<textarea id="appealNote" class="form-input" rows="2" placeholder="Alasan banding..."></textarea>' +
+          '<button type="button" class="btn-topup" id="btnAppeal" style="margin-top:8px;">Kirim banding</button></div>' : '');
+
+      var list = document.getElementById('myProds');
+      if (!prods.length) list.innerHTML = '<p style="color:#8aa0b8;font-size:13px;">Belum ada produk.</p>';
+      else list.innerHTML = prods.map(function (p) {
+        return '<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid #1a2740;">' +
+          (p.img ? '<img src="' + escapeH(p.img) + '" style="width:56px;height:56px;object-fit:cover;border-radius:8px;" onerror="this.style.display=\'none\'">' : '') +
+          '<div style="flex:1;"><b style="color:#fff;font-size:13px;">' + escapeH(p.title) + '</b><div style="color:#FFC107;font-size:13px;">' + NailongToko.formatRp(p.price) +
+          '</div><a href="produk-toko.html?id=' + encodeURIComponent(p.productId) + '" style="font-size:11px;color:#8aa0b8;">Detail</a></div></div>';
+      }).join('');
+
+      var sc = document.getElementById('sellerChatBox');
+      if (sc && NailongToko.getAllChatsForStore) {
+        var ch = NailongToko.getAllChatsForStore(my.storeId);
+        sc.innerHTML = ch.length ? ch.slice(0,30).map(function(m){
+          return '<div style="padding:6px 0;border-bottom:1px solid #1a2740;"><b style="color:#FFC107">'+(m.name||'Buyer')+'</b>: '+String(m.text||'').replace(/</g,'')+' <span style="color:#6b7a90;font-size:10px;">'+m.productId+'</span></div>';
+        }).join('') : '<p style="color:#8aa0b8;">Belum ada chat.</p>';
+      }
+      document.getElementById('btnAddProd').onclick = async function () {
+        var res = await NailongToko.addProduct({
+          title: document.getElementById('pTitle').value,
+          price: document.getElementById('pPrice').value,
+          img: document.getElementById('pImg').value,
+          desc: document.getElementById('pDesc').value
+        });
+        if (!res.ok) { alert(res.error); return; }
+        alert('Produk ditambahkan');
+        render();
+      };
+
+      var _logoEdit = '', _bannerEdit = '';
+      var elLogo = document.getElementById('editLogo');
+      var elBan = document.getElementById('editBanner');
+      if (elLogo) elLogo.onchange = function(){ var f=elLogo.files[0]; if(!f)return; var r=new FileReader(); r.onload=function(){ _logoEdit=r.result; }; r.readAsDataURL(f); };
+      if (elBan) elBan.onchange = function(){ var f=elBan.files[0]; if(!f)return; var r=new FileReader(); r.onload=function(){ _bannerEdit=r.result; }; r.readAsDataURL(f); };
+      var bs = document.getElementById('btnSaveStore');
+      if (bs) bs.onclick = async function() {
+        var patch = { desc: document.getElementById('editDesc').value, link: document.getElementById('editLink').value, wa: (document.getElementById('editWa')||{}).value };
+        if (_logoEdit) patch.logo = _logoEdit;
+        if (_bannerEdit) patch.banner = _bannerEdit;
+        var res = await NailongToko.updateStore(my.storeId, patch);
+        if (!res.ok) { alert(res.error||'Gagal'); return; }
+        alert('Profil toko disimpan');
+        render();
+      };
+
+      document.getElementById('btnTarik').onclick = function () {
+        var amount = parseInt(prompt('Nominal tarik (saldo: ' + bal + '):', String(bal)), 10);
+        if (!amount) return;
+        var res = NailongToko.withdrawSeller(my.storeId, amount);
+        if (!res.ok) { alert(res.error); return; }
+        var msg = encodeURIComponent('Halo admin, saya tarik saldo toko.\nToko: ' + my.name + '\nID: ' + my.storeId + '\nNominal: Rp ' + amount.toLocaleString('id-ID'));
+        alert('Saldo dipotong Rp ' + amount.toLocaleString('id-ID') + '. Lanjut chat admin.');
+        window.open('https://wa.me/6285124697215?text=' + msg, '_blank');
+        render();
+      };
+
+      var ba = document.getElementById('btnAppeal');
+      if (ba) ba.onclick = async function () {
+        await NailongToko.appealStore(my.storeId, document.getElementById('appealNote').value);
+        alert('Banding dikirim, status toko masuk pemeriksaan ulang.');
+        render();
+      };
+    }
+    function escapeH(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+    }
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(render, 500); });
+  </script>
+</body>
+</html>

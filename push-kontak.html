@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Push Kontak Otomatis - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="badge">PUSH KONTAK</div>
+    <h2 class="page-title"><i class="fa-solid fa-paper-plane"></i> Push Kontak Otomatis</h2>
+    <p class="page-desc">Rp <b style="color:#FFC107">800</b> / nomor · berlaku <b>1 hari</b> sejak dijalankan.</p>
+
+    <div class="warn-push">
+      <strong><i class="fa-solid fa-triangle-exclamation"></i> PERINGATAN PENTING</strong><br><br>
+      PUSH KONTAK otomatis ini bisa membuat WhatsApp anda <b>kenon / limit</b>. 
+      Jadi kalau misalnya anda coba dan kenon/limit, <b>bukan tanggung jawab admin &amp; owner</b>, 
+      karena kami sudah ingatkan.
+    </div>
+
+    <div class="api-form-card">
+      <h3 style="font-size:15px;margin:0 0 10px;color:#FFC107;"><i class="fa-solid fa-book"></i> Cara pakai</h3>
+      <ol style="margin:0;padding-left:18px;font-size:13px;color:#cfd8dc;line-height:1.7;">
+        <li>Isi <b>link grup</b> (wajib).</li>
+        <li>Isi daftar <b>nomor</b> yang mau di-push (satu baris satu nomor).</li>
+        <li>Tulis <b>prompt / teks PM</b> yang akan dikirim.</li>
+        <li>Order &amp; bayar (WijayaPay / saldo).</li>
+        <li>Salin <b>kode pairing</b> → WhatsApp → Perangkat tertaut → tempel kode (otomatis siap, bisa langsung disalin).</li>
+        <li>Pantau progress: berapa pesan sudah terkirim.</li>
+      </ol>
+    </div>
+
+    <div class="api-form-card">
+      <label>Link grup <span style="color:#ff8a80;">*wajib</span></label>
+      <input type="url" id="pkLink" class="form-input" placeholder="https://chat.whatsapp.com/....">
+
+      <label style="margin-top:10px;">Nomor yang di-push <span style="color:#ff8a80;">*wajib</span></label>
+      <textarea id="pkNumbers" class="form-input" rows="4" placeholder="62812xxxxxxxx&#10;62813xxxxxxxx&#10;(satu nomor per baris)"></textarea>
+      <p style="font-size:11px;color:#8aa0b8;margin:4px 0 0;">Terdeteksi: <b id="pkCount">0</b> nomor · Total ≈ <b id="pkTotal">Rp 0</b></p>
+
+      <label style="margin-top:10px;">Prompt / teks PM</label>
+      <textarea id="pkPrompt" class="form-input" rows="3" placeholder="Halo, yuk gabung grup kami: {link}"></textarea>
+
+      <button type="button" class="btn-pesan" id="btnPkOrder" style="width:100%;margin-top:14px;">
+        <i class="fa-solid fa-bolt"></i> Order Push Kontak
+      </button>
+    </div>
+
+    <div class="api-form-card" id="pkPairingBox" style="display:none;">
+      <h3 style="font-size:15px;margin:0 0 8px;color:#69f0ae;"><i class="fa-solid fa-link"></i> Pairing (langsung salin)</h3>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <code id="pkPairing" style="flex:1;background:#0a0e18;padding:12px;border-radius:10px;font-size:18px;letter-spacing:2px;color:#FFC107;text-align:center;">------</code>
+        <button type="button" class="btn-topup" id="btnPkCopy"><i class="fa-solid fa-copy"></i></button>
+      </div>
+    </div>
+
+    <div class="api-form-card" id="pkProgressBox" style="display:none;">
+      <h3 style="font-size:15px;margin:0 0 8px;color:#FFC107;"><i class="fa-solid fa-chart-line"></i> Progress</h3>
+      <p style="font-size:13px;color:#cfd8dc;">Pesan terkirim: <b id="pkSent">0</b> / <b id="pkTarget">0</b></p>
+      <div style="height:8px;background:#1a2740;border-radius:6px;overflow:hidden;margin-top:8px;">
+        <div id="pkBar" style="height:100%;width:0%;background:linear-gradient(90deg,#FFC107,#FF8F00);transition:width 0.3s;"></div>
+      </div>
+      <p style="font-size:11px;color:#8aa0b8;margin-top:8px;">Berlaku 1 hari sejak dijalankan.</p>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script>
+    var PRICE = 800;
+    function parseNums() {
+      var raw = (document.getElementById('pkNumbers').value || '').split(/[\n,;]+/);
+      return raw.map(function(s){ return s.replace(/\D/g,''); }).filter(function(s){ return s.length >= 10; });
+    }
+    function refreshCount() {
+      var n = parseNums().length;
+      document.getElementById('pkCount').textContent = n;
+      document.getElementById('pkTotal').textContent = 'Rp ' + (n * PRICE).toLocaleString('id-ID');
+    }
+    document.getElementById('pkNumbers').addEventListener('input', refreshCount);
+
+    function makePairing() {
+      var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      var s = '';
+      for (var i = 0; i < 8; i++) s += chars[Math.floor(Math.random() * chars.length)];
+      return s.slice(0,4) + '-' + s.slice(4);
+    }
+
+    document.getElementById('btnPkOrder').onclick = function() {
+      var link = (document.getElementById('pkLink').value || '').trim();
+      if (!link || link.indexOf('http') !== 0) { alert('Link grup wajib diisi (http/https)'); return; }
+      var nums = parseNums();
+      if (!nums.length) { alert('Minimal 1 nomor valid'); return; }
+      var prompt = (document.getElementById('pkPrompt').value || '').trim() || ('Halo, yuk gabung: ' + link);
+      var total = nums.length * PRICE;
+      var code = makePairing();
+
+      // simpan session push (1 hari)
+      try {
+        var job = {
+          link: link, numbers: nums, prompt: prompt,
+          pairing: code, sent: 0, target: nums.length,
+          startedAt: Date.now(), expiresAt: Date.now() + 24*60*60*1000,
+          total: total
+        };
+        localStorage.setItem('nailong_push_job', JSON.stringify(job));
+        // catat pengeluaran akun
+        var exp = JSON.parse(localStorage.getItem('nailong_expenses') || '[]');
+        exp.unshift({ type: 'push-kontak', amount: total, at: Date.now(), detail: nums.length + ' nomor' });
+        localStorage.setItem('nailong_expenses', JSON.stringify(exp.slice(0, 100)));
+      } catch(e) {}
+
+      document.getElementById('pkPairingBox').style.display = 'block';
+      document.getElementById('pkPairing').textContent = code;
+      document.getElementById('pkProgressBox').style.display = 'block';
+      document.getElementById('pkSent').textContent = '0';
+      document.getElementById('pkTarget').textContent = String(nums.length);
+
+      location.href = 'pembayaran.html?paket=' + encodeURIComponent('Push Kontak ' + nums.length + ' nomor') +
+        '&total=' + total + '&type=push';
+    };
+
+    document.getElementById('btnPkCopy').onclick = function() {
+      var t = document.getElementById('pkPairing').textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText(t);
+      alert('Pairing disalin: ' + t);
+    };
+
+    // restore progress
+    try {
+      var job = JSON.parse(localStorage.getItem('nailong_push_job') || 'null');
+      if (job && job.expiresAt > Date.now()) {
+        document.getElementById('pkPairingBox').style.display = 'block';
+        document.getElementById('pkPairing').textContent = job.pairing || '------';
+        document.getElementById('pkProgressBox').style.display = 'block';
+        document.getElementById('pkSent').textContent = job.sent || 0;
+        document.getElementById('pkTarget').textContent = job.target || 0;
+        var pct = job.target ? Math.min(100, Math.round((job.sent||0)/job.target*100)) : 0;
+        document.getElementById('pkBar').style.width = pct + '%';
+      }
+    } catch(e) {}
+  </script>
+  <script src="nailong-anim.js"></script>
+  <script src="protect.js"></script>
+</body>
+</html>

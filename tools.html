@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tools - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .tool-card {
+      background: rgba(16,24,42,0.6); border: 1px solid rgba(255,193,7,0.15);
+      border-radius: 14px; padding: 16px 8px; text-align: center; cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .tool-card:active { transform: scale(0.96); }
+    .tool-card i { font-size: 22px; color: #FFC107; margin-bottom: 8px; display: block; }
+    .tool-card span { font-size: 11px; font-weight: 700; color: #cfd8dc; }
+    .tool-panel { display: none; margin-top: 14px; }
+    .tool-panel.active { display: block; }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full">
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <div class="badge">TOOLS NEXUS</div>
+    <h2 class="page-title"><i class="fa-solid fa-screwdriver-wrench"></i> All Tools</h2>
+    <p class="page-desc">Kumpulan tools otomatis — pilih menu, pakai langsung di browser.</p>
+
+    <div class="tools-grid" id="toolsGrid">
+      <div class="tool-card" data-tool="encode"><i class="fa-solid fa-lock"></i><span>Base64</span></div>
+      <div class="tool-card" data-tool="url"><i class="fa-solid fa-link"></i><span>URL Encode</span></div>
+      <div class="tool-card" data-tool="wa"><i class="fa-brands fa-whatsapp"></i><span>WA Link</span></div>
+      <div class="tool-card" data-tool="qr"><i class="fa-solid fa-qrcode"></i><span>QR Text</span></div>
+      <div class="tool-card" data-tool="hash"><i class="fa-solid fa-fingerprint"></i><span>Hash MD5</span></div>
+      <div class="tool-card" data-tool="case"><i class="fa-solid fa-font"></i><span>Case Text</span></div>
+      <div class="tool-card" data-tool="json"><i class="fa-solid fa-code"></i><span>JSON Format</span></div>
+      <div class="tool-card" data-tool="uuid"><i class="fa-solid fa-key"></i><span>UUID</span></div>
+      <div class="tool-card" data-tool="pass"><i class="fa-solid fa-shield"></i><span>Password</span></div>
+      <div class="tool-card" data-tool="count"><i class="fa-solid fa-calculator"></i><span>Hitung Teks</span></div>
+      <div class="tool-card" data-tool="time"><i class="fa-solid fa-clock"></i><span>Timestamp</span></div>
+      <div class="tool-card" data-tool="color"><i class="fa-solid fa-palette"></i><span>Color Hex</span></div>
+    </div>
+
+    <div class="api-form-card tool-panel" id="toolPanel">
+      <h3 id="toolTitle" style="font-size:15px;color:#FFC107;margin:0 0 10px;">Tool</h3>
+      <textarea id="toolIn" class="form-input" rows="4" placeholder="Input..."></textarea>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+        <button type="button" class="btn-pesan" id="toolRun" style="flex:1;">Jalankan</button>
+        <button type="button" class="btn-topup" id="toolCopy">Salin hasil</button>
+      </div>
+      <textarea id="toolOut" class="form-input" rows="4" placeholder="Output..." readonly style="margin-top:10px;"></textarea>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="tools.html" class="nav-item active" data-nav="tools"><span class="nav-icon-wrap"><i class="fa-solid fa-screwdriver-wrench"></i></span><span>Tools</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="protect.js"></script>
+  <script>
+    var current = 'encode';
+    var titles = {
+      encode:'Base64 Encode/Decode', url:'URL Encode/Decode', wa:'Generator WA.me',
+      qr:'QR dari teks (link API)', hash:'Hash sederhana', case:'UPPER / lower / Title',
+      json:'Format JSON', uuid:'Generate UUID', pass:'Password random',
+      count:'Hitung karakter/kata', time:'Unix Timestamp', color:'Preview warna hex'
+    };
+    document.querySelectorAll('.tool-card').forEach(function(c){
+      c.onclick = function(){
+        current = c.getAttribute('data-tool');
+        document.getElementById('toolPanel').classList.add('active');
+        document.getElementById('toolTitle').textContent = titles[current] || current;
+        document.getElementById('toolOut').value = '';
+      };
+    });
+    function md5lite(s){
+      // simple hash fallback (not crypto-md5) for demo
+      var h = 0;
+      for (var i=0;i<s.length;i++){ h = ((h<<5)-h)+s.charCodeAt(i); h|=0; }
+      return 'nd_' + Math.abs(h).toString(16) + '_' + s.length;
+    }
+    document.getElementById('toolRun').onclick = function(){
+      var inp = document.getElementById('toolIn').value;
+      var out = '';
+      try {
+        if (current==='encode') {
+          try { out = atob(inp); } catch(e){ out = btoa(unescape(encodeURIComponent(inp))); }
+        } else if (current==='url') {
+          try { out = decodeURIComponent(inp); } catch(e){ out = encodeURIComponent(inp); }
+        } else if (current==='wa') {
+          var n = inp.replace(/\D/g,'');
+          if (n.startsWith('0')) n = '62'+n.slice(1);
+          out = 'https://wa.me/' + n;
+        } else if (current==='qr') {
+          out = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(inp);
+        } else if (current==='hash') {
+          out = md5lite(inp);
+        } else if (current==='case') {
+          out = 'UPPER:\n'+inp.toUpperCase()+'\n\nlower:\n'+inp.toLowerCase()+'\n\nTitle:\n'+inp.replace(/\w\S*/g,function(t){return t.charAt(0).toUpperCase()+t.substr(1).toLowerCase();});
+        } else if (current==='json') {
+          out = JSON.stringify(JSON.parse(inp), null, 2);
+        } else if (current==='uuid') {
+          out = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c=='x'?r:(r&0x3|0x8);return v.toString(16);});
+        } else if (current==='pass') {
+          var chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$';
+          out=''; for(var i=0;i<16;i++) out+=chars[Math.floor(Math.random()*chars.length)];
+        } else if (current==='count') {
+          out = 'Karakter: '+inp.length+'\nKata: '+(inp.trim()?inp.trim().split(/\s+/).length:0)+'\nBaris: '+inp.split('\n').length;
+        } else if (current==='time') {
+          out = 'Unix: '+Math.floor(Date.now()/1000)+'\nISO: '+new Date().toISOString()+'\nLokal: '+new Date().toLocaleString('id-ID');
+        } else if (current==='color') {
+          var hex = inp.trim();
+          if (hex.charAt(0)!=='#') hex='#'+hex;
+          out = hex;
+          document.getElementById('toolOut').style.background = hex;
+        }
+      } catch(e){ out = 'Error: '+(e.message||e); }
+      if (current!=='color') document.getElementById('toolOut').style.background = '';
+      document.getElementById('toolOut').value = out;
+    };
+    document.getElementById('toolCopy').onclick = function(){
+      var t = document.getElementById('toolOut').value;
+      if (navigator.clipboard) navigator.clipboard.writeText(t);
+      alert('Disalin');
+    };
+  </script>
+</body>
+</html>

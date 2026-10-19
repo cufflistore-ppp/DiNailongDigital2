@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="description" content="Nailong Digital — Botwa, Joki, Produk Digital & Jasweb. Order online, bayar QRIS atau saldo.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nailong Digital">
+  <meta property="og:title" content="Nailong Digital | Botwa, Joki & Produk Digital">
+  <meta property="og:description" content="Nailong Digital menyediakan Botwa, Joki, Produk Digital & Jasweb terpercaya. Order online, bayar QRIS atau saldo, cek riwayat pesanan.">
+  <meta property="og:image" content="/og-banner.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Nailong Digital">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nailong Digital">
+  <meta name="twitter:description" content="Pusat layanan Nailong Digital. Order online, bayar QRIS atau saldo.">
+  <meta name="twitter:image" content="/og-banner.jpg">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="apple-touch-icon" href="nailong-digital-logo.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .jaspost-notice {
+      background: #2a2200;
+      border: 1px solid #FFC10755;
+      border-radius: 10px;
+      padding: 12px;
+      margin: 12px 0;
+      font-size: 12px;
+      color: #eee;
+      line-height: 1.5;
+    }
+    .jaspost-notice .title {
+      color: #FFC107;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .foto-preview {
+      max-width: 100%;
+      max-height: 180px;
+      border-radius: 10px;
+      margin-top: 8px;
+      display: none;
+      border: 1px solid #3d3200;
+    }
+    .field-hint {
+      font-size: 11px;
+      color: #aaa;
+      margin: -4px 0 8px;
+    }
+    #formJaspost label {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <img src="logo.png" alt="Nailong" class="logo"  >
+      <div>
+        <h1>𝗡Λ𝗜𝗟𝗢𝗡𝗚々𝗝𝗢𝗞𝗜 𝗘𝗟𝗜𝗧𝗘 <img src="secure.gif" alt="✓" class="verified-img" style="width:18px;height:18px;vertical-align:middle;margin-left:4px;"></h1>
+        <p>Form Pemesanan</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="top-notif" id="topNotif" style="display:none;"></div>
+
+  <div class="page-content">
+    <a href="javascript:history.back()" class="back"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
+
+    <div class="order-header" style="margin-bottom:16px;">
+      <img src="logo.png" class="order-logo"  >
+      <div>
+        <h3 id="paketJudul">Joki Kontak</h3>
+        <p>Nailong · <span class="tag">Proses Cepat</span> · <span class="tag aman">Aman</span></p>
+      </div>
+    </div>
+
+    <div class="warning-box red" id="warningJoki">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div class="marquee">
+        <span>KANG JOKI KONTAK DILARANG ORDER. JIKA KETAHUAN TIDAK DILAYANI! &nbsp;&nbsp;&nbsp; KANG JOKI KONTAK DILARANG ORDER. JIKA KETAHUAN TIDAK DILAYANI!</span>
+      </div>
+    </div>
+
+    <!-- ========== FORM STANDAR (Joki + Paket Views/Premium) ========== -->
+    <div id="formStandar">
+      <div class="form-section">
+        <h4><span class="step">1</span> Format Teks Joki</h4>
+
+        <!-- Nama & WA disembunyikan untuk joki; tetap ada di DOM untuk kompatibilitas produk digital -->
+        <div id="fieldNamaWa" style="display:none;">
+          <label>Nama (Store/JB)</label>
+          <input type="text" id="nama" placeholder="Nama Store kamu">
+          <label>Nomor WhatsApp</label>
+          <input type="tel" id="wa" placeholder="08xxxxxxxxxx">
+        </div>
+
+        <label>Teks Joki (Format Push Kontak)</label>
+        <p style="font-size:12px; color:#FFC107; margin:4px 0 8px;">
+          * Tinggal ganti <b>NAMA STORE</b> dan nomor di <b>Wa.me/628…</b> saja. Jangan hapus formatnya.
+          Durasi <b id="hintDurasi">[15 jam]</b> otomatis sesuai paket yang kamu pilih.
+        </p>
+        <textarea id="catatan" rows="9">SV BUYER FRESH 𝗡Λ𝗜𝗟𝗢𝗡𝗚🐣
+
+[15 jam]
+
+SV ; NAMA STORE
+Wa.me/628…
+
+*#NAMBAH VIEW SW + KONTAK + SELLER + BUYYER + DLL 👾🐥*</textarea>
+      </div>
+
+      <div class="form-section" id="addonSection" style="display:none;">
+        <h4><span class="step">2</span> Tambahan / Prioritas</h4>
+        <div class="addon" onclick="toggleAddon(this, 500)">
+          <span>+ 15 jam</span>
+          <span class="addon-price">+Rp 500</span>
+          <button class="btn-pilih" type="button">Pilih</button>
+        </div>
+        <div class="addon" onclick="toggleAddon(this, 1000)">
+          <span>+ 1 hari</span>
+          <span class="addon-price">+Rp 1.000</span>
+          <button class="btn-pilih" type="button">Pilih</button>
+        </div>
+        <div class="addon" onclick="toggleAddon(this, 2000)">
+          <span>+ 2 hari</span>
+          <span class="addon-price">+Rp 2.000</span>
+          <button class="btn-pilih" type="button">Pilih</button>
+        </div>
+        <div class="addon" onclick="toggleAddon(this, 3000)">
+          <span>+ 3 hari</span>
+          <span class="addon-price">+Rp 3.000</span>
+          <button class="btn-pilih" type="button">Pilih</button>
+        </div>
+        <div class="addon" onclick="toggleAddon(this, 5000)">
+          <span>+ 5 hari</span>
+          <span class="addon-price">+Rp 5.000</span>
+          <button class="btn-pilih" type="button">Pilih</button>
+        </div>
+        <div class="addon" onclick="toggleAddon(this, 6000)">
+          <span>+ 6 hari</span>
+          <span class="addon-price">+Rp 6.000</span>
+          <button class="btn-pilih" type="button">Pilih</button>
+        </div>
+        <div class="addon" onclick="toggleAddon(this, 7000)">
+          <span>+ 1 minggu</span>
+          <span class="addon-price">+Rp 7.000</span>
+          <button class="btn-pilih" type="button">Pilih</button>
+        </div>
+        <div class="addon" onclick="toggleAddon(this, 15000)">
+          <span>+ 1 bulan</span>
+          <span class="addon-price">+Rp 15.000</span>
+          <button class="btn-pilih" type="button">Pilih</button>
+        </div>
+        <div class="addon" onclick="toggleAddon(this, 8000)">
+          <span>Prioritas Antrian</span>
+          <span class="addon-price">+Rp 8.000</span>
+          <button class="btn-pilih" type="button">Pilih</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== FORM JASA POST ========== -->
+    <div id="formJaspost" style="display:none;">
+      <div class="form-section">
+        <h4><span class="step">1</span> Format Jasa Post</h4>
+
+        <div class="jaspost-notice">
+          <span class="title">🫣 JASA POST FREE/GRATIS PM AJA NAILONG</span>
+          <b>FORMAT JASPOST BY NAILONG</b><br>
+          <code>BUKAN AKUN ADMIN</code>
+        </div>
+
+        <label>JUAL / CARI</label>
+        <input type="text" id="jp_jual_cari" placeholder="Jual / Cari ..." required>
+
+        <label>NOMER LU</label>
+        <input type="tel" id="jp_nomer" placeholder="08xxxxxxxxxx / 62xxxxxxxxxx" required>
+
+        <label>NAMA LU</label>
+        <input type="text" id="jp_nama" placeholder="Nama kamu" required>
+
+        <label>ITEM / AKUN</label>
+        <input type="text" id="jp_item" placeholder="Item / akun yang dipost" required>
+
+        <label>LOG</label>
+        <input type="text" id="jp_log" placeholder="Log (opsional)">
+
+        <label>OP</label>
+        <input type="text" id="jp_op" placeholder="OP (opsional)">
+
+        <label>SPEK</label>
+        <textarea id="jp_spek" rows="3" placeholder="Spesifikasi produk / akun" required></textarea>
+
+        <label>Mc / Admin</label>
+        <input type="text" id="jp_mc" value="NAILONG" readonly style="background:#0a0e18;color:#FFC107;">
+
+        <div class="jaspost-notice" style="margin-top:14px;">
+          😶 <b>PEMBERITAHUAN</b> : GUNAKAN JASA ADMIN / MC AGAR TERHINDAR DARI PENIPUAN<br><br>
+          Jasa Post <b>GRATIS</b>. Isi lengkap + foto, lalu kirim.
+        </div>
+
+        <label style="margin-top:14px;">Foto produk / akun (wajib) 📷</label>
+        <p class="field-hint">Wajib upload foto. Data + foto langsung dikirim ke admin saat kamu tekan <b>Kirim Gratis</b>.</p>
+        <input type="file" id="fotoAkun" accept="image/*" required>
+        <img id="fotoPreview" class="foto-preview" alt="Preview foto">
+      </div>
+    </div>
+
+    <div class="ringkasan">
+      <h4>Ringkasan Order</h4>
+      <div class="row"><span id="namaPaketRow">Joki Kontak</span><span>Paket</span><span id="hargaPaket">Rp 5.000</span></div>
+      <div class="row total"><span>Total</span><span id="totalHarga">Rp 5.000</span></div>
+      <button class="btn-buat" id="btnSubmitOrder" onclick="buatPesanan()">Buat Pesanan</button>
+    </div>
+  </div>
+
+  <a href="laporan.html" class="floating-laporan"><i class="fa-solid fa-exclamation-circle"></i> Laporan</a>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa">
+      <span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span>
+      <span>Botwa</span>
+    </a>
+    <a href="joki.html" class="nav-item" data-nav="joki">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span>
+      <span>Joki Kontak</span>
+    </a>
+    <a href="index.html" class="nav-item active" data-nav="home">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span>
+      <span>Home</span>
+    </a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span>
+      <span>JasWeb</span>
+    </a>
+    <a href="akun.html" class="nav-item" data-nav="akun">
+      <span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span>
+      <span>Akun</span>
+    </a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="joki-produk.js"></script>
+  <script src="telegram.js"></script>
+    <script src="script.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="account-widget.js"></script>
+  <script src="digital-produk.js"></script>
+  <script>
+    // Preview foto akun
+    document.getElementById("fotoAkun")?.addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      const prev = document.getElementById("fotoPreview");
+      if (file && prev) {
+        prev.src = URL.createObjectURL(file);
+        prev.style.display = "block";
+      } else if (prev) {
+        prev.style.display = "none";
+      }
+    });
+
+    // Support Joki (default), Produk Views/Premium (sama seperti joki), dan Jasa Post (form khusus)
+    document.addEventListener("DOMContentLoaded", function() {
+      const params = new URLSearchParams(window.location.search);
+      const type = params.get("type") || "joki";
+      const id = parseInt(params.get("id") || "1", 10);
+
+      window.isJaspost = false;
+      window.orderType = "Joki Kontak";
+      window.orderPaketName = "Joki Kontak";
+
+      if (type === "jaspost") {
+        window.isJaspost = true;
+        window.orderType = "Jasa Post";
+        window.orderPaketName = "Jasa Post Free by Nailong";
+        baseHarga = 0;
+        document.getElementById("paketJudul").textContent = "🫣 Jasa Post Free / Gratis — Nailong";
+        document.getElementById("namaPaketRow").textContent = "Jasa Post Free by Nailong";
+        document.getElementById("hargaPaket").textContent = "GRATIS";
+        const totalEl = document.getElementById("totalHarga");
+        if (totalEl) totalEl.textContent = "GRATIS";
+        document.getElementById("formStandar").style.display = "none";
+        document.getElementById("formJaspost").style.display = "block";
+        const warn = document.getElementById("warningJoki");
+        if (warn) warn.style.display = "none";
+        const addon = document.getElementById("addonSection");
+        if (addon) addon.style.display = "none";
+        const btn = document.getElementById("btnSubmitOrder");
+        if (btn) btn.textContent = "Kirim Gratis";
+      } else if (type === "produk") {
+        // Load produk digital
+        if (typeof loadProdukDigital === "function") loadProdukDigital();
+        const item = (typeof produkDigital !== "undefined") ? produkDigital.find(p => p.id === id) : null;
+        if (item) {
+          baseHarga = item.harga;
+          document.getElementById("paketJudul").textContent = item.judul;
+          document.getElementById("namaPaketRow").textContent = item.judul;
+          document.getElementById("hargaPaket").textContent = "Rp " + Number(item.harga).toLocaleString("id-ID");
+          window.orderPaketName = item.judul;
+          window.orderType = "Produk Digital";
+
+          const isJasaPost = (item.judul && item.judul.toLowerCase().includes("jasa post"));
+
+          if (isJasaPost) {
+            window.isJaspost = true;
+            window.orderType = "Jasa Post";
+            window.orderPaketName = "Jasa Post Free by Nailong";
+            baseHarga = 0;
+            document.getElementById("formStandar").style.display = "none";
+            document.getElementById("formJaspost").style.display = "block";
+            document.getElementById("warningJoki").style.display = "none";
+            document.getElementById("hargaPaket").textContent = "GRATIS";
+            const totalEl = document.getElementById("totalHarga");
+            if (totalEl) totalEl.textContent = "GRATIS";
+            const btn = document.getElementById("btnSubmitOrder");
+            if (btn) btn.textContent = "Kirim Gratis";
+          } else {
+            const addonSection = document.getElementById("addonSection");
+            if (addonSection) addonSection.style.display = "none";
+            const fn = document.getElementById("fieldNamaWa");
+            if (fn) fn.style.display = "block";
+            window.isJokiOrder = false;
+            const btn = document.getElementById("btnSubmitOrder");
+            if (btn) btn.textContent = "Bayar Sekarang";
+          }
+
+          if (typeof updateTotal === "function") updateTotal();
+        }
+      } else {
+        // Joki biasa — hanya teks joki, tanpa field nama/WA
+        if (typeof loadPaketFromStorage === "function") loadPaketFromStorage();
+        const paket = (typeof paketJoki !== "undefined") ? paketJoki.find(p => p.id === id) : null;
+        if (paket) {
+          baseHarga = paket.harga;
+          document.getElementById("paketJudul").textContent = paket.judul;
+          document.getElementById("namaPaketRow").textContent = paket.judul;
+          document.getElementById("hargaPaket").textContent = "Rp " + Number(paket.harga).toLocaleString("id-ID");
+          if (typeof updateTotal === "function") updateTotal();
+          window.orderPaketName = paket.judul;
+          window.orderType = "Joki Kontak";
+          window.isJokiOrder = true;
+
+          // Sembunyikan nama & WA; tampilkan addon (prioritas + nambah durasi, tanpa permanen)
+          const fn = document.getElementById("fieldNamaWa");
+          if (fn) fn.style.display = "none";
+          const addon = document.getElementById("addonSection");
+          if (addon) addon.style.display = "block";
+
+          // Durasi di teks sesuai paket
+          const durasiMap = {
+            1: "15 jam",
+            2: "1 hari",
+            3: "2 hari",
+            4: "3 hari",
+            5: "5 hari",
+            6: "6 hari",
+            7: "1 minggu",
+            8: "1 bulan",
+            9: "permanen"
+          };
+          const label = paket.label || "";
+          let durasi = durasiMap[paket.id] || "15 jam";
+          if (/permanen/i.test(label) || /permanen/i.test(paket.judul || "")) durasi = "permanen";
+          else if (/15\s*jam/i.test(label) || /15\s*jam/i.test(paket.judul || "")) durasi = "15 jam";
+          else if (/1\s*minggu/i.test(label) || /1\s*minggu/i.test(paket.judul || "")) durasi = "1 minggu";
+          else if (/1\s*bulan/i.test(label) || /1\s*bulan/i.test(paket.judul || "")) durasi = "1 bulan";
+          else if (/1\s*hari/i.test(label)) durasi = "1 hari";
+          else if (/2\s*hari/i.test(label)) durasi = "2 hari";
+          else if (/3\s*hari/i.test(label)) durasi = "3 hari";
+          else if (/5\s*hari/i.test(label)) durasi = "5 hari";
+          else if (/6\s*hari/i.test(label)) durasi = "6 hari";
+
+          window.jokiDurasi = durasi;
+          const hint = document.getElementById("hintDurasi");
+          if (hint) hint.textContent = "[" + durasi + "]";
+
+          const ta = document.getElementById("catatan");
+          if (ta) {
+            ta.value = `SV BUYER FRESH 𝗡Λ𝗜𝗟𝗢𝗡𝗚🐣
+
+[${durasi}]
+
+SV ; NAMA STORE
+Wa.me/628…
+
+*#NAMBAH VIEW SW + KONTAK + SELLER + BUYYER + DLL 👾🐥*`;
+          }
+        }
+      }
+    });
+
+    const originalBuatPesanan = window.buatPesanan;
+    window.buatPesanan = async function() {
+      if (window.NailongAuthGuard && typeof window.NailongAuthGuard.requireLogin === "function") {
+        const okLogin = await window.NailongAuthGuard.requireLogin({
+          message: "Sebelum order, kamu wajib login dulu pakai akun Google."
+        });
+        if (!okLogin) return;
+      }
+
+      if (window.isJaspost) {
+        const jualCari = document.getElementById("jp_jual_cari")?.value?.trim() || "";
+        const nomer = document.getElementById("jp_nomer")?.value?.trim() || "";
+        const nama = document.getElementById("jp_nama")?.value?.trim() || "Customer";
+        const item = document.getElementById("jp_item")?.value?.trim() || "";
+        const log = document.getElementById("jp_log")?.value?.trim() || "-";
+        const op = document.getElementById("jp_op")?.value?.trim() || "-";
+        const spek = document.getElementById("jp_spek")?.value?.trim() || "";
+        const mc = document.getElementById("jp_mc")?.value?.trim() || "NAILONG";
+        const fotoInput = document.getElementById("fotoAkun");
+        const btn = document.getElementById("btnSubmitOrder");
+
+        if (!jualCari || !nomer || !nama || !item || !spek) {
+          showNiceAlert("Lengkapi field wajib: JUAL/CARI, NOMER LU, NAMA LU, ITEM/AKUN, dan SPEK.");
+          return;
+        }
+        if (!fotoInput || !fotoInput.files || !fotoInput.files[0]) {
+          showNiceAlert("Wajib upload foto produk/akun terlebih dahulu.");
+          return;
+        }
+
+        const catatan = `🫣_JASA POST FREE/GRATIS PM AJA NAILONG_
+*FORMAT JASPOST BY NAILONG*
+\`BUKAN AKUN ADMIN\`
+- *JUAL/CARI*: ${jualCari}
+- *NOMER LU* : ${nomer}
+- *NAMA LU*    : ${nama}
+- *ITEM/AKUN* : ${item}
+- *LOG* : ${log}
+- *OP* : ${op}
+- *SPEK* : ${spek}
+- *Mc/Admin* : ${mc}
+😶PEMBERITAHUAN : GUNAKAN JASA ADMIN / MC AGAR TERHINDAR DARI PENIPUAN`;
+
+        const kode = (typeof generateOrderCode === "function" ? generateOrderCode() : ("ND-" + new Date().getFullYear() + "-" + Math.floor(1000 + Math.random() * 9000) + String(Date.now()).slice(-3)));
+
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = "Mengirim...";
+        }
+
+        const pesan = `
+📣 <b>JASA POST GRATIS - NAILONG</b>
+
+🆔 Kode: <code>${kode}</code>
+🛒 Jual/Cari: <b>${jualCari}</b>
+👤 Nama: <b>${nama}</b>
+📦 Item/Akun: <b>${item}</b>
+📱 Nomer: <b>${nomer}</b>
+📋 Log: ${log}
+⚙️ OP: ${op}
+📈 Spek: ${spek}
+🏷️ Mc/Admin: ${mc}
+💰 Biaya: <b>GRATIS</b>
+📊 Status: <b>Masuk Antrian</b>
+⏰ ${new Date().toLocaleString("id-ID")}
+        `.trim();
+
+        // Kompres foto + simpan ke panel admin (Firebase), bukan Telegram
+        let photoData = null;
+        try {
+          if (fotoInput.files[0] && window.VoxyyOrders && typeof window.VoxyyOrders.compressImageFile === "function") {
+            photoData = await window.VoxyyOrders.compressImageFile(fotoInput.files[0], 900, 0.72);
+          } else if (fotoInput.files[0]) {
+            photoData = await new Promise((resolve, reject) => {
+              const r = new FileReader();
+              r.onload = () => resolve(r.result);
+              r.onerror = reject;
+              r.readAsDataURL(fotoInput.files[0]);
+            });
+          }
+        } catch (e) {
+          console.warn("Gagal kompres foto jasa post:", e);
+        }
+
+        const order = {
+          kode,
+          nama,
+          wa: nomer,
+          catatan,
+          total: "GRATIS",
+          paket: window.orderPaketName || "Jasa Post Free by Nailong",
+          status: "Proses",
+          waktu: new Date().toLocaleString("id-ID"),
+          isJaspost: true,
+          createdAt: Date.now(),
+          finalAmount: 0
+        };
+
+        if (window.VoxyyOrders && typeof window.VoxyyOrders.addOrder === "function") {
+          await window.VoxyyOrders.addOrder(order); if (window.NailongNotifyChannel) NailongNotifyChannel(order);
+          if (window.NailongNotifyChannel) NailongNotifyChannel(order);
+        } else {
+          let orders = JSON.parse(localStorage.getItem("voxyy_orders") || "[]");
+          orders.unshift(order);
+          localStorage.setItem("voxyy_orders", JSON.stringify(orders));
+        }
+        localStorage.setItem("voxyy_saved_kode", kode);
+
+        // Simpan khusus jasa post (teks + foto) ke panel admin
+        try {
+          if (window.VoxyyOrders && typeof window.VoxyyOrders.addJaspost === "function") {
+            await window.VoxyyOrders.addJaspost({
+              kode,
+              nama,
+              wa: nomer,
+              nomer,
+              item,
+              paket: order.paket,
+              teks: catatan,
+              catatan,
+              photos: photoData ? [photoData] : [],
+              waktu: order.waktu,
+              createdAt: order.createdAt
+            });
+          }
+        } catch (e) {
+          console.warn("Gagal simpan jaspost ke admin:", e);
+        }
+
+        if (typeof window.showSiteModal === "function") {
+          window.showSiteModal("Jasa post gratis sudah dikirim ke panel admin.", "success");
+        }
+
+        setTimeout(function() {
+          if ((window.orderType || "").toLowerCase().indexOf("joki") >= 0) {
+            window.location.href = "riwayat.html";
+          } else {
+            window.location.href = "antrian.html";
+          }
+        }, 900);
+        return;
+      }
+
+      // Non-jaspost → panggil original
+      if (typeof originalBuatPesanan === "function") {
+        return originalBuatPesanan();
+      }
+    };
+
+    // Nice alert helper (pakai modal animasi)
+    function showNiceAlert(msg) {
+      if (typeof window.showSiteModal === "function") {
+        window.showSiteModal(msg, "warning");
+      } else {
+        alert(msg);
+      }
+    }
+  </script>
+
+  <script src="chat-system.js"></script>
+  <script src="presence.js"></script>
+  <script src="wijayapay.js"></script>
+  <script src="pay-choice.js"></script>
+
+  <script src="ui-enhance.js"></script>
+  <script src="nav.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nailong-anim.js"></script>
+  <script src="channel.js"></script>
+</body>
+</html>
