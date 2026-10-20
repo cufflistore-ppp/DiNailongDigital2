@@ -23,12 +23,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="header">
-    <div class="brand">
-      <img src="logo.png" alt="Nailong" class="logo"  >
-      <div>
-        <h1>𝗡Λ𝗜𝗟𝗢𝗡𝗚々𝗝𝗢𝗞𝗜 𝗘𝗟𝗜𝗧𝗘 <img src="secure.gif" alt="✓" class="verified-img" style="width:18px;height:18px;vertical-align:middle;margin-left:4px;"></h1>
-        <p>Pusat Layanan Nailong</p>
+<header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full">
       </div>
     </div>
   </header>
@@ -39,7 +37,7 @@
   <div class="page-content">
     <div class="badge">JASA JOKI KONTAK</div>
     <h2 class="page-title">Paket Joki Kontak.</h2>
-    <p class="page-desc">Pilih paket dinamis dari admin, isi data promo, lalu bayar dari website.</p>
+    <p class="page-desc">Pilih satu paket joki di bawah. Format SV otomatis diisi saat order (tidak dobel form edit).</p>
 
     <div class="warning-box">
       <i class="fa-solid fa-triangle-exclamation"></i>
@@ -51,7 +49,7 @@
     <!-- Daftar Paket (diisi JS) -->
     
     <div class="api-form-card" id="jokiFormatCard">
-      <h3 style="font-size:15px;margin:0 0 10px;color:#FFC107;"><i class="fa-solid fa-file-lines"></i> Format Joki Kontak (auto)</h3>
+      <h3 style="font-size:15px;margin:0 0 10px;color:#FFC107;"><i class="fa-solid fa-file-lines"></i> Preview Format (opsional)</h3>
       <p style="font-size:12px;color:#8aa0b8;margin:0 0 10px;">Isi nama store &amp; nomor SV — format langsung berubah. <b>Tidak bisa disalin/disimpan</b> (proteksi).</p>
       <label>Nama store</label>
       <input type="text" id="jkStore" class="form-input" placeholder="Nama store kamu" autocomplete="off">

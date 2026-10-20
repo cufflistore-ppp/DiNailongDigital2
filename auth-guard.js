@@ -262,3 +262,63 @@
     init();
   }
 })();
+
+
+  // Gate: buka website → login dulu → baru home (kecuali halaman akun/login)
+  // Gate: hanya paksa login di home jika BENAR-BENAR belum login (tunggu Firebase restore)
+  (function forceLoginOnEntry() {
+    try {
+      var path = (location.pathname || '').toLowerCase();
+      var allow = /akun\.html|login|auth|pembayaran|riwayat/.test(path);
+      if (allow) return;
+
+      // Flag lokal: sudah pernah login di device ini
+      var loggedFlag = false;
+      try { loggedFlag = localStorage.getItem('nailong_logged_in') === '1'; } catch (e) {}
+
+      function goAkunOnce() {
+        // jangan spam redirect
+        if (sessionStorage.getItem('nailong_login_gate') === '1') return;
+        sessionStorage.setItem('nailong_login_gate', '1');
+        try { sessionStorage.setItem('nailong_return_after_login', location.href); } catch (e) {}
+        if (/index\.html|\/$/.test(path) || path.endsWith('/')) {
+          location.href = 'akun.html';
+        }
+      }
+
+      function onUser(user) {
+        if (user) {
+          try {
+            localStorage.setItem('nailong_logged_in', '1');
+            sessionStorage.removeItem('nailong_login_gate');
+          } catch (e) {}
+          return;
+        }
+        // user null — tapi Firebase mungkin masih restore; tunggu sebentar
+        if (loggedFlag) return; // sudah pernah login, jangan ganggu
+        setTimeout(function () {
+          var u = null;
+          try {
+            if (window.VoxyyAuth && window.VoxyyAuth.getCurrentUser) u = window.VoxyyAuth.getCurrentUser();
+            else if (typeof firebase !== 'undefined' && firebase.auth) u = firebase.auth().currentUser;
+          } catch (e) {}
+          if (!u && !loggedFlag) goAkunOnce();
+        }, 1800);
+      }
+
+      function bind() {
+        if (window.VoxyyAuth && window.VoxyyAuth.onAuthChange) {
+          window.VoxyyAuth.onAuthChange(onUser);
+          return true;
+        }
+        return false;
+      }
+      if (!bind()) {
+        var tries = 0;
+        var t = setInterval(function () {
+          tries++;
+          if (bind() || tries > 15) clearInterval(t);
+        }, 300);
+      }
+    } catch (e) {}
+  })();

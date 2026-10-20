@@ -2422,8 +2422,8 @@ body {
   display: inline-flex; align-items: center; gap: 6px;
 }
 .nd-loading span {
-  width: 6px; height: 6px; border-radius: 50%;
-  animation: ndDot 0.9s ease-in-out infinite;
+  width: 4px; height: 4px; border-radius: 50%;
+  animation: ndDot 0.85s ease-in-out infinite;
 }
 .nd-loading span:nth-child(1) { background: #FFC107; }
 .nd-loading span:nth-child(2) { background: #fff; animation-delay: 0.2s; }
@@ -2753,3 +2753,126 @@ body {
 .notif-item i { color: #FFC107; margin-top: 2px; }
 .notif-item .ni-t { font-size: 13px; font-weight: 700; color: #fff; }
 .notif-item .ni-s { font-size: 11px; color: #8aa0b8; margin-top: 2px; }
+
+
+/* Home menu rapi — max 2 baris */
+.menu-grid-clean {
+  gap: 10px !important;
+  padding: 0 12px 4px !important;
+}
+.menu-grid-clean .menu-item {
+  padding: 14px 8px !important;
+  border-radius: 14px !important;
+  background: rgba(16,24,42,0.55) !important;
+  border: 1px solid rgba(255,193,7,0.12) !important;
+}
+.menu-grid-clean .menu-item i {
+  font-size: 22px !important;
+  margin-bottom: 6px !important;
+}
+.menu-grid-clean .menu-item span {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+}
+
+/* Cegah hamburger dobel di header */
+.header .btn-hamburger-left + .btn-hamburger-left,
+.header .btn-bell + .btn-hamburger-left,
+.header .btn-hamburger-right { display: none !important; }
+header.header .btn-hamburger:not(.btn-hamburger-left) { display: none !important; }
+
+
+/* Nailong jalan di dekat bottom nav — full terlihat, loop, bg transparan */
+.nailong-run-track {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: 58px; /* di atas nav, tidak terpotong */
+  height: 56px;
+  z-index: 85;
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: visible;
+  background: transparent;
+}
+.nailong-run-vid {
+  height: 54px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  background: transparent;
+  mix-blend-mode: normal;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));
+  animation: nailongSlide 12s linear infinite;
+}
+.nailong-run-track.climb .nailong-run-vid {
+  animation: nailongClimb 1.2s ease-in-out infinite alternate;
+}
+@keyframes nailongSlide {
+  0% { transform: translateX(-40vw); }
+  100% { transform: translateX(40vw); }
+}
+@keyframes nailongClimb {
+  from { transform: translateY(0) scale(1); }
+  to { transform: translateY(-18px) scale(1.05); }
+}
+
+/* Bottom nav background lebih rendah agar nailong kelihatan full */
+.bottom-nav {
+  background-size: cover !important;
+  background-position: center 70% !important;
+  padding-bottom: env(safe-area-inset-bottom, 0) !important;
+}
+body { padding-bottom: 120px !important; }
+
+/* Header seragam logo-only di semua halaman */
+.header .brand h1 { font-size: 15px !important; }
+.header .verified-img, .header img[src*="secure"] { display: none !important; }
+
+
+/* Loading 2 titik sangat kecil saat pindah halaman */
+.page-nav-loader {
+  position: fixed; inset: 0; z-index: 99999;
+  background: rgba(8, 12, 22, 0.72);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.15s;
+  backdrop-filter: blur(2px);
+}
+.page-nav-loader.show { opacity: 1; pointer-events: auto; }
+.page-nav-loader .nd-loading span {
+  width: 4px !important; height: 4px !important;
+}
+.nd-loading span {
+  width: 4px !important; height: 4px !important;
+}
+
+/* Tanjakan melengkung (path curve) */
+.nailong-run-track {
+  bottom: 62px !important;
+  height: 70px !important;
+}
+.nailong-run-vid {
+  height: 52px !important;
+  animation: nailongPath 10s linear infinite !important;
+  transform-origin: center bottom;
+}
+.nailong-run-track.climb .nailong-run-vid {
+  animation: nailongCurveClimb 2.4s ease-in-out infinite !important;
+}
+@keyframes nailongPath {
+  0%   { transform: translateX(-45vw) translateY(8px) rotate(-4deg); }
+  15%  { transform: translateX(-25vw) translateY(2px) rotate(-2deg); }
+  30%  { transform: translateX(-8vw) translateY(-6px) rotate(2deg); }
+  45%  { transform: translateX(8vw) translateY(-12px) rotate(5deg); }
+  60%  { transform: translateX(22vw) translateY(-6px) rotate(2deg); }
+  75%  { transform: translateX(35vw) translateY(2px) rotate(-1deg); }
+  100% { transform: translateX(48vw) translateY(8px) rotate(-3deg); }
+}
+@keyframes nailongCurveClimb {
+  0%   { transform: translateX(-20vw) translateY(10px) rotate(-8deg) scale(0.95); }
+  25%  { transform: translateX(-5vw) translateY(-4px) rotate(0deg) scale(1); }
+  50%  { transform: translateX(10vw) translateY(-18px) rotate(6deg) scale(1.06); }
+  75%  { transform: translateX(25vw) translateY(-8px) rotate(2deg) scale(1.02); }
+  100% { transform: translateX(40vw) translateY(6px) rotate(-4deg) scale(0.98); }
+}

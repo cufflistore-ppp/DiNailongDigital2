@@ -182,37 +182,66 @@
   }
 
   // --- Login splash (on akun / first visit) ---
-  function maybeSplash() {
-    var path = (location.pathname || '').toLowerCase();
-    var isAkun = path.indexOf('akun') >= 0;
-    var seen = sessionStorage.getItem('nailong_splash_done');
-    if (!isAkun && seen) return;
-    if (!isAkun) {
-      // light splash only on first page of session
-      if (seen) return;
+  function maybeSplash() { /* disabled */ }
+
+  
+  function injectNailongRun() {
+    if (document.getElementById('nailongRunTrack')) return;
+    var track = document.createElement('div');
+    track.id = 'nailongRunTrack';
+    track.className = 'nailong-run-track';
+    track.innerHTML =
+      '<video class="nailong-run-vid" autoplay muted loop playsinline webkit-playsinline>' +
+        '<source src="nailong-run-transparent.webm" type="video/webm">' +
+        '<source src="nailong-run.mp4" type="video/mp4">' +
+      '</video>';
+    document.body.appendChild(track);
+    // klik = naik (tanjakan)
+    track.addEventListener('click', function () {
+      track.classList.toggle('climb');
+    });
+  }
+
+  
+  function injectPageLoader() {
+    if (document.getElementById('pageNavLoader')) return;
+    var el = document.createElement('div');
+    el.id = 'pageNavLoader';
+    el.className = 'page-nav-loader';
+    el.innerHTML = '<div class="nd-loading"><span></span><span></span></div>';
+    document.body.appendChild(el);
+
+    function showLoader() {
+      el.classList.add('show');
     }
-
-    var splash = document.createElement('div');
-    splash.className = 'login-splash';
-    splash.id = 'loginSplash';
-    splash.innerHTML =
-      '<img src="nailong-digital-logo.jpg" alt="Nailong Digital" class="login-splash-logo">' +
-      '<div class="tiktok-loader"><span></span><span></span><span></span></div>' +
-      '<div class="login-splash-text">Memuat Nailong Digital…</div>';
-    document.body.appendChild(splash);
-
-    setTimeout(function () {
-      splash.classList.add('hide');
-      sessionStorage.setItem('nailong_splash_done', '1');
-      setTimeout(function () { splash.remove(); }, 600);
-    }, isAkun ? 2200 : 1400);
+    // Semua link internal → loading dulu
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a');
+      if (!a) return;
+      var href = a.getAttribute('href') || '';
+      if (!href || href.charAt(0) === '#' || href.indexOf('javascript:') === 0) return;
+      if (a.target === '_blank' || a.hasAttribute('download')) return;
+      if (/^https?:\/\//i.test(href) && href.indexOf(location.host) < 0) return;
+      // internal navigation
+      showLoader();
+    }, true);
+    // form submit internal
+    document.addEventListener('submit', function () { showLoader(); }, true);
+    // pageshow dari bfcache → hide
+    window.addEventListener('pageshow', function () { el.classList.remove('show'); });
+    // safety hide after 4s
+    setInterval(function () {
+      if (document.readyState === 'complete') el.classList.remove('show');
+    }, 400);
   }
 
   document.addEventListener('DOMContentLoaded', function () {
     injectVideoBg();
     injectFabChat();
     injectHalo();
-    maybeSplash();
+    injectNailongRun();
+    injectPageLoader();
+    /* splash dihapus — login langsung di akun */
 
     // Hook auth for halo
     function tryAuth() {

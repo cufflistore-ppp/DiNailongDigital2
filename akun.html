@@ -328,7 +328,39 @@
     }
 
     #viewLoggedIn, #viewGuest { display: none; }
-  </style>
+  
+    .login-menu-ui {
+      background: rgba(16,24,42,0.75);
+      border: 1px solid rgba(255,193,7,0.2);
+      border-radius: 18px;
+      padding: 22px 18px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .login-menu-ui .logo-login {
+      width: 72px; height: 72px; border-radius: 18px;
+      margin: 0 auto 12px; display: block;
+      box-shadow: 0 8px 24px rgba(255,193,7,0.25);
+    }
+    .login-menu-ui h3 { color:#fff; font-size:18px; margin:0 0 6px; }
+    .login-menu-ui p { color:#8aa0b8; font-size:13px; margin:0 0 16px; line-height:1.45; }
+    .btn-google {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 14px 16px;
+      background: #fff; color: #1a1a1a; border: none; border-radius: 12px;
+      font-weight: 700; font-size: 14px; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    }
+    .login-menu-links {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px;
+    }
+    .login-menu-links a {
+      background: rgba(255,193,7,0.08); border: 1px solid rgba(255,193,7,0.15);
+      border-radius: 12px; padding: 12px 8px; text-decoration: none;
+      color: #cfd8dc; font-size: 12px; font-weight: 600;
+    }
+    .login-menu-links a i { display:block; color:#FFC107; margin-bottom:4px; font-size:16px; }
+    </style>
 </head>
 <body>
   <header class="header">
@@ -372,7 +404,7 @@
           <div class="profil-name" id="profilName">—</div>
           <div class="profil-email" id="profilEmail">—</div>
           <div class="profil-meta" id="profilMeta">Terhubung dengan Google</div>
-          <div class="profil-status-pill" id="profilPill"><img src="secure.gif" alt="✓" style="width:12px;height:12px;vertical-align:middle;margin-right:4px;"> Aktif</div>
+          <div class="profil-status-pill" id="profilPill"> Aktif</div>
         </div>
       </div>
 
@@ -542,6 +574,7 @@
           await new Promise(function (r) { setTimeout(r, 200); });
         }
         const user = await window.VoxyyAuth.loginGoogle();
+        try { if (user) localStorage.setItem('nailong_logged_in', '1'); sessionStorage.removeItem('nailong_login_gate'); } catch (e) {}
         if (user) showLoggedIn(user);
       } catch (e) {
         const msg = (e && e.message) ? e.message : String(e);
@@ -575,6 +608,19 @@
         }
         if (typeof window.VoxyyAuth.onAuthChange === "function") {
           window.VoxyyAuth.onAuthChange(function (user) {
+          try {
+            if (user) {
+              localStorage.setItem('nailong_logged_in', '1');
+              sessionStorage.removeItem('nailong_login_gate');
+              var ret = sessionStorage.getItem('nailong_return_after_login');
+              if (ret && /akun\.html/i.test(location.pathname||'')) {
+                sessionStorage.removeItem('nailong_return_after_login');
+                // jangan redirect loop — hanya jika datang dari gate
+              }
+            } else {
+              localStorage.removeItem('nailong_logged_in');
+            }
+          } catch (e) {}
             if (user) showLoggedIn(user);
             else showGuest();
           });

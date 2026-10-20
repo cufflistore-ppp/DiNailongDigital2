@@ -238,21 +238,21 @@
   }
 
   function injectHeaderControls() {
+    // Jangan tambah hamburger lagi (sudah ada di header-bar kiri).
+    // Hanya foto profil kecil di kanan (tap = modal akun), di kiri lonceng.
     document.querySelectorAll("header.header").forEach(function (header) {
-      if (header.querySelector(".header-right")) return;
-      var right = document.createElement("div");
-      right.className = "header-right";
-      right.innerHTML =
-        '<img class="header-profile" alt="Profil" title="Profil" referrerpolicy="no-referrer">' +
-        '<button type="button" class="btn-hamburger" aria-label="Menu Akun"><i class="fa-solid fa-bars"></i></button>';
-      header.appendChild(right);
-    });
-
-    document.querySelectorAll(".btn-hamburger").forEach(function (btn) {
-      btn.addEventListener("click", openModal);
-    });
-    document.querySelectorAll(".header-profile").forEach(function (img) {
+      if (header.querySelector(".header-profile")) return;
+      var img = document.createElement("img");
+      img.className = "header-profile";
+      img.alt = "Profil";
+      img.title = "Akun";
+      img.setAttribute("referrerpolicy", "no-referrer");
+      img.style.cssText = "width:28px;height:28px;border-radius:50%;object-fit:cover;margin-right:36px;display:none;cursor:pointer;border:1px solid rgba(255,193,7,0.35);";
       img.addEventListener("click", openModal);
+      // taruh sebelum lonceng kalau ada
+      var bell = header.querySelector(".btn-bell");
+      if (bell) header.insertBefore(img, bell);
+      else header.appendChild(img);
     });
   }
 

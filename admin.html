@@ -280,31 +280,15 @@
   </style>
 </head>
 <body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full">
+      </div>
+    </div>
+  </header>
   <div class="admin-header" style="position:relative;">
-    <button type="button" class="admin-hamburger" id="adminMenuBtn" aria-label="Menu" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);z-index:5;">
-      <span></span><span></span><span></span>
-    </button>
-    <i class="fa-solid fa-user-shield"></i> PANEL ADMIN - NAILONG
-  </div>
-
-  <div id="adminLock" class="admin-lock" style="display:none;">
-    <i class="fa-solid fa-lock"></i>
-    <h3>Akses Terbatas</h3>
-    <p>Panel admin hanya tersedia untuk akun admin resmi.<br>Login dengan Google terlebih dahulu.</p>
-    <button class="btn-buat" style="margin-top:16px;max-width:240px;" onclick="loginAdmin()">
-      <i class="fa-brands fa-google"></i> Login Google
-    </button>
-    <p style="margin-top:16px;font-size:12px;"><a href="index.html" style="color:#FFC107;">← Kembali ke beranda</a></p>
-  </div>
-
-  <div id="adminApp" style="display:none;">
-    <div class="admin-tabs" id="adminTabs">
-      <button class="admin-tab active" data-tab="pesanan" onclick="switchTab('pesanan')">
-        <i class="fa-solid fa-list"></i> Pesanan <span class="badge-count" id="cntPesanan" style="display:none;">0</span>
-      </button>
-      <button class="admin-tab" data-tab="bukti" onclick="switchTab('bukti')">
-        <i class="fa-solid fa-receipt"></i> Bukti TF <span class="badge-count" id="cntBukti" style="display:none;">0</span>
-      </button>
+    
       <button class="admin-tab" data-tab="jaspost" onclick="switchTab('jaspost')">
         <i class="fa-solid fa-share-nodes"></i> Jasa Post <span class="badge-count" id="cntJaspost" style="display:none;">0</span>
       </button>
@@ -664,5 +648,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 });
 </script>
+  <script src="header-bar.js"></script>
+  <script src="protect.js"></script>
 </body>
 </html>

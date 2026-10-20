@@ -17,9 +17,9 @@
     .baca-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
     .baca-card {
       background:rgba(16,24,42,0.55); border:1px solid rgba(255,193,7,0.12);
-      border-radius:14px; overflow:hidden; cursor:pointer;
+      border-radius:14px; overflow:hidden; cursor:pointer; text-decoration:none; display:block;
     }
-    .baca-card img { width:100%; height:120px; object-fit:cover; display:block; background:#10182a; }
+    .baca-card img { width:100%; height:130px; object-fit:cover; display:block; background:#10182a; }
     .baca-card .info { padding:10px; }
     .baca-card h4 { margin:0 0 4px; font-size:13px; color:#fff; }
     .baca-card p { margin:0; font-size:11px; color:#8aa0b8; }
@@ -29,6 +29,7 @@
       background:rgba(16,24,42,0.55); border:1px solid rgba(255,193,7,0.12); border-radius:12px;
     }
     .part-item a { color:#FFC107; font-size:12px; font-weight:700; text-decoration:none; }
+    .src-note { font-size:11px; color:#8aa0b8; margin-bottom:10px; }
   </style>
 </head>
 <body>
@@ -40,11 +41,13 @@
   <div class="page-content">
     <div class="badge">BACA & NONTON</div>
     <h2 class="page-title"><i class="fa-solid fa-book-open"></i> Komik & Anime</h2>
-    <p class="page-desc">Koleksi komik lengkap & part video anime. Klik untuk buka sumber eksternal.</p>
+    <p class="page-desc">Sumber dari website eksternal (MangaDex, MAL, AniList, dll). Klik kartu untuk buka situs aslinya.</p>
+    <p class="src-note"><i class="fa-solid fa-circle-info"></i> Konten milik situs sumber · Nailong hanya menautkan.</p>
     <div class="baca-tabs">
       <button type="button" class="active" data-tab="komik">Komik</button>
-      <button type="button" data-tab="anime">Anime / Video</button>
-      <button type="button" data-tab="part">Part Series</button>
+      <button type="button" data-tab="anime">Anime</button>
+      <button type="button" data-tab="part">Part / Arc</button>
+      <button type="button" data-tab="cari">Cari Lain</button>
     </div>
     <div id="bacaBox"></div>
   </div>
@@ -52,7 +55,7 @@
     <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
     <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
     <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
-    <a href="game.html" class="nav-item" data-nav="game"><span class="nav-icon-wrap"><i class="fa-solid fa-gamepad"></i></span><span>Game</span></a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
     <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
     <div class="nav-indicator" id="navIndicator"></div>
   </nav>
@@ -64,37 +67,63 @@
   <script src="protect.js"></script>
   <script>
     var KOMIK = [
-      { t:'One Piece', d:'Komik full · petualangan bajak laut', img:'https://cdn.myanimelist.net/images/manga/2/253146.jpg', url:'https://www.mangadex.org/title/a1c7c817-4e59-43b7-9365-09675a149a6f/one-piece' },
-      { t:'Naruto', d:'Komik lengkap ninja', img:'https://cdn.myanimelist.net/images/manga/3/249658.jpg', url:'https://www.mangadex.org/title/6b1eb93e-473a-4ab3-9922-1a66d2672ae7/naruto' },
-      { t:'Demon Slayer', d:'Kimetsu no Yaiba', img:'https://cdn.myanimelist.net/images/manga/3/179023.jpg', url:'https://www.mangadex.org/title/78964148-a4b4-4eac-a4b6-9e0c0c9a7e1a/kimetsu-no-yaiba' },
-      { t:'Jujutsu Kaisen', d:'Sihir kutukan', img:'https://cdn.myanimelist.net/images/manga/3/217533.jpg', url:'https://www.mangadex.org/title/c52b2ce3-7f95-469c-96b0-49cc2c11bc69/jujutsu-kaisen' },
-      { t:'Attack on Titan', d:'Shingeki no Kyojin', img:'https://cdn.myanimelist.net/images/manga/2/200782.jpg', url:'https://www.mangadex.org/search?q=attack%20on%20titan' },
-      { t:'Spy x Family', d:'Aksi komedi keluarga', img:'https://cdn.myanimelist.net/images/manga/3/242009.jpg', url:'https://www.mangadex.org/search?q=spy%20x%20family' }
+      { t:'One Piece', d:'MangaDex · full', img:'https://cdn.myanimelist.net/images/manga/2/253146.jpg', url:'https://mangadex.org/title/a1c7c817-4e59-43b7-9365-09675a149a6f/one-piece' },
+      { t:'Naruto', d:'MangaDex', img:'https://cdn.myanimelist.net/images/manga/3/249658.jpg', url:'https://mangadex.org/title/6b1eb93e-473a-4ab3-9922-1a66d2672ae7/naruto' },
+      { t:'Demon Slayer', d:'Kimetsu no Yaiba', img:'https://cdn.myanimelist.net/images/manga/3/179023.jpg', url:'https://mangadex.org/search?q=kimetsu%20no%20yaiba' },
+      { t:'Jujutsu Kaisen', d:'MangaDex', img:'https://cdn.myanimelist.net/images/manga/3/217533.jpg', url:'https://mangadex.org/title/c52b2ce3-7f95-469c-96b0-49cc2c11bc69/jujutsu-kaisen' },
+      { t:'Attack on Titan', d:'Shingeki', img:'https://cdn.myanimelist.net/images/manga/2/200782l.jpg', url:'https://mangadex.org/search?q=shingeki%20no%20kyojin' },
+      { t:'Spy x Family', d:'MangaDex', img:'https://cdn.myanimelist.net/images/manga/3/242009l.jpg', url:'https://mangadex.org/search?q=spy%20x%20family' },
+      { t:'Solo Leveling', d:'Manhwa', img:'https://cdn.myanimelist.net/images/manga/3/222295.jpg', url:'https://mangadex.org/search?q=solo%20leveling' },
+      { t:'Chainsaw Man', d:'MangaDex', img:'https://cdn.myanimelist.net/images/manga/3/216486.jpg', url:'https://mangadex.org/search?q=chainsaw%20man' },
+      { t:'Blue Lock', d:'Soccer manga', img:'https://cdn.myanimelist.net/images/manga/5/235921.jpg', url:'https://mangadex.org/search?q=blue%20lock' },
+      { t:'Tokyo Revengers', d:'MangaDex', img:'https://cdn.myanimelist.net/images/manga/3/218278.jpg', url:'https://mangadex.org/search?q=tokyo%20revengers' },
+      { t:'Black Clover', d:'MangaDex', img:'https://cdn.myanimelist.net/images/manga/2/157931.jpg', url:'https://mangadex.org/search?q=black%20clover' },
+      { t:'My Hero Academia', d:'Boku no Hero', img:'https://cdn.myanimelist.net/images/manga/1/209370.jpg', url:'https://mangadex.org/search?q=boku%20no%20hero' }
     ];
     var ANIME = [
-      { t:'One Piece Anime', d:'Episode ongoing', img:'https://cdn.myanimelist.net/images/anime/6/73245.jpg', url:'https://myanimelist.net/anime/21/One_Piece' },
-      { t:'Jujutsu Kaisen', d:'Season list', img:'https://cdn.myanimelist.net/images/anime/1171/109222.jpg', url:'https://myanimelist.net/anime/40748/Jujutsu_Kaisen' },
-      { t:'Demon Slayer', d:'Full series info', img:'https://cdn.myanimelist.net/images/anime/1286/99889.jpg', url:'https://myanimelist.net/anime/38000/Kimetsu_no_Yaiba' },
-      { t:'Solo Leveling', d:'Anime adaptation', img:'https://cdn.myanimelist.net/images/anime/1800/140807.jpg', url:'https://myanimelist.net/anime/52299/Ore_dake_Level_Up_na_Ken' }
+      { t:'One Piece', d:'MAL · ongoing', img:'https://cdn.myanimelist.net/images/anime/6/73245.jpg', url:'https://myanimelist.net/anime/21/One_Piece' },
+      { t:'Jujutsu Kaisen', d:'MAL', img:'https://cdn.myanimelist.net/images/anime/1171/109222.jpg', url:'https://myanimelist.net/anime/40748/Jujutsu_Kaisen' },
+      { t:'Demon Slayer', d:'Kimetsu', img:'https://cdn.myanimelist.net/images/anime/1286/99889.jpg', url:'https://myanimelist.net/anime/38000/Kimetsu_no_Yaiba' },
+      { t:'Solo Leveling', d:'MAL', img:'https://cdn.myanimelist.net/images/anime/1800/140807.jpg', url:'https://myanimelist.net/anime/52299/Ore_dake_Level_Up_na_Ken' },
+      { t:'Frieren', d:'Sousou no Frieren', img:'https://cdn.myanimelist.net/images/anime/1015/138006.jpg', url:'https://myanimelist.net/anime/52991/Sousou_no_Frieren' },
+      { t:'Attack on Titan', d:'Final', img:'https://cdn.myanimelist.net/images/anime/10/47347.jpg', url:'https://myanimelist.net/anime/16498/Shingeki_no_Kyojin' },
+      { t:'Naruto Shippuden', d:'MAL', img:'https://cdn.myanimelist.net/images/anime/5/17407.jpg', url:'https://myanimelist.net/anime/1735/Naruto__Shippuuden' },
+      { t:'Hunter x Hunter', d:'2011', img:'https://cdn.myanimelist.net/images/anime/1337/99013.jpg', url:'https://myanimelist.net/anime/11061/Hunter_x_Hunter_2011' },
+      { t:'Vinland Saga', d:'MAL', img:'https://cdn.myanimelist.net/images/anime/1500/109266.jpg', url:'https://myanimelist.net/anime/37521/Vinland_Saga' },
+      { t:'Mob Psycho 100', d:'MAL', img:'https://cdn.myanimelist.net/images/anime/8/80356.jpg', url:'https://myanimelist.net/anime/32182/Mob_Psycho_100' }
     ];
     var PARTS = [
-      { t:'One Piece — East Blue Arc', url:'https://myanimelist.net/anime/21/One_Piece' },
+      { t:'One Piece — East Blue', url:'https://myanimelist.net/anime/21/One_Piece' },
+      { t:'One Piece — Water 7 / Enies Lobby', url:'https://myanimelist.net/anime/21/One_Piece' },
       { t:'Naruto — Chunin Exam', url:'https://myanimelist.net/anime/20/Naruto' },
-      { t:'JJK — Shibuya Incident', url:'https://myanimelist.net/anime/40748/Jujutsu_Kaisen' },
+      { t:'JJK — Shibuya Incident', url:'https://myanimelist.net/anime/51009/Jujutsu_Kaisen_2nd_Season' },
       { t:'Demon Slayer — Mugen Train', url:'https://myanimelist.net/anime/40456/Kimetsu_no_Yaiba__Mugen_Ressha-hen' },
-      { t:'AOT — Final Season', url:'https://myanimelist.net/anime/40028/Shingeki_no_Kyojin__The_Final_Season' }
+      { t:'Demon Slayer — Entertainment District', url:'https://myanimelist.net/anime/47778/Kimetsu_no_Yaiba__Yuukaku-hen' },
+      { t:'AOT — Rumbling / Final', url:'https://myanimelist.net/anime/40028/Shingeki_no_Kyojin__The_Final_Season' },
+      { t:'HxH — Chimera Ant', url:'https://myanimelist.net/anime/11061/Hunter_x_Hunter_2011' }
     ];
     function render(tab) {
       var box = document.getElementById('bacaBox');
+      if (tab === 'cari') {
+        box.innerHTML = '<div class="api-form-card"><label>Cari di MangaDex / MAL</label>'+
+          '<input id="q" class="form-input" placeholder="Judul anime / komik">'+
+          '<button type="button" class="btn-pesan" id="goMd" style="width:100%;margin-top:8px;">Cari MangaDex</button>'+
+          '<button type="button" class="btn-topup" id="goMal" style="width:100%;margin-top:8px;">Cari MyAnimeList</button>'+
+          '<button type="button" class="btn-topup" id="goAni" style="width:100%;margin-top:8px;">Cari AniList</button></div>';
+        document.getElementById('goMd').onclick=function(){ window.open('https://mangadex.org/search?q='+encodeURIComponent(document.getElementById('q').value||''),'_blank'); };
+        document.getElementById('goMal').onclick=function(){ window.open('https://myanimelist.net/search/all?q='+encodeURIComponent(document.getElementById('q').value||''),'_blank'); };
+        document.getElementById('goAni').onclick=function(){ window.open('https://anilist.co/search/anime?search='+encodeURIComponent(document.getElementById('q').value||''),'_blank'); };
+        return;
+      }
       if (tab === 'part') {
         box.innerHTML = '<div class="part-list">' + PARTS.map(function(p){
-          return '<div class="part-item"><i class="fa-solid fa-play" style="color:#FFC107"></i><div><b style="color:#fff;font-size:13px;">'+p.t+'</b><br><a href="'+p.url+'" target="_blank" rel="noopener">Buka part / info</a></div></div>';
+          return '<div class="part-item"><i class="fa-solid fa-play" style="color:#FFC107"></i><div><b style="color:#fff;font-size:13px;">'+p.t+'</b><br><a href="'+p.url+'" target="_blank" rel="noopener">Buka di MAL</a></div></div>';
         }).join('') + '</div>';
         return;
       }
       var list = tab === 'anime' ? ANIME : KOMIK;
       box.innerHTML = '<div class="baca-grid">' + list.map(function(x){
-        return '<a class="baca-card" href="'+x.url+'" target="_blank" rel="noopener"><img src="'+x.img+'" alt="" loading="lazy" onerror="this.src=\'logo.png\'"><div class="info"><h4>'+x.t+'</h4><p>'+x.d+'</p></div></a>';
+        return '<a class="baca-card" href="'+x.url+'" target="_blank" rel="noopener"><img src="'+x.img+'" alt="" loading="lazy" onerror="this.src=\'nailong-digital-logo.png\'"><div class="info"><h4>'+x.t+'</h4><p>'+x.d+'</p></div></a>';
       }).join('') + '</div>';
     }
     document.querySelectorAll('.baca-tabs button').forEach(function(b){
