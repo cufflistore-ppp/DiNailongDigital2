@@ -4,14 +4,28 @@
 (function () {
   // --- Video background ---
   function injectVideoBg() {
-    if (document.querySelector('.video-bg')) return;
+    if (document.getElementById('bgVideoWrap')) return;
     var wrap = document.createElement('div');
-    wrap.className = 'video-bg';
-    wrap.innerHTML = '<video autoplay muted loop playsinline poster="nailong-digital-logo.jpg"><source src="bg-nailong.mp4" type="video/mp4"></video>';
-    var overlay = document.createElement('div');
-    overlay.className = 'video-bg-overlay';
+    wrap.id = 'bgVideoWrap';
+    wrap.className = 'bg-video-wrap';
+    wrap.innerHTML =
+      '<video id="bgVideo" autoplay muted loop playsinline webkit-playsinline poster="banner.jpg">' +
+        '<source src="bg-nailong.mp4" type="video/mp4">' +
+      '</video>' +
+      '<div class="bg-video-overlay"></div>';
     document.body.insertBefore(wrap, document.body.firstChild);
-    document.body.insertBefore(overlay, wrap.nextSibling);
+    document.body.classList.add('has-video-bg');
+    document.documentElement.style.background = '#0a0e18';
+    document.body.style.background = 'transparent';
+    // paksa semua section/page tidak putih
+    try {
+      document.querySelectorAll('.page-content, .api-form-card, main, section').forEach(function(el){
+        var bg = getComputedStyle(el).backgroundColor;
+        if (bg === 'rgb(255, 255, 255)' || bg === '#fff' || bg === 'white') {
+          el.style.background = 'rgba(16,24,42,0.55)';
+        }
+      });
+    } catch(e) {}
   }
 
   // --- FAB Chat Admin ---
@@ -185,22 +199,6 @@
   function maybeSplash() { /* disabled */ }
 
   
-  function injectNailongRun() {
-    if (document.getElementById('nailongRunTrack')) return;
-    var track = document.createElement('div');
-    track.id = 'nailongRunTrack';
-    track.className = 'nailong-run-track';
-    track.innerHTML =
-      '<video class="nailong-run-vid" autoplay muted loop playsinline webkit-playsinline>' +
-        '<source src="nailong-run-transparent.webm" type="video/webm">' +
-        '<source src="nailong-run.mp4" type="video/mp4">' +
-      '</video>';
-    document.body.appendChild(track);
-    // klik = naik (tanjakan)
-    track.addEventListener('click', function () {
-      track.classList.toggle('climb');
-    });
-  }
 
   
   function injectPageLoader() {
@@ -235,11 +233,34 @@
     }, 400);
   }
 
+  
+  function injectIntroSplash() {
+    try {
+      if (sessionStorage.getItem('nd_intro_done') === '1') return;
+    } catch (e) {}
+    var el = document.createElement('div');
+    el.id = 'ndIntro';
+    el.className = 'nd-intro';
+    el.innerHTML =
+      '<div class="nd-intro-inner">' +
+        '<img src="logo-nd-gold.jpg" alt="Nailong Digital" class="nd-intro-logo" onerror="this.src=\'nailong-digital-logo.png\'">' +
+        '<div class="nd-intro-title">NAILONG DIGITAL</div>' +
+        '<div class="nd-loading nd-intro-dots"><span></span><span></span></div>' +
+      '</div>';
+    document.body.appendChild(el);
+    setTimeout(function () {
+      el.classList.add('hide');
+      try { sessionStorage.setItem('nd_intro_done', '1'); } catch (e) {}
+      setTimeout(function () { el.remove(); }, 500);
+    }, 1600);
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
+    injectIntroSplash();
     injectVideoBg();
     injectFabChat();
     injectHalo();
-    injectNailongRun();
+    /* nailong run dihapus */
     injectPageLoader();
     /* splash dihapus — login langsung di akun */
 

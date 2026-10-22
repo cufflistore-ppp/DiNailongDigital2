@@ -18,8 +18,8 @@
   <meta name="twitter:title" content="Nailong Digital">
   <meta name="twitter:description" content="Pusat layanan Nailong Digital. Order online, bayar QRIS atau saldo.">
   <meta name="twitter:image" content="/og-banner.jpg">
-  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
-  <link rel="apple-touch-icon" href="nailong-digital-logo.png">
+  <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="nd-logo-gold.jpg">
   <link rel="stylesheet" href="style.css">
   <style>
     .pay-container {
@@ -64,7 +64,7 @@
       line-height: 1.5;
     }
     .qris-box-big {
-      background: #fff;
+      background:#0a0e18;
       border-radius: 12px;
       padding: 12px;
       margin: 12px auto;
@@ -132,7 +132,7 @@
   <header class="header header-logo-only">
     <div class="brand brand-centered">
       <div class="logo-text-wrap">
-        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full">
+        <img src="nd-logo-gold.jpg" alt="Nailong Digital" class="logo-full">
       </div>
     </div>
   </header>
@@ -165,11 +165,14 @@
       <p class="info-bayar" id="infoBayar">
         1. Klik <b>Bayar via Wijaya Pay</b> (atau scan QR dinamis jika muncul)<br>
         2. Bayar sesuai <b>nominal total</b> di atas<br>
-        3. Setelah berhasil, klik <b>Saya Sudah Bayar</b><br>
+        3. Setelah berhasil, klik <b>Saya Sudah Bayar</button>
+        <button type="button" class="btn-topup" id="btnCancelOrder" style="width:100%;margin-top:10px;background:#3d1a1a;color:#ff8a80;border:1px solid #ff8a8055;">Batalkan Transaksi</button>
+        <button type="button" class="btn-topup" id="btnBatalkanTrx" style="width:100%;margin-top:10px;background:rgba(255,80,80,0.15);border:1px solid rgba(255,80,80,0.4);color:#ff8a80;"><i class="fa-solid fa-xmark"></i> Batalkan Transaksi</b><br>
         4. Status order akan diproses otomatis / hubungi admin bila perlu
       </p>
 <button class="btn-konfirmasi" id="btnKonfirmasi" onclick="konfirmasiPembayaran()">
-         Saya Sudah Bayar
+         Saya Sudah Bayar</button>
+        <button type="button" class="btn-topup" id="btnCancelOrder" style="width:100%;margin-top:10px;background:#3d1a1a;color:#ff8a80;border:1px solid #ff8a8055;">Batalkan Transaksi
       </button>
 
       <div class="status-box" id="statusBox">
@@ -418,6 +421,25 @@
     }
 
     document.addEventListener("DOMContentLoaded", loadOrderData);
+    document.addEventListener("DOMContentLoaded", function() {
+      var b = document.getElementById("btnBatalkanTrx");
+      if (!b) return;
+      b.onclick = function() {
+        try {
+          var params = new URLSearchParams(location.search);
+          var kode = params.get("kode") || ("ND-" + new Date().getFullYear() + "-X");
+          var orders = JSON.parse(localStorage.getItem("voxyy_orders") || "[]");
+          var idx = orders.findIndex(function(o){ return o.kode === kode; });
+          if (idx >= 0) {
+            orders[idx].status = "Dibatalkan";
+          } else {
+            orders.unshift({ kode: kode, paket: params.get("paket")||"Order", total: params.get("total")||"Rp 0", status: "Dibatalkan", waktu: new Date().toLocaleString("id-ID"), createdAt: Date.now() });
+          }
+          localStorage.setItem("voxyy_orders", JSON.stringify(orders));
+        } catch(e) {}
+        location.href = "riwayat.html";
+      };
+    });
   </script>
 
   <script src="chat-system.js"></script>
@@ -482,5 +504,27 @@
   <script src="nailong-anim.js"></script>
   <script src="channel.js"></script>
   <script src="protect.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+      var btn = document.getElementById('btnCancelOrder');
+      if (!btn) return;
+      btn.onclick = function(){
+        try {
+          var params = new URLSearchParams(location.search);
+          var kode = params.get('kode') || '';
+          var orders = JSON.parse(localStorage.getItem('voxyy_orders')||'[]');
+          var found = false;
+          for (var i=0;i<orders.length;i++){
+            if (orders[i].kode === kode) { orders[i].status = 'Dibatalkan'; found = true; break; }
+          }
+          if (!found && kode) {
+            orders.unshift({ kode: kode, paket: params.get('paket')||'Order', total: params.get('total')||'Rp 0', status: 'Dibatalkan', waktu: new Date().toLocaleString('id-ID'), createdAt: Date.now() });
+          }
+          localStorage.setItem('voxyy_orders', JSON.stringify(orders));
+        } catch(e){}
+        location.href = 'riwayat.html';
+      };
+    });
+</script>
 </body>
 </html>

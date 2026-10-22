@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tools - Nailong Digital</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="icon" href="nd-logo-gold.jpg" type="image/png">
   <link rel="stylesheet" href="style.css">
   <style>
     .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
@@ -24,7 +24,7 @@
 <body>
   <header class="header header-logo-only">
     <div class="brand brand-centered"><div class="logo-text-wrap">
-      <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full">
+      <img src="nd-logo-gold.jpg" alt="Nailong Digital" class="logo-full">
     </div></div>
   </header>
   <div class="page-content">
@@ -73,6 +73,20 @@
       <div class="tool-card" data-tool="meta"><i class="fa-solid fa-globe"></i><span>Meta Preview</span></div>
     </div>
 
+    <div class="tools-cat">DEPLOY &amp; HOSTING</div>
+    <div class="tools-grid">
+      <div class="tool-card" data-tool="deployzip"><i class="fa-solid fa-cloud-arrow-up"></i><span>Deploy ZIP</span></div>
+      <div class="tool-card" data-tool="hostcheck"><i class="fa-solid fa-signal"></i><span>Cek Host</span></div>
+      <div class="tool-card" data-tool="htmlpreview"><i class="fa-solid fa-code"></i><span>HTML Preview</span></div>
+      <div class="tool-card" data-tool="minify"><i class="fa-solid fa-compress"></i><span>Minify</span></div>
+    </div>
+
+    <div class="tools-cat">DEV &amp; TEXT</div>
+    <div class="tools-grid">
+      <div class="tool-card" data-tool="regex"><i class="fa-solid fa-asterisk"></i><span>Regex Test</span></div>
+      <div class="tool-card" data-tool="difftext"><i class="fa-solid fa-code-compare"></i><span>Diff Teks</span></div>
+    </div>
+
     <div class="tools-cat">UTILITAS</div>
     <div class="tools-grid">
       <div class="tool-card" data-tool="uang"><i class="fa-solid fa-money-bill"></i><span>Format Rupiah</span></div>
@@ -81,6 +95,27 @@
       <div class="tool-card" data-tool="diff"><i class="fa-solid fa-calendar"></i><span>Selisih Hari</span></div>
       <div class="tool-card" data-tool="ip"><i class="fa-solid fa-network-wired"></i><span>IP Info</span></div>
       <div class="tool-card" data-tool="useragent"><i class="fa-solid fa-mobile"></i><span>User Agent</span></div>
+    </div>
+
+    
+    <div class="tools-cat">HOSTING · DEPLOY CEPAT</div>
+    <div class="tools-grid">
+      <div class="tool-card" data-tool="deploy"><i class="fa-solid fa-rocket"></i><span>Deploy ZIP</span></div>
+      <div class="tool-card" data-tool="netlify"><i class="fa-solid fa-cloud"></i><span>Netlify Drop</span></div>
+      <div class="tool-card" data-tool="cfpages"><i class="fa-solid fa-globe"></i><span>CF Pages</span></div>
+      <div class="tool-card" data-tool="tiiny"><i class="fa-solid fa-link"></i><span>Tiiny Host</span></div>
+      <div class="tool-card" data-tool="zipview"><i class="fa-solid fa-file-zipper"></i><span>Buka ZIP</span></div>
+      <div class="tool-card" data-tool="htmlhost"><i class="fa-solid fa-code"></i><span>HTML Preview</span></div>
+    </div>
+
+    <div class="tools-cat">NEXUS STYLE</div>
+    <div class="tools-grid">
+      <div class="tool-card" data-tool="fakeovo"><i class="fa-solid fa-wallet"></i><span>Fake OVO</span></div>
+      <div class="tool-card" data-tool="fakedev"><i class="fa-solid fa-laptop-code"></i><span>FakeDev</span></div>
+      <div class="tool-card" data-tool="quote"><i class="fa-solid fa-quote-left"></i><span>Quote Gen</span></div>
+      <div class="tool-card" data-tool="nokia"><i class="fa-solid fa-mobile-screen"></i><span>Nokia SMS</span></div>
+      <div class="tool-card" data-tool="prompt"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Prompt Gen</span></div>
+      <div class="tool-card" data-tool="fakeid2"><i class="fa-solid fa-id-card"></i><span>Fake Data</span></div>
     </div>
 
     <div class="api-form-card tool-panel" id="toolPanel">
@@ -103,5 +138,6 @@
   <script src="nav.js"></script>
   <script src="protect.js"></script>
   <script src="tools-app.js"></script>
+  <script src="ui-enhance.js"></script>
 </body>
 </html>

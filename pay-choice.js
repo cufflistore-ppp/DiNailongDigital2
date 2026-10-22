@@ -43,7 +43,40 @@
     document.body.appendChild(ov);
 
     ov.addEventListener('click', function (e) { if (e.target === ov) ov.remove(); });
-    document.getElementById('payCancel').onclick = function () { ov.remove(); };
+    document.getElementById('payCancel').onclick = function () {
+      try {
+        var orders = JSON.parse(localStorage.getItem('voxyy_orders') || '[]');
+        var params = new URLSearchParams(location.search || '');
+        var kode = (opts && opts.kode) || params.get('kode') || '';
+        var found = false;
+        if (kode) {
+          for (var i = 0; i < orders.length; i++) {
+            if (orders[i].kode === kode) {
+              orders[i].status = 'Dibatalkan';
+              orders[i].waktu = new Date().toLocaleString('id-ID');
+              found = true;
+              break;
+            }
+          }
+        }
+        if (!found) {
+          kode = kode || ('ND-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000));
+          orders.unshift({
+            kode: kode,
+            paket: desc,
+            total: 'Rp ' + amount.toLocaleString('id-ID'),
+            finalAmount: amount,
+            status: 'Dibatalkan',
+            waktu: new Date().toLocaleString('id-ID'),
+            createdAt: Date.now()
+          });
+        }
+        localStorage.setItem('voxyy_orders', JSON.stringify(orders));
+      } catch (e) {}
+      ov.remove();
+      if (typeof opts.onCancel === 'function') opts.onCancel();
+      else location.href = 'riwayat.html';
+    };
 
     var btnSaldo = document.getElementById('paySaldo');
     if (cukup && btnSaldo) {

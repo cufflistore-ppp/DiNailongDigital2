@@ -1,3 +1,18 @@
+/* Global dark + video bg */
+html, body { background: #0a0e18 !important; min-height: 100%; }
+body.has-video-bg { background: transparent !important; }
+.bg-video-wrap {
+  position: fixed; inset: 0; z-index: -2; overflow: hidden;
+  pointer-events: none;
+}
+.bg-video-wrap video {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.45) saturate(1.1);
+}
+.bg-video-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8,12,22,0.55) 0%, rgba(8,12,22,0.82) 100%);
+}
 * {
   margin: 0;
   padding: 0;
@@ -2875,4 +2890,229 @@ body { padding-bottom: 120px !important; }
   50%  { transform: translateX(10vw) translateY(-18px) rotate(6deg) scale(1.06); }
   75%  { transform: translateX(25vw) translateY(-8px) rotate(2deg) scale(1.02); }
   100% { transform: translateX(40vw) translateY(6px) rotate(-4deg) scale(0.98); }
+}
+
+#nailongRunTrack, .nailong-run-track { display: none !important; }
+
+/* Bottom nav image lebih rendah */
+.bottom-nav {
+  background-position: center 85% !important;
+  background-size: cover !important;
+}
+
+/* Intro ND */
+.nd-intro {
+  position: fixed; inset: 0; z-index: 100000;
+  background: #0a0e18;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.45s ease;
+}
+.nd-intro.hide { opacity: 0; pointer-events: none; }
+.nd-intro-inner { text-align: center; }
+.nd-intro-logo {
+  width: 140px; height: 140px; object-fit: contain;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(255,193,7,0.25);
+  animation: ndLogoIn 0.7s ease;
+}
+.nd-intro-title {
+  margin-top: 16px; font-size: 18px; font-weight: 800;
+  letter-spacing: 3px; color: #FFC107;
+  text-shadow: 0 0 20px rgba(255,193,7,0.4);
+}
+.nd-intro-dots { margin-top: 18px; justify-content: center; }
+@keyframes ndLogoIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Login / Register pages */
+.auth-page {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 24px 16px 100px; max-width: 420px; margin: 0 auto;
+}
+.auth-card {
+  width: 100%;
+  background: rgba(16,24,42,0.82);
+  border: 1px solid rgba(255,193,7,0.2);
+  border-radius: 20px; padding: 28px 20px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+}
+.auth-card .auth-logo {
+  width: 88px; height: 88px; object-fit: contain;
+  display: block; margin: 0 auto 14px; border-radius: 16px;
+}
+.auth-card h1 {
+  text-align: center; color: #fff; font-size: 20px; margin: 0 0 6px;
+}
+.auth-card .sub {
+  text-align: center; color: #8aa0b8; font-size: 13px; margin: 0 0 20px;
+}
+.auth-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+.auth-tabs button {
+  flex: 1; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,193,7,0.2);
+  background: rgba(10,14,24,0.6); color: #cfd8dc; font-weight: 700; cursor: pointer;
+}
+.auth-tabs button.active {
+  background: linear-gradient(90deg,#FFC107,#FF8F00); color: #0a0e18; border-color: transparent;
+}
+
+
+/* Intro splash (saat buka link website) */
+.nd-intro-splash {
+  position: fixed; inset: 0; z-index: 100000;
+  background: #05070e;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.45s ease;
+}
+.nd-intro-splash.hide { opacity: 0; pointer-events: none; }
+.nd-intro-inner { text-align: center; }
+.nd-intro-logo {
+  width: 120px; height: 120px; object-fit: contain;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(255,193,7,0.25);
+  animation: ndLogoIn 0.7s ease;
+}
+.nd-intro-title {
+  margin-top: 16px; font-size: 15px; font-weight: 800;
+  letter-spacing: 3px; color: #FFC107;
+  text-shadow: 0 0 20px rgba(255,193,7,0.4);
+}
+@keyframes ndLogoIn {
+  from { opacity: 0; transform: scale(0.7); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Bottom nav image lebih ke bawah */
+.bottom-nav, .bottom-nav.nav-5 {
+  background-position: center 85% !important;
+  background-size: cover !important;
+}
+
+/* Paksa halaman tidak putih */
+html, body, .page-content, .api-form-card, .pay-container, .pay-card {
+  background-color: transparent !important;
+}
+body:not(.has-video-bg) {
+  background: #0a0e18 !important;
+}
+.bg-video-wrap {
+  position: fixed; inset: 0; z-index: -1;
+  overflow: hidden; pointer-events: none;
+}
+.bg-video-wrap video {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.35);
+}
+.bg-video-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8,12,22,0.55), rgba(8,12,22,0.88));
+}
+
+
+/* FORCE DARK VIDEO BG — jangan putih */
+html, body {
+  background: #0a0e18 !important;
+  min-height: 100%;
+}
+body.has-video-bg,
+body.has-video-bg .page-content,
+.page-content {
+  background: transparent !important;
+}
+.bg-video-wrap {
+  position: fixed; inset: 0; z-index: -1;
+  overflow: hidden; pointer-events: none;
+}
+.bg-video-wrap video {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: brightness(0.45) saturate(1.05);
+}
+.bg-video-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(8,12,22,0.55) 0%, rgba(8,12,22,0.75) 50%, rgba(8,12,22,0.9) 100%);
+}
+
+/* Sembunyikan nailong run */
+.nailong-run-track, #nailongRunTrack { display: none !important; }
+
+/* Bottom nav foto lebih ke bawah */
+.bottom-nav {
+  background-image: url('bg-bottom-nav.jpg') !important;
+  background-size: cover !important;
+  background-position: center 85% !important;
+  background-repeat: no-repeat !important;
+}
+.bottom-nav::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(8,12,22,0.55);
+  z-index: 0;
+  border-radius: inherit;
+}
+.bottom-nav > * { position: relative; z-index: 1; }
+
+/* Logo header */
+.logo-full, .header img.logo-full {
+  max-height: 40px; width: auto; object-fit: contain;
+}
+
+
+/* Hapus video nailong jalan di atas nav */
+.nailong-run-track, #nailongRunTrack, .nailong-track, .nailong-runner { display: none !important; }
+
+/* Paksa bukan putih di semua halaman */
+body, html { background: #0a0e18 !important; }
+body.has-video-bg .page-content,
+body.has-video-bg .api-form-card,
+body.has-video-bg .menu-item,
+body.has-video-bg .saldo-card {
+  background: rgba(16,24,42,0.55) !important;
+  color: #e8eef5;
+}
+body.has-video-bg input,
+body.has-video-bg textarea,
+body.has-video-bg select {
+  background: #0d1220 !important;
+  color: #fff !important;
+  border-color: rgba(255,193,7,0.25) !important;
+}
+
+/* Bottom nav bg lebih rendah */
+.bottom-nav {
+  background-position: center 85% !important;
+  padding-top: 10px !important;
+  min-height: 64px !important;
+}
+body { padding-bottom: 88px !important; }
+
+/* Logo header lebih rapi */
+.logo-full, .header .logo, img.logo-full {
+  max-height: 42px !important;
+  width: auto !important;
+  object-fit: contain;
+}
+.header-logo-only .logo-full { max-height: 48px !important; }
+
+/* TikTok-like entrance saat buka website */
+.nd-enter {
+  animation: ndEnter 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes ndEnter {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); filter: blur(4px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+.nd-splash-enter {
+  position: fixed; inset: 0; z-index: 100000;
+  background: #0a0e18;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: opacity 0.45s ease, visibility 0.45s;
+}
+.nd-splash-enter.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+.nd-splash-enter img { width: 110px; height: auto; margin-bottom: 14px; animation: ndPulse 1.2s ease-in-out infinite; }
+@keyframes ndPulse {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.06); opacity: 0.9; }
 }

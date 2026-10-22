@@ -14,6 +14,103 @@
   function btn(id,txt){ return '<button type="button" class="btn-pesan" id="'+id+'" style="width:100%;margin-top:10px;">'+txt+'</button>'; }
 
   var handlers = {
+
+    deploy: function(){
+      show('<p style="font-size:13px;color:#cfd8dc;line-height:1.5;">Upload ZIP website → ekstrak di browser → siap di-host. <b>Tanpa GitHub</b>.</p>'+
+        '<input type="file" id="zipf" accept=".zip,application/zip" class="form-input">'+
+        '<button type="button" class="btn-pesan" id="go" style="width:100%;margin-top:10px;">Ekstrak ZIP</button>'+
+        '<div id="out" style="margin-top:12px;font-size:12px;color:#8aa0b8;"></div>'+
+        '<p style="font-size:11px;color:#6b7a90;margin-top:10px;">Setelah ekstrak, pakai tombol Netlify Drop / Tiiny untuk online tanpa akun GitHub.</p>');
+      document.getElementById('go').onclick = async function(){
+        var f = document.getElementById('zipf').files[0];
+        var out = document.getElementById('out');
+        if (!f) { out.textContent = 'Pilih file ZIP dulu'; return; }
+        out.innerHTML = 'Mengurai '+f.name+'…';
+        try {
+          if (typeof JSZip === 'undefined') {
+            await new Promise(function(res,rej){
+              var s=document.createElement('script');
+              s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+              s.onload=res; s.onerror=rej; document.head.appendChild(s);
+            });
+          }
+          var zip = await JSZip.loadAsync(f);
+          var names = Object.keys(zip.files).filter(function(n){ return !zip.files[n].dir; });
+          window.__ndZip = zip;
+          window.__ndZipNames = names;
+          out.innerHTML = '<b style="color:#69f0ae;">'+names.length+' file</b> siap.<br>'+
+            names.slice(0,12).map(function(n){return '• '+n;}).join('<br>')+
+            (names.length>12?'<br>…':'')+
+            '<br><button type="button" class="btn-topup" id="toNetlify" style="width:100%;margin-top:10px;">Lanjut Netlify Drop</button>';
+          document.getElementById('toNetlify').onclick=function(){ window.open('https://app.netlify.com/drop','_blank'); };
+        } catch(e){ out.textContent = 'Gagal: '+(e.message||e); }
+      };
+    },
+    netlify: function(){
+      show('<p style="font-size:13px;color:#cfd8dc;">Netlify Drop = drag & drop folder/ZIP, <b>tanpa GitHub</b>, dapat link *.netlify.app</p>'+
+        '<a class="btn-pesan" style="display:block;text-align:center;margin-top:12px;" href="https://app.netlify.com/drop" target="_blank" rel="noopener">Buka Netlify Drop</a>'+
+        '<p style="font-size:11px;color:#8aa0b8;margin-top:10px;">1) Ekstrak ZIP di HP/PC 2) Buka link di atas 3) Drop folder 4) Dapat URL live</p>');
+    },
+    cfpages: function(){
+      show('<p style="font-size:13px;color:#cfd8dc;">Cloudflare Pages juga bisa upload langsung (akun Cloudflare gratis, tanpa GitHub wajib).</p>'+
+        '<a class="btn-pesan" style="display:block;text-align:center;margin-top:12px;" href="https://dash.cloudflare.com/?to=/:account/pages" target="_blank" rel="noopener">Buka Cloudflare Pages</a>');
+    },
+    tiiny: function(){
+      show('<p style="font-size:13px;color:#cfd8dc;">Tiiny.host — upload ZIP, dapat link langsung. Cocok file statis.</p>'+
+        '<a class="btn-pesan" style="display:block;text-align:center;margin-top:12px;" href="https://tiiny.host/" target="_blank" rel="noopener">Buka Tiiny.host</a>');
+    },
+    zipview: function(){
+      show('<input type="file" id="zipf" accept=".zip" class="form-input">'+btn('go','Lihat isi ZIP')+'<pre id="out" style="margin-top:10px;background:#0a0e18;padding:10px;border-radius:10px;color:#cfd8dc;font-size:11px;max-height:220px;overflow:auto;"></pre>');
+      document.getElementById('go').onclick = async function(){
+        var f=document.getElementById('zipf').files[0]; if(!f) return;
+        if (typeof JSZip==='undefined'){ await new Promise(function(r){ var s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; s.onload=r; document.head.appendChild(s); }); }
+        var z=await JSZip.loadAsync(f);
+        document.getElementById('out').textContent=Object.keys(z.files).join('\n');
+      };
+    },
+    htmlhost: function(){
+      show(ta('HTML','t','<!DOCTYPE html><html><body><h1>Halo</h1></body></html>')+btn('go','Preview')+'<iframe id="out" style="width:100%;height:220px;margin-top:10px;border-radius:12px;border:1px solid #333;background:#fff;"></iframe>');
+      document.getElementById('go').onclick=function(){
+        var blob=new Blob([document.getElementById('t').value],{type:'text/html'});
+        document.getElementById('out').src=URL.createObjectURL(blob);
+      };
+    },
+    fakeovo: function(){
+      show(field('Nama','n','Nailong')+field('Saldo','s','1500000')+btn('go','Generate')+'<div id="out" style="margin-top:12px;background:linear-gradient(135deg,#7B2CBF,#5A189A);border-radius:16px;padding:20px;color:#fff;"></div>');
+      document.getElementById('go').onclick=function(){
+        var n=document.getElementById('n').value||'User';
+        var s=parseInt(document.getElementById('s').value,10)||0;
+        document.getElementById('out').innerHTML='<div style="font-size:12px;opacity:.8;">OVO</div><div style="font-size:18px;font-weight:800;margin:8px 0;">'+n+'</div><div style="font-size:22px;font-weight:800;">Rp '+s.toLocaleString('id-ID')+'</div><div style="font-size:11px;margin-top:8px;opacity:.7;">Preview UI · bukan saldo asli</div>';
+      };
+    },
+    fakedev: function(){
+      show(field('Nama','n','Dev Nailong')+field('Bio','b','Fullstack · Bot WA')+btn('go','Kartu Dev')+'<div id="out" style="margin-top:12px;background:#0d1117;border:1px solid #30363d;border-radius:12px;padding:16px;color:#c9d1d9;"></div>');
+      document.getElementById('go').onclick=function(){
+        document.getElementById('out').innerHTML='<div style="display:flex;gap:12px;align-items:center;"><div style="width:48px;height:48px;border-radius:50%;background:#FFC107;color:#000;display:flex;align-items:center;justify-content:center;font-weight:800;">'+(document.getElementById('n').value||'D').charAt(0)+'</div><div><b style="color:#fff;">'+document.getElementById('n').value+'</b><br><span style="font-size:12px;color:#8b949e;">'+document.getElementById('b').value+'</span></div></div>';
+      };
+    },
+    quote: function(){
+      var q=['Kerja diam-diam, hasil bicara.','Jangan bandingkan prosesmu.','Konsisten > motivasi.','Nailong Digital — otomatis, cepat, rapi.'];
+      show(btn('go','Quote Random')+'<div id="out" style="margin-top:12px;padding:20px;border-radius:14px;background:#111;color:#FFC107;font-size:16px;font-weight:700;text-align:center;min-height:80px;"></div>');
+      document.getElementById('go').onclick=function(){ document.getElementById('out').textContent='"'+q[Math.floor(Math.random()*q.length)]+'"'; };
+    },
+    nokia: function(){
+      show(field('Pengirim','n','Admin')+ta('Pesan','m','Halo')+btn('go','Buat SMS Nokia')+'<div id="out" style="margin-top:12px;background:#9e9e9e;border-radius:8px;padding:12px;font-family:monospace;color:#000;font-size:13px;"></div>');
+      document.getElementById('go').onclick=function(){
+        document.getElementById('out').innerHTML='<b>'+document.getElementById('n').value+'</b><br>'+document.getElementById('m').value+'<br><span style="font-size:10px;">12:00</span>';
+      };
+    },
+    prompt: function(){
+      show(field('Topik','t','bot whatsapp')+btn('go','Buat Prompt')+'<textarea id="out" class="form-input" rows="5" style="margin-top:10px;"></textarea>'+btn('copy','Salin'));
+      document.getElementById('go').onclick=function(){
+        var t=document.getElementById('t').value||'AI';
+        document.getElementById('out').value='Buatkan deskripsi profesional tentang '+t+' dalam bahasa Indonesia, singkat, jelas, dan menarik untuk website jasa digital.';
+      }; copyBtn('copy');
+    },
+    fakeid2: function(){
+      handlers.fakeid();
+    },
+
     wa: function(){
       show(field('Nomor (62…)','n','62812…')+btn('go','Buat Link')+'<input id="out" class="form-input" style="margin-top:10px;" readonly>'+btn('copy','Salin'));
       document.getElementById('go').onclick=function(){
@@ -212,6 +309,107 @@
         document.getElementById('out').textContent=JSON.stringify({ip:j.ip,city:j.city,region:j.region,country:j.country_name,org:j.org},null,2);
       }catch(e){ document.getElementById('out').textContent='Gagal ambil IP'; }
     },
+
+    deployzip: function(){
+      show(
+        '<p style="font-size:12px;color:#8aa0b8;margin:0 0 10px;">Upload <b>ZIP</b> atau folder file HTML. Diekstrak di browser, lalu unduh paket siap deploy / buka Netlify Drop (tanpa akun).</p>'+
+        '<input type="file" id="zipFile" class="form-input" accept=".zip,application/zip">'+
+        '<button type="button" class="btn-pesan" id="goExtract" style="width:100%;margin-top:10px;">Ekstrak &amp; Siapkan</button>'+
+        '<div id="out" style="margin-top:12px;font-size:12px;color:#cfd8dc;"></div>'+
+        '<a id="dlZip" class="btn-topup" style="display:none;text-align:center;margin-top:10px;">Unduh ZIP siap deploy</a>'+
+        '<button type="button" class="btn-pesan" id="goNetlify" style="width:100%;margin-top:8px;display:none;">Buka Netlify Drop (tanpa login)</button>'+
+        '<button type="button" class="btn-topup" id="goVercel" style="width:100%;margin-top:8px;display:none;">Buka Vercel (import)</button>'+
+        '<p style="font-size:11px;color:#6b7a90;margin-top:10px;">Netlify Drop: tarik folder hasil ekstrak → dapat link *.netlify.app tanpa daftar. Vercel butuh akun gratis untuk project permanen.</p>'
+      );
+      var lastBlob = null;
+      document.getElementById('goExtract').onclick = async function(){
+        var f = document.getElementById('zipFile').files[0];
+        if (!f) return alert('Pilih file ZIP dulu');
+        var out = document.getElementById('out');
+        out.textContent = 'Memproses…';
+        try {
+          if (typeof JSZip === 'undefined') {
+            await new Promise(function(res,rej){
+              var s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+              s.onload=res; s.onerror=rej; document.head.appendChild(s);
+            });
+          }
+          var zip = await JSZip.loadAsync(f);
+          var names = Object.keys(zip.files).filter(function(n){ return !zip.files[n].dir; });
+          out.innerHTML = '<b style="color:#69f0ae">'+names.length+' file</b> dalam ZIP:<br>' + names.slice(0,12).map(function(n){return '• '+n;}).join('<br>') + (names.length>12?'<br>…':'');
+          // re-pack clean
+          var newZip = new JSZip();
+          for (var i=0;i<names.length;i++) {
+            var n = names[i];
+            newZip.file(n.replace(/^\/+/, ''), await zip.files[n].async('uint8array'));
+          }
+          lastBlob = await newZip.generateAsync({type:'blob'});
+          var a = document.getElementById('dlZip');
+          a.href = URL.createObjectURL(lastBlob);
+          a.download = (f.name||'site').replace(/\.zip$/i,'') + '-ready.zip';
+          a.style.display = 'block';
+          document.getElementById('goNetlify').style.display = 'block';
+          document.getElementById('goVercel').style.display = 'block';
+        } catch (e) {
+          out.textContent = 'Gagal: ' + (e.message||e);
+        }
+      };
+      document.getElementById('goNetlify').onclick = function(){ window.open('https://app.netlify.com/drop', '_blank'); };
+      document.getElementById('goVercel').onclick = function(){ window.open('https://vercel.com/new', '_blank'); };
+    },
+    hostcheck: function(){
+      show(
+        field('URL website','u','https://namamu.vercel.app')+btn('go','Cek online')+
+        '<pre id="out" style="margin-top:10px;background:#0a0e18;padding:12px;border-radius:10px;color:#cfd8dc;font-size:12px;"></pre>'
+      );
+      document.getElementById('go').onclick = async function(){
+        var u = document.getElementById('u').value.trim();
+        var out = document.getElementById('out');
+        out.textContent = 'Mengecek…';
+        try {
+          var t0 = Date.now();
+          var r = await fetch(u, { mode: 'no-cors' });
+          out.textContent = 'Request dikirim ('+(Date.now()-t0)+'ms).\nMode no-cors — jika URL valid, site biasanya online.\nBuka manual: '+u;
+        } catch(e){ out.textContent = 'Error: '+e.message; }
+      };
+    },
+    htmlpreview: function(){
+      show(ta('Kode HTML','t','<h1>Halo</h1>')+btn('go','Preview')+'<iframe id="out" style="width:100%;height:220px;margin-top:10px;border:1px solid #333;border-radius:10px;background:#fff;"></iframe>');
+      document.getElementById('go').onclick=function(){
+        var doc = document.getElementById('out').contentDocument;
+        doc.open(); doc.write(document.getElementById('t').value||''); doc.close();
+      };
+    },
+    minify: function(){
+      show(ta('CSS / JS','t','')+btn('go','Minify sederhana')+'<textarea id="out" class="form-input" rows="5" style="margin-top:10px;"></textarea>');
+      document.getElementById('go').onclick=function(){
+        var t=document.getElementById('t').value||'';
+        document.getElementById('out').value=t.replace(/\/\*[\s\S]*?\*\//g,'').replace(/\/\/.*$/gm,'').replace(/\s+/g,' ').trim();
+      };
+    },
+    regex: function(){
+      show(field('Pattern','p','\\d+')+ta('Teks','t','abc 123 def')+btn('go','Test')+'<pre id="out" style="margin-top:10px;color:#FFC107;font-size:12px;"></pre>');
+      document.getElementById('go').onclick=function(){
+        try {
+          var re = new RegExp(document.getElementById('p').value, 'g');
+          var m = (document.getElementById('t').value||'').match(re);
+          document.getElementById('out').textContent = m ? m.join('\n') : '(tidak match)';
+        } catch(e){ document.getElementById('out').textContent = e.message; }
+      };
+    },
+    difftext: function(){
+      show(ta('Teks A','a','')+ta('Teks B','b','')+btn('go','Bandingkan')+'<pre id="out" style="margin-top:10px;font-size:12px;color:#cfd8dc;"></pre>');
+      document.getElementById('go').onclick=function(){
+        var a=(document.getElementById('a').value||'').split('\n'), b=(document.getElementById('b').value||'').split('\n');
+        var lines=[], max=Math.max(a.length,b.length);
+        for(var i=0;i<max;i++){
+          if(a[i]===b[i]) lines.push('  '+(a[i]||''));
+          else { if(a[i]!==undefined) lines.push('- '+a[i]); if(b[i]!==undefined) lines.push('+ '+b[i]); }
+        }
+        document.getElementById('out').textContent=lines.join('\n');
+      };
+    },
+
     useragent: function(){
       show('<pre id="out" style="background:#0a0e18;padding:12px;border-radius:10px;color:#cfd8dc;font-size:12px;word-break:break-all;"></pre>');
       document.getElementById('out').textContent=navigator.userAgent+'\n\nPlatform: '+navigator.platform+'\nLanguage: '+navigator.language;

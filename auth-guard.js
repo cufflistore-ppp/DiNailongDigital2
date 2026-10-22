@@ -63,7 +63,7 @@
     try {
       if (returnUrl) sessionStorage.setItem("nailong_return_after_login", returnUrl);
     } catch (e) {}
-    window.location.href = "akun.html";
+    window.location.href = "login.html";
   }
 
   function waitForAuthUser() {
@@ -269,7 +269,7 @@
   (function forceLoginOnEntry() {
     try {
       var path = (location.pathname || '').toLowerCase();
-      var allow = /akun\.html|login|auth|pembayaran|riwayat/.test(path);
+      var allow = /akun\.html|login|register|auth|pembayaran|riwayat/.test(path);
       if (allow) return;
 
       // Flag lokal: sudah pernah login di device ini
@@ -282,7 +282,7 @@
         sessionStorage.setItem('nailong_login_gate', '1');
         try { sessionStorage.setItem('nailong_return_after_login', location.href); } catch (e) {}
         if (/index\.html|\/$/.test(path) || path.endsWith('/')) {
-          location.href = 'akun.html';
+          location.href = 'login.html';
         }
       }
 

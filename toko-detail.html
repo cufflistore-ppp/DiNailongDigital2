@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Detail Toko - Nailong Digital</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="icon" href="nailong-digital-logo.png" type="image/jpeg">
+  <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="header header-logo-only">
     <div class="brand brand-centered">
       <div class="logo-text-wrap">
-        <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full"></div>
+        <img src="nd-logo-gold.jpg" alt="Nailong Digital" class="logo-full"></div>
     </div>
   </header>
   <div class="page-content" id="storeBox">
@@ -64,7 +64,7 @@
       if (!prods.length) grid.innerHTML = '<p style="color:#8aa0b8;padding:12px;">Belum ada produk.</p>';
       else grid.innerHTML = prods.map(function(p) {
         return '<div class="produk-card produk-card-glass">' +
-          (p.img ? '<img src="'+esc(p.img)+'" alt="" onerror="this.src=\'logo.png\'">' : '<img src="logo.png" alt="">') +
+          (p.img ? '<img src="'+esc(p.img)+'" alt="" onerror="this.src=\'logo.png\'">' : '<img src="nd-logo-gold.jpg" alt="">') +
           '<div class="produk-info"><small style="color:#8aa0b8;font-size:10px;">'+esc(s.name)+'</small>' +
           '<h4>'+esc(p.title)+'</h4><div class="harga">'+NailongToko.formatRp(p.price)+'</div>' +
           '<div style="display:flex;gap:6px;margin-top:8px;">' +
@@ -79,5 +79,6 @@
       });
     });
   </script>
+  <script src="ui-enhance.js"></script>
 </body>
 </html>

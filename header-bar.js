@@ -14,6 +14,7 @@
     var header = document.querySelector('header.header');
     if (!header) return;
     if (header.querySelector('.btn-hamburger-left')) return;
+    var isAdminPage = /admin\.html/i.test(location.pathname || '') || /admin\.html/i.test(location.href || '');
 
     var left = document.createElement('button');
     left.type = 'button';
@@ -88,9 +89,49 @@
       document.body.appendChild(overlay);
       document.body.appendChild(drawer);
       document.getElementById('sideClose').onclick = closeDrawer;
+      if (isAdminPage) {
+        drawer.innerHTML =
+          '<div class="side-drawer-head"><div><div class="side-title">Panel Admin</div><div class="side-sub">Menu khusus admin</div></div>' +
+          '<button type="button" class="side-close" id="sideClose">&times;</button></div>' +
+          '<div class="side-section">MODERASI</div>' +
+          '<a href="admin.html"><i class="fa-solid fa-list"></i><span>Pesanan Customer</span></a>' +
+          '<a href="admin.html"><i class="fa-solid fa-comment-dots"></i><span>Teks Joki / Push</span></a>' +
+          '<a href="admin.html"><i class="fa-solid fa-store"></i><span>Moderasi Toko</span></a>' +
+          '<a href="admin.html"><i class="fa-solid fa-money-bill-wave"></i><span>Pengeluaran Akun</span></a>' +
+          '<a href="admin.html"><i class="fa-solid fa-inbox"></i><span>Chat Inbox</span></a>' +
+          '<a href="admin.html"><i class="fa-solid fa-broadcast-tower"></i><span>Nomor SW</span></a>' +
+          '<div class="side-section">LAINNYA</div>' +
+          '<a href="index.html"><i class="fa-solid fa-house"></i><span>Ke Website User</span></a>' +
+          '<div class="side-foot">Hanya menu admin — tidak campur menu user.</div>';
+        document.getElementById('sideClose').onclick = closeDrawer;
+      }
     }
 
     updateBellBadge();
+
+    try {
+      var isAdminPage = /admin\.html/i.test(location.pathname || '') || /admin\.html/i.test(location.href || '');
+      if (isAdminPage && document.getElementById('sideDrawer')) {
+        document.getElementById('sideDrawer').innerHTML =
+          '<div class="side-drawer-head">' +
+            '<div><div class="side-title">Admin Menu</div><div class="side-sub">Khusus panel</div></div>' +
+            '<button type="button" class="side-close" id="sideClose">&times;</button>' +
+          '</div>' +
+          '<div class="side-section">PANEL</div>' +
+          '<a href="admin.html"><i class="fa-solid fa-gauge"></i><span>Dashboard Admin</span></a>' +
+          '<a href="admin.html"><i class="fa-solid fa-box"></i><span>Pesanan</span></a>' +
+          '<a href="admin.html"><i class="fa-solid fa-comment-dots"></i><span>Teks Joki</span></a>' +
+          '<a href="admin.html"><i class="fa-solid fa-store"></i><span>Moderasi Toko</span></a>' +
+          '<a href="admin-chat.html"><i class="fa-solid fa-inbox"></i><span>Chat Inbox</span></a>' +
+          '<div class="side-section">LAINNYA</div>' +
+          '<a href="index.html"><i class="fa-solid fa-house"></i><span>Ke Website</span></a>' +
+          '<a href="riwayat.html"><i class="fa-solid fa-clock-rotate-left"></i><span>Riwayat User</span></a>' +
+          '<div class="side-foot">Menu admin terpisah agar tidak berantakan.</div>';
+        var sc = document.getElementById('sideClose');
+        if (sc) sc.onclick = closeDrawer;
+      }
+    } catch (e) {}
+
   }
 
   function countNotifs() {
