@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Music - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .sp-search { display:flex; gap:8px; margin-bottom:14px; }
+    .sp-search input { flex:1; }
+    .sp-list { display:flex; flex-direction:column; gap:8px; }
+    .sp-item {
+      display:flex; gap:12px; align-items:center; padding:10px;
+      background:rgba(16,24,42,0.65); border:1px solid rgba(255,193,7,0.12);
+      border-radius:12px; cursor:pointer;
+    }
+    .sp-item img { width:48px; height:48px; border-radius:8px; object-fit:cover; background:#1a2740; }
+    .sp-item .meta { flex:1; min-width:0; }
+    .sp-item .meta b { display:block; color:#fff; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .sp-item .meta span { font-size:11px; color:#8aa0b8; }
+    .sp-item .play-ic { color:#FFC107; font-size:18px; }
+    .sp-player {
+      position:sticky; bottom:72px; margin-top:16px;
+      background:rgba(12,16,28,0.95); border:1px solid rgba(255,193,7,0.25);
+      border-radius:16px; padding:14px; backdrop-filter:blur(12px);
+    }
+    .sp-now { display:flex; gap:12px; align-items:center; }
+    .sp-now img { width:56px; height:56px; border-radius:10px; object-fit:cover; background:#1a2740; }
+    .sp-now .t { flex:1; min-width:0; }
+    .sp-now .t b { display:block; color:#fff; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .sp-now .t span { font-size:12px; color:#8aa0b8; }
+    .sp-controls { display:flex; align-items:center; justify-content:center; gap:18px; margin-top:12px; }
+    .sp-controls button {
+      border:none; background:transparent; color:#fff; font-size:20px; cursor:pointer;
+    }
+    .sp-controls button.main {
+      width:48px; height:48px; border-radius:50%;
+      background:#FFC107; color:#0a0e18; font-size:18px;
+    }
+    .sp-bar { height:4px; background:#1a2740; border-radius:4px; margin-top:12px; overflow:hidden; cursor:pointer; }
+    .sp-bar > i { display:block; height:100%; width:0%; background:linear-gradient(90deg,#FFC107,#FF8F00); }
+    .sp-tabs { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+    .sp-tabs button {
+      border:1px solid rgba(255,193,7,0.25); background:rgba(16,24,42,0.6);
+      color:#cfd8dc; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;
+    }
+    .sp-tabs button.active { background:linear-gradient(90deg,#FFC107,#FF8F00); color:#0a0e18; border-color:transparent; }
+    .sp-note { font-size:11px; color:#8aa0b8; margin-bottom:12px; line-height:1.45; }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full">
+    </div></div>
+  </header>
+  <div class="page-content">
+    <div class="badge">MUSIC</div>
+    <h2 class="page-title"><i class="fa-solid fa-music"></i> Nailong Music</h2>
+    <p class="sp-note">
+      Tampilan seperti Spotify. Preview lagu dari katalog (iTunes / sumber bebas).
+      Musik bisa tetap jalan saat pindah halaman / main game lewat <b>mini player</b> di bawah.
+      Untuk katalog penuh Spotify resmi butuh akun developer Spotify (API).
+    </p>
+    <div class="sp-tabs">
+      <button type="button" class="active" data-tab="cari">Cari</button>
+      <button type="button" data-tab="hits">Hits</button>
+      <button type="button" data-tab="indo">Indo</button>
+      <button type="button" data-tab="queue">Antrian</button>
+    </div>
+    <div class="sp-search" id="searchRow">
+      <input type="text" id="q" class="form-input" placeholder="Cari lagu / artis...">
+      <button type="button" class="btn-pesan" id="btnSearch" style="padding:12px 16px;"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+    <div class="sp-list" id="list"></div>
+    <div class="sp-player" id="playerBox">
+      <div class="sp-now">
+        <img id="nowArt" src="nailong-digital-logo.png" alt="">
+        <div class="t"><b id="nowTitle">Belum ada lagu</b><span id="nowArtist">Pilih lagu untuk putar</span></div>
+      </div>
+      <div class="sp-bar" id="seek"><i id="prog"></i></div>
+      <div class="sp-controls">
+        <button type="button" id="btnPrev" title="Sebelumnya"><i class="fa-solid fa-backward-step"></i></button>
+        <button type="button" class="main" id="btnPlay"><i class="fa-solid fa-play"></i></button>
+        <button type="button" id="btnNext" title="Berikutnya"><i class="fa-solid fa-forward-step"></i></button>
+      </div>
+    </div>
+  </div>
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="game.html" class="nav-item" data-nav="game"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>Game</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="music-player.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script src="protect.js"></script>
+  <script src="music-app.js"></script>
+</body>
+</html>

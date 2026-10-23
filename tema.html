@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tema - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <style>
+    .tema-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    .tema-card {
+      border-radius:14px; padding:14px; cursor:pointer; text-align:center;
+      border:2px solid transparent; background:rgba(16,24,42,0.7);
+    }
+    .tema-card.active { border-color: var(--nd-accent, #d4a017); }
+    .tema-swatch {
+      width:100%; height:40px; border-radius:10px; margin-bottom:8px;
+    }
+    .tema-card b { display:block; color:#fff; font-size:13px; }
+    .tema-note { font-size:12px; color:#8aa0b8; margin:10px 0 14px; line-height:1.45; }
+    .tema-preview {
+      margin-top:16px; padding:14px; border-radius:14px;
+      background:rgba(16,24,42,0.7); border:1px solid rgba(255,255,255,0.08);
+    }
+    .tema-preview .btn-demo {
+      display:inline-block; margin-top:8px; padding:10px 16px; border-radius:10px;
+      background:linear-gradient(90deg,var(--nd-accent,#d4a017),var(--nd-accent-2,#b8860b));
+      color:#0a0e18; font-weight:800; border:none; font-size:13px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full">
+    </div></div>
+  </header>
+  <div class="page-content">
+    <div class="badge">TEMA</div>
+    <h2 class="page-title"><i class="fa-solid fa-palette"></i> Ganti warna</h2>
+    <p class="tema-note">
+      Tema ini <b>hanya untuk akun kamu</b>. Akun lain tidak ikut berubah.
+      Setelah diganti, warna tetap tersimpan (tidak balik sendiri).
+    </p>
+    <div class="tema-grid" id="grid"></div>
+    <div style="margin-top:16px;">
+      <label style="font-size:12px;color:#cfd8dc;font-weight:700;">Warna kustom</label>
+      <div style="display:flex;gap:8px;margin-top:6px;">
+        <input type="color" id="customColor" value="#3b82f6" style="width:52px;height:42px;border:none;background:transparent;cursor:pointer;">
+        <button type="button" class="btn-pesan" id="btnCustom" style="flex:1;">Pakai warna ini</button>
+      </div>
+    </div>
+    <div class="tema-preview">
+      <div style="font-size:12px;color:#8aa0b8;">Pratinjau aksen</div>
+      <div style="font-size:15px;font-weight:800;color:var(--nd-accent,#d4a017);margin-top:4px;">Teks aksen · tombol · badge</div>
+      <button type="button" class="btn-demo">Contoh tombol</button>
+    </div>
+    <p style="margin-top:16px;"><a href="index.html" class="theme-link">← Kembali ke beranda</a></p>
+  </div>
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki</span></a>
+    <a href="index.html" class="nav-item active"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="akun.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <a href="tema.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-palette"></i></span><span>Tema</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script>
+  (function(){
+    var grid = document.getElementById('grid');
+    var cur = NailongTheme.load();
+    Object.keys(NailongTheme.PRESETS).forEach(function(k){
+      var p = NailongTheme.PRESETS[k];
+      var el = document.createElement('div');
+      el.className = 'tema-card' + (!cur.custom && cur.preset===k ? ' active' : '');
+      el.innerHTML = '<div class="tema-swatch" style="background:linear-gradient(90deg,'+p.accent+','+p.accent2+')"></div><b>'+p.name+'</b>';
+      el.onclick = function(){
+        NailongTheme.setPreset(k);
+        document.querySelectorAll('.tema-card').forEach(function(x){ x.classList.remove('active'); });
+        el.classList.add('active');
+      };
+      grid.appendChild(el);
+    });
+    document.getElementById('btnCustom').onclick = function(){
+      var hex = document.getElementById('customColor').value;
+      NailongTheme.setCustom(hex);
+      document.querySelectorAll('.tema-card').forEach(function(x){ x.classList.remove('active'); });
+    };
+  })();
+  </script>
+</body>
+</html>

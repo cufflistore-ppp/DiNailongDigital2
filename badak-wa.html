@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Badak WhatsApp - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .bd-wrap { max-width: 420px; margin: 0 auto; padding: 12px 16px 120px; }
+    .bd-status {
+      display: flex; align-items: center; gap: 12px;
+      background: linear-gradient(135deg, rgba(16,30,50,0.9), rgba(10,20,40,0.95));
+      border: 1px solid rgba(0,200,255,0.35); border-radius: 16px;
+      padding: 14px 16px; margin-bottom: 16px;
+      box-shadow: 0 0 24px rgba(0,150,255,0.12);
+    }
+    .bd-status .ic {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: rgba(37,211,102,0.12); border: 1px solid rgba(37,211,102,0.35);
+      display: flex; align-items: center; justify-content: center;
+      color: #25d366; font-size: 20px;
+    }
+    .bd-status b { display: block; color: #fff; font-size: 14px; letter-spacing: 0.3px; }
+    .bd-status span { font-size: 11px; color: #7eb8d4; }
+    .bd-card {
+      background: rgba(12,18,32,0.88); border: 1px solid rgba(0,180,255,0.2);
+      border-radius: 18px; padding: 20px 16px;
+      backdrop-filter: blur(12px);
+    }
+    .bd-card label {
+      display: block; font-size: 11px; font-weight: 800; color: #5ec8f0;
+      letter-spacing: 0.6px; margin: 0 0 8px;
+    }
+    .bd-card .form-input, .bd-card select {
+      width: 100%; background: #0a0e18 !important; color: #e8f4ff !important;
+      border: 1px solid rgba(0,180,255,0.25) !important; border-radius: 12px !important;
+      padding: 14px 14px !important; font-size: 14px; margin-bottom: 16px;
+    }
+    .bd-card select option { background: #0a0e18; color: #fff; }
+    .bd-go {
+      width: 100%; border: none; border-radius: 14px; padding: 15px;
+      font-weight: 800; font-size: 15px; cursor: pointer; color: #fff;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      box-shadow: 0 8px 24px rgba(0,114,255,0.35);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .bd-go:active { transform: scale(0.98); }
+    .bd-go:disabled { opacity: 0.55; cursor: not-allowed; }
+    .bd-info {
+      margin-top: 18px; background: rgba(12,18,32,0.75);
+      border: 1px solid rgba(0,180,255,0.18); border-radius: 16px; padding: 16px;
+    }
+    .bd-info h3 { margin: 0 0 12px; font-size: 13px; color: #5ec8f0; letter-spacing: 0.5px; }
+    .bd-info ul { margin: 0; padding: 0; list-style: none; }
+    .bd-info li {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 12px; color: #c5d8e8; line-height: 1.45; margin-bottom: 10px;
+    }
+    .bd-info li i { color: #25d366; margin-top: 2px; flex-shrink: 0; }
+    .bd-warn {
+      margin-top: 12px; font-size: 11px; color: #ffab91; line-height: 1.45;
+      background: rgba(255,80,40,0.08); border: 1px solid rgba(255,80,40,0.2);
+      border-radius: 12px; padding: 10px 12px;
+    }
+    .bd-toast {
+      position: fixed; top: 16px; left: 16px; right: 16px; z-index: 200;
+      max-width: 420px; margin: 0 auto;
+      background: linear-gradient(135deg, #0d2818, #0a1f14);
+      border: 1px solid rgba(105,240,174,0.45); border-radius: 14px;
+      padding: 14px 16px; color: #e8fff0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      display: none; align-items: flex-start; gap: 12px;
+      animation: bdIn 0.35s ease;
+    }
+    .bd-toast.show { display: flex; }
+    .bd-toast .tic { width: 28px; height: 28px; border-radius: 50%; background: #25d366;
+      color: #0a0e18; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .bd-toast b { display: block; font-size: 13px; margin-bottom: 2px; }
+    .bd-toast span { font-size: 11px; color: #a5d6a7; }
+    @keyframes bdIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
+  </style>
+</head>
+<body>
+  <div class="bd-toast" id="bdToast">
+    <div class="tic"><i class="fa-solid fa-check"></i></div>
+    <div>
+      <b id="toastTitle">Badak berhasil diajukan</b>
+      <span id="toastSub">Pesanan masuk antrian. Cek riwayat untuk status.</span>
+    </div>
+  </div>
+
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full">
+    </div></div>
+  </header>
+
+  <div class="bd-wrap">
+    <div class="bd-status">
+      <div class="ic"><i class="fa-brands fa-whatsapp"></i></div>
+      <div>
+        <b>BADAK WHATSAPP</b>
+        <span>Status: Active &nbsp;|&nbsp; Method: 4 Available</span>
+      </div>
+    </div>
+
+    <div class="bd-card">
+      <label>TARGET NUMBER</label>
+      <input type="tel" id="target" class="form-input" placeholder="628xxxxxxxxxx" inputmode="numeric" autocomplete="tel">
+
+      <label>SELECT METHOD</label>
+      <select id="method" class="form-input">
+        <option value="">Select - Badak</option>
+        <option value="50">Badak 50 Chat</option>
+        <option value="100">Badak 100 Chat</option>
+        <option value="200">Badak 200 Chat</option>
+        <option value="489">Badak 489 Chat</option>
+      </select>
+
+      <button type="button" class="bd-go" id="btnGo">
+        <i class="fa-solid fa-paper-plane"></i> Mulai Badak
+      </button>
+    </div>
+
+    <div class="bd-info">
+      <h3>INFO LAYANAN BADAK WHATSAPP</h3>
+      <ul>
+        <li><i class="fa-solid fa-check"></i><span>Pilih paket sesuai kebutuhan (50 / 100 / 200 / 489 chat).</span></li>
+        <li><i class="fa-solid fa-check"></i><span>Masukkan nomor target dengan format 62… (tanpa spasi / tanda).</span></li>
+        <li><i class="fa-solid fa-check"></i><span>Tekan <b>Mulai Badak</b> — pesanan masuk antrian &amp; riwayat.</span></li>
+        <li><i class="fa-solid fa-check"></i><span>Status proses bisa dicek di halaman riwayat / hubungi admin bila perlu.</span></li>
+        <li><i class="fa-solid fa-check"></i><span>Gunakan hanya untuk nomor &amp; keperluan yang sah dan diizinkan.</span></li>
+      </ul>
+      <div class="bd-warn">
+        <b>Penting:</b> Jangan gunakan layanan ini untuk spam, penipuan, atau mengganggu orang lain.
+        Pelanggaran dapat berakibat penolakan order dan pemblokiran akun.
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script src="protect.js"></script>
+  <script>
+  (function () {
+    function toast(title, sub) {
+      var el = document.getElementById('bdToast');
+      document.getElementById('toastTitle').textContent = title || 'Berhasil';
+      document.getElementById('toastSub').textContent = sub || '';
+      el.classList.add('show');
+      setTimeout(function () { el.classList.remove('show'); }, 4200);
+    }
+    function yearCode() {
+      var y = new Date().getFullYear();
+      return 'ND-' + y + '-' + Math.random().toString(36).slice(2, 10).toUpperCase();
+    }
+    document.getElementById('btnGo').onclick = async function () {
+      var num = (document.getElementById('target').value || '').replace(/\D/g, '');
+      var method = document.getElementById('method').value;
+      if (!num || num.length < 10) return toast('Nomor belum valid', 'Isi target number format 62…');
+      if (!method) return toast('Pilih method', 'Pilih paket Badak terlebih dahulu');
+      if (num.startsWith('08')) num = '62' + num.slice(1);
+      if (!num.startsWith('62')) num = '62' + num;
+
+      var btn = document.getElementById('btnGo');
+      btn.disabled = true;
+      var order = {
+        orderId: yearCode(),
+        type: 'badak-wa',
+        product: 'Badak ' + method + ' Chat',
+        target: num,
+        method: method,
+        status: 'pending',
+        createdAt: Date.now()
+      };
+      try {
+        var list = [];
+        try { list = JSON.parse(localStorage.getItem('nd_orders') || '[]'); } catch (e) {}
+        list.unshift(order);
+        localStorage.setItem('nd_orders', JSON.stringify(list.slice(0, 100)));
+        if (window.VoxyyOrders && typeof VoxyyOrders.pushOrder === 'function') {
+          try { await VoxyyOrders.pushOrder(order); } catch (e) {}
+        }
+        toast('Badak berhasil diajukan', order.orderId + ' · ' + order.product + ' · ' + num);
+        setTimeout(function () { location.href = 'riwayat.html'; }, 1600);
+      } catch (e) {
+        toast('Gagal', e.message || 'Coba lagi');
+        btn.disabled = false;
+      }
+    };
+  })();
+  </script>
+</body>
+</html>

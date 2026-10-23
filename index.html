@@ -21,6 +21,7 @@
   <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
   <link rel="apple-touch-icon" href="nd-logo-gold.jpg">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
 </head>
 <body>
 
@@ -58,6 +59,10 @@
   </div>
 
   <div class="menu-grid menu-grid-4 menu-grid-clean">
+    <a href="badak-wa.html" class="menu-item">
+      <i class="fa-brands fa-whatsapp"></i>
+      <span>Badak WA</span>
+    </a>
     <a href="botwa.html" class="menu-item">
       <i class="fa-brands fa-whatsapp"></i>
       <span>Sewa Bot</span>
@@ -78,6 +83,10 @@
       <i class="fa-solid fa-store"></i>
       <span>Toko</span>
     </a>
+    <a href="music.html" class="menu-item">
+      <i class="fa-solid fa-music"></i>
+      <span>Music</span>
+    </a>
     <a href="game.html" class="menu-item">
       <i class="fa-solid fa-gamepad"></i>
       <span>Game</span>
@@ -95,15 +104,16 @@
 
   
   <section class="produk-section" id="tokoMarketSection">
-    <h3>TOKO MEMBER</h3>
-    <p class="subtitle">Produk dari toko publik · <a href="buka-toko.html" style="color:#FFC107">Buka toko</a> · <a href="keranjang.html" style="color:#FFC107">Keranjang (<span id="cartBadgeTop">0</span>)</a></p>
-    <div class="produk-grid" id="tokoMarketGrid"></div>
-  </section>
-
-  <section class="produk-section">
-    <h3>PRODUK DIGITAL</h3>
-    <p class="subtitle">APK & produk digital. Untuk jasa website lihat menu <a href="jasweb.html" style="color:#FFC107">Jasweb</a>.</p>
-    <div class="produk-grid" id="produkGrid"></div>
+    <h3>PRODUK TOKO</h3>
+    <p class="subtitle">Dari toko member · <a href="buka-toko.html" class="theme-link">Buka toko</a> · <a href="keranjang.html" class="theme-link">Keranjang (<span id="cartBadgeTop">0</span>)</a> · <a href="tema.html" class="theme-link">Tema</a></p>
+    <div class="filter-chips" id="homeFilterChips">
+      <button type="button" class="chip active" data-f="all">Semua</button>
+      <button type="button" class="chip" data-f="apk">apk</button>
+      <button type="button" class="chip" data-f="digital">digital</button>
+      <button type="button" class="chip" data-f="jasa">jasa</button>
+      <button type="button" class="chip" data-f="lainnya">lainnya</button>
+    </div>
+    <div class="produk-grid produk-grid-uniform" id="tokoMarketGrid"></div>
   </section>
 
   <div class="info-box">
@@ -162,37 +172,53 @@
   <script src="header-bar.js"></script>
   <script src="nailong-anim.js"></script>
   <script>
-    async function renderTokoMarket() {
+    async function renderTokoMarket(filterCat) {
       var grid = document.getElementById('tokoMarketGrid');
       if (!grid || !window.NailongToko) return;
-      var badge = document.getElementById('cartBadgeTop');
-      if (badge) badge.textContent = NailongToko.cartCount();
-      var list = await NailongToko.getPublicProducts();
+      var list = [];
+      try { list = await NailongToko.getPublicProducts(); } catch (e) { list = []; }
+      list = (list || []).slice(0, 22);
+      filterCat = filterCat || 'all';
+      if (filterCat !== 'all') {
+        list = list.filter(function (p) {
+          var c = String(p.category || p.kategori || 'lainnya').toLowerCase();
+          return c.indexOf(filterCat) >= 0 || (filterCat === 'lainnya' && !c);
+        });
+      }
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+      }
       if (!list.length) {
-        grid.innerHTML = '<p style="grid-column:1/-1;color:#8aa0b8;font-size:13px;padding:8px;">Belum ada produk toko. <a href="buka-toko.html" style="color:#FFC107;">Jadi penjual</a></p>';
+        grid.innerHTML = '<p style="grid-column:1/-1;color:var(--text-muted,#8aa0b8);font-size:13px;padding:8px;">Belum ada produk toko. <a href="buka-toko.html" class="theme-link">Buka toko &amp; pasang produk</a> biar muncul di sini.</p>';
         return;
       }
-      grid.innerHTML = list.slice(0, 12).map(function(p) {
-        function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
-        return '<div class="produk-card produk-card-glass">' +
-          '<img src="' + esc(p.img || 'logo.png') + '" alt="" onerror="this.src=\'logo.png\'">' +
+      grid.innerHTML = list.map(function (p) {
+        var img = p.img || p.image || p.foto || 'nailong-digital-logo.png';
+        var store = p.storeName || p.tokoNama || p.storeId || 'Toko';
+        var price = p.price != null ? p.price : (p.harga || 0);
+        var name = p.title || p.name || p.nama || 'Produk';
+        return '<a class="produk-card produk-card-uniform" href="produk-toko.html?id=' + encodeURIComponent(p.productId) + '">' +
+          '<div class="produk-thumb-wrap"><img src="' + esc(img) + '" alt="" loading="lazy" onerror="this.src='nailong-digital-logo.png'"></div>' +
+          '<div class="produk-badge-store">' + esc(store) + '</div>' +
           '<div class="produk-info">' +
-          '<small style="color:#8aa0b8;font-size:10px;"><i class="fa-solid fa-store"></i> ' + esc(p.storeName) + '</small>' +
-          '<h4>' + esc(p.title) + '</h4>' +
-          '<div class="harga">' + NailongToko.formatRp(p.price) + '</div>' +
-          '<div style="display:flex;gap:6px;margin-top:8px;">' +
-          '<a href="produk-toko.html?id=' + encodeURIComponent(p.productId) + '" class="btn" style="flex:1;font-size:11px;padding:6px;">Detail</a>' +
-          '<button type="button" class="btn btn-add-cart" data-pid="' + esc(p.productId) + '" style="flex:1;font-size:11px;padding:6px;border:none;cursor:pointer;">+ Cart</button>' +
-          '</div></div></div>';
+          '<div class="produk-name">' + esc(name) + '</div>' +
+          '<div class="produk-price">Rp ' + Number(price).toLocaleString('id-ID') + '</div>' +
+          '</div></a>';
       }).join('');
-      grid.querySelectorAll('.btn-add-cart').forEach(function(btn) {
-        btn.onclick = async function() {
-          var prod = await NailongToko.getProduct(btn.getAttribute('data-pid'));
-          if (prod) { NailongToko.addToCart(prod, 1); if (badge) badge.textContent = NailongToko.cartCount(); alert('Masuk keranjang'); }
+      var badge = document.getElementById('cartBadgeTop');
+      if (badge && NailongToko.cartCount) badge.textContent = NailongToko.cartCount();
+    }
+    document.addEventListener('DOMContentLoaded', function(){
+      setTimeout(function(){ renderTokoMarket('all'); }, 600);
+      var chips = document.getElementById('homeFilterChips');
+      if (chips) chips.querySelectorAll('.chip').forEach(function(b){
+        b.onclick = function(){
+          chips.querySelectorAll('.chip').forEach(function(x){ x.classList.remove('active'); });
+          b.classList.add('active');
+          renderTokoMarket(b.getAttribute('data-f') || 'all');
         };
       });
-    }
-    document.addEventListener('DOMContentLoaded', function(){ setTimeout(renderTokoMarket, 600); });
+    });
   </script>
   <script src="home-profile.js"></script>
   <script src="protect.js"></script>

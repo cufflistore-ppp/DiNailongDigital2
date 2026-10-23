@@ -60,6 +60,7 @@
         '<a href="leaderboard.html"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>' +
         '<a href="tools.html"><i class="fa-solid fa-screwdriver-wrench"></i><span>Tools</span></a>' +
         '<a href="baca.html"><i class="fa-solid fa-book-open"></i><span>Baca / Anime</span></a>' +
+        '<a href="music.html"><i class="fa-solid fa-music"></i><span>Music</span></a>' +
         '<a href="game.html"><i class="fa-solid fa-gamepad"></i><span>Game</span></a>' +
 
         '<div class="side-section">LAYANAN BOT</div>' +

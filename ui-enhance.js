@@ -1,3 +1,27 @@
+
+  
+  function ensureTheme() {
+    if (window.NailongTheme) { try { NailongTheme.apply(NailongTheme.load()); } catch(e){} return; }
+    if (document.querySelector('script[data-nd-theme]')) return;
+    var s = document.createElement('script');
+    s.src = 'theme.js'; s.setAttribute('data-nd-theme','1');
+    s.onload = function(){ try { NailongTheme.apply(NailongTheme.load()); } catch(e){} };
+    document.head.appendChild(s);
+  }
+
+  function ensureMusicPlayer() {
+    if (window.NailongMusic) {
+      try { NailongMusic.injectMini(); } catch (e) {}
+      return;
+    }
+    if (document.querySelector('script[data-nd-music]')) return;
+    var s = document.createElement('script');
+    s.src = 'music-player.js';
+    s.setAttribute('data-nd-music', '1');
+    s.onload = function () { try { NailongMusic.injectMini(); } catch (e) {} };
+    document.head.appendChild(s);
+  }
+
 /**
  * Nailong Digital - Video BG, FAB Chat, Halo, Login splash
  */
@@ -258,6 +282,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     injectIntroSplash();
     injectVideoBg();
+    try { ensureTheme(); ensureMusicPlayer(); } catch(e) {}
     injectFabChat();
     injectHalo();
     /* nailong run dihapus */

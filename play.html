@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Main Game - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .play-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; }
+    .play-top h1 { font-size:18px; color:#fff; margin:0; }
+    .g-how { font-size:12px; color:#8aa0b8; background:rgba(255,193,7,0.06); border:1px solid rgba(255,193,7,0.15); border-radius:12px; padding:10px 12px; margin-bottom:12px; line-height:1.45; }
+    .g-hud { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:13px; color:#cfd8dc; flex-wrap:wrap; gap:6px; }
+    .g-btn { border:none; border-radius:10px; padding:10px 14px; font-weight:700; cursor:pointer; background:linear-gradient(90deg,#FFC107,#FF8F00); color:#0a0e18; }
+    .g-btn.sec { background:rgba(255,193,7,0.12); color:#FFC107; border:1px solid rgba(255,193,7,0.3); }
+    canvas.game-cv { display:block; margin:0 auto; border-radius:10px; background:#0a0e18; max-width:100%; touch-action:none; }
+    .tod-card { min-height:160px; border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; color:#fff; text-align:center; }
+    .tod-card.truth { background:linear-gradient(145deg,#c62828,#e53935); }
+    .tod-card.dare { background:linear-gradient(145deg,#1565c0,#1e88e5); }
+    .tod-card.shuffle { background:linear-gradient(145deg,#333,#555); }
+    .tod-type { font-size:12px; letter-spacing:2px; font-weight:800; }
+    .tod-text { font-size:17px; font-weight:800; margin-top:10px; line-height:1.35; }
+    .uno-hand { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+    .uno-card { width:46px; height:66px; border-radius:8px; border:2px solid #fff; color:#fff; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+    .uno-card.r{background:#e53935}.uno-card.y{background:#fdd835;color:#333}.uno-card.g{background:#43a047}.uno-card.b{background:#1e88e5}
+    .sl-board { display:grid; grid-template-columns:repeat(10,1fr); gap:2px; max-width:360px; margin:0 auto; }
+    .sl-cell { aspect-ratio:1; background:#1a2740; border-radius:3px; font-size:8px; color:#8aa0b8; display:flex; align-items:center; justify-content:center; position:relative; }
+    .sl-cell.snake{background:#4a1520}.sl-cell.ladder{background:#1b3a2a}
+    .sl-p1::after{content:'🔵';position:absolute;font-size:11px}.sl-p2::after{content:'🔴';position:absolute;font-size:11px}
+    .mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:320px;margin:0 auto}
+    .mem-card{aspect-ratio:1;border-radius:10px;background:#1a2740;border:1px solid rgba(255,193,7,.2);font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .ttt{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:240px;margin:0 auto}
+    .ttt div{aspect-ratio:1;background:#1a2740;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;cursor:pointer;color:#FFC107}
+    .quiz-opts{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+    .quiz-opts button{border:1px solid rgba(255,193,7,.25);background:rgba(16,24,42,.7);color:#fff;border-radius:12px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;text-align:left}
+    .c4{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;max-width:300px;margin:0 auto}
+    .c4 div{aspect-ratio:1;border-radius:50%;background:#1a2740;cursor:pointer}
+    .soon-box { text-align:center; padding:28px 16px; background:rgba(16,24,42,0.7); border-radius:16px; border:1px solid rgba(255,193,7,0.15); }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full">
+    </div></div>
+  </header>
+  <div class="page-content">
+    <div class="play-top">
+      <a href="game.html" class="g-btn sec" style="text-decoration:none;"><i class="fa-solid fa-arrow-left"></i> Katalog</a>
+      <h1 id="gameTitle">Game</h1>
+      <a href="music.html" class="g-btn sec" style="text-decoration:none;"><i class="fa-solid fa-music"></i></a>
+    </div>
+    <div id="gameArea"></div>
+  </div>
+  <nav class="bottom-nav nav-5">
+    <a href="game.html" class="nav-item active"><span class="nav-icon-wrap"><i class="fa-solid fa-gamepad"></i></span><span>Games</span></a>
+    <a href="music.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-music"></i></span><span>Music</span></a>
+    <a href="index.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="joki.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki</span></a>
+    <a href="akun.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+  <script src="games-catalog.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="music-player.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script src="protect.js"></script>
+  <script src="games-app.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    var id = new URLSearchParams(location.search).get('id') || '';
+    var cat = (window.NAILONG_GAMES_CATALOG || []).find(function(g){ return g.key === id; });
+    var title = cat ? cat.name : id;
+    document.getElementById('gameTitle').textContent = title || 'Game';
+    document.title = (title || 'Game') + ' - Nailong Digital';
+
+    // games-app exposes start via NailongGames.start(id) after we patch it
+    if (window.NailongGames && typeof NailongGames.start === 'function') {
+      NailongGames.start(id, cat);
+    } else {
+      document.getElementById('gameArea').innerHTML = '<div class="soon-box"><p style="color:#FFC107;font-weight:800;">Engine belum load</p></div>';
+    }
+  });
+  </script>
+</body>
+</html>

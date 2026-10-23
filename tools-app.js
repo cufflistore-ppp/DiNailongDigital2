@@ -312,50 +312,49 @@
 
     deployzip: function(){
       show(
-        '<p style="font-size:12px;color:#8aa0b8;margin:0 0 10px;">Upload <b>ZIP</b> atau folder file HTML. Diekstrak di browser, lalu unduh paket siap deploy / buka Netlify Drop (tanpa akun).</p>'+
-        '<input type="file" id="zipFile" class="form-input" accept=".zip,application/zip">'+
-        '<button type="button" class="btn-pesan" id="goExtract" style="width:100%;margin-top:10px;">Ekstrak &amp; Siapkan</button>'+
-        '<div id="out" style="margin-top:12px;font-size:12px;color:#cfd8dc;"></div>'+
-        '<a id="dlZip" class="btn-topup" style="display:none;text-align:center;margin-top:10px;">Unduh ZIP siap deploy</a>'+
-        '<button type="button" class="btn-pesan" id="goNetlify" style="width:100%;margin-top:8px;display:none;">Buka Netlify Drop (tanpa login)</button>'+
-        '<button type="button" class="btn-topup" id="goVercel" style="width:100%;margin-top:8px;display:none;">Buka Vercel (import)</button>'+
-        '<p style="font-size:11px;color:#6b7a90;margin-top:10px;">Netlify Drop: tarik folder hasil ekstrak → dapat link *.netlify.app tanpa daftar. Vercel butuh akun gratis untuk project permanen.</p>'
+        '<div style="font-size:12px;color:#8aa0b8;line-height:1.5;margin-bottom:12px;">'+
+        '<b style="color:#FFC107;">Request Deploy Otomatis</b><br>'+
+        '1) Isi <b>nama domain</b> yang diinginkan<br>'+
+        '2) Pilih <b>Netlify</b> atau <b>Vercel</b><br>'+
+        '3) Upload <b>ZIP</b> website kamu<br>'+
+        'Sistem ekstrak &amp; kirim ke panel admin. Jika API token terpasang, domain langsung aktif tanpa admin kerjakan manual.'+
+        '</div>'+
+        '<label>Nama domain (tanpa .vercel.app / .netlify.app)</label>'+
+        '<input type="text" id="depName" class="form-input" placeholder="contoh: toko-saya">'+
+        '<label style="margin-top:8px;display:block;">Platform</label>'+
+        '<select id="depPlat" class="form-input"><option value="netlify">Netlify (.netlify.app)</option><option value="vercel">Vercel (.vercel.app)</option></select>'+
+        '<label style="margin-top:8px;display:block;">File ZIP website</label>'+
+        '<input type="file" id="depZip" class="form-input" accept=".zip,application/zip">'+
+        '<button type="button" class="btn-pesan" id="depGo" style="width:100%;margin-top:12px;">Kirim Request Deploy</button>'+
+        '<div id="out" style="margin-top:12px;font-size:12px;color:#cfd8dc;line-height:1.5;"></div>'+
+        '<div id="depNeed" style="margin-top:14px;padding:12px;border-radius:12px;background:rgba(255,193,7,0.08);border:1px solid rgba(255,193,7,0.2);font-size:11px;color:#cfd8dc;line-height:1.55;">'+
+        '<b style="color:#FFC107;">API yang dibutuhkan (isi di deploy-config.js)</b><br>'+
+        '• <b>NETLIFY_TOKEN</b> — dari app.netlify.com → User settings → Personal access tokens<br>'+
+        '• <b>VERCEL_TOKEN</b> — dari vercel.com → Settings → Tokens<br>'+
+        'Tanpa token: request tetap masuk panel admin (ZIP bisa diunduh). Dengan token: domain langsung dikirim ke user.'+
+        '</div>'
       );
-      var lastBlob = null;
-      document.getElementById('goExtract').onclick = async function(){
-        var f = document.getElementById('zipFile').files[0];
-        if (!f) return alert('Pilih file ZIP dulu');
+      document.getElementById('depGo').onclick = async function(){
         var out = document.getElementById('out');
-        out.textContent = 'Memproses…';
+        var name = (document.getElementById('depName').value||'').trim();
+        var plat = document.getElementById('depPlat').value;
+        var file = document.getElementById('depZip').files[0];
+        if (!name) return alert('Isi nama domain');
+        if (!file) return alert('Upload ZIP');
+        if (!window.NailongDeploy) return alert('Sistem deploy belum load. Refresh halaman.');
+        out.innerHTML = '<span style="color:#FFC107">Memproses ZIP &amp; mengirim request…</span>';
         try {
-          if (typeof JSZip === 'undefined') {
-            await new Promise(function(res,rej){
-              var s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
-              s.onload=res; s.onerror=rej; document.head.appendChild(s);
-            });
-          }
-          var zip = await JSZip.loadAsync(f);
-          var names = Object.keys(zip.files).filter(function(n){ return !zip.files[n].dir; });
-          out.innerHTML = '<b style="color:#69f0ae">'+names.length+' file</b> dalam ZIP:<br>' + names.slice(0,12).map(function(n){return '• '+n;}).join('<br>') + (names.length>12?'<br>…':'');
-          // re-pack clean
-          var newZip = new JSZip();
-          for (var i=0;i<names.length;i++) {
-            var n = names[i];
-            newZip.file(n.replace(/^\/+/, ''), await zip.files[n].async('uint8array'));
-          }
-          lastBlob = await newZip.generateAsync({type:'blob'});
-          var a = document.getElementById('dlZip');
-          a.href = URL.createObjectURL(lastBlob);
-          a.download = (f.name||'site').replace(/\.zip$/i,'') + '-ready.zip';
-          a.style.display = 'block';
-          document.getElementById('goNetlify').style.display = 'block';
-          document.getElementById('goVercel').style.display = 'block';
+          var rec = await NailongDeploy.submitRequest({ name: name, platform: plat, file: file });
+          var html = '<b style="color:#69f0ae">Request terkirim</b><br>ID: '+rec.id+'<br>Nama: '+rec.name+'<br>Platform: '+rec.platform+'<br>Status: <b>'+rec.status+'</b>';
+          if (rec.domain) html += '<br>Domain: <a href="'+rec.domain+'" target="_blank" style="color:#FFC107">'+rec.domain+'</a>';
+          if (rec.error) html += '<br><span style="color:#ff8a80">'+rec.error+'</span>';
+          if (rec.status === 'pending') html += '<br><br>Menunggu auto-deploy / admin. Cek lagi nanti di Tools atau tanya admin.';
+          if (rec.status === 'live') html += '<br><br>Langsung pakai domain di atas — tidak perlu setup manual.';
+          out.innerHTML = html;
         } catch (e) {
-          out.textContent = 'Gagal: ' + (e.message||e);
+          out.innerHTML = '<span style="color:#ff8a80">Gagal: '+(e.message||e)+'</span>';
         }
       };
-      document.getElementById('goNetlify').onclick = function(){ window.open('https://app.netlify.com/drop', '_blank'); };
-      document.getElementById('goVercel').onclick = function(){ window.open('https://vercel.com/new', '_blank'); };
     },
     hostcheck: function(){
       show(

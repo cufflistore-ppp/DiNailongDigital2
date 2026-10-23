@@ -8,17 +8,22 @@
   <link rel="icon" href="nailong-digital-logo.png" type="image/png">
   <link rel="stylesheet" href="style.css">
   <style>
+    body { background: #0a0e18 !important; }
     .auth-wrap { max-width: 400px; margin: 0 auto; padding: 24px 16px 100px; }
     .auth-card {
-      background: rgba(16,24,42,0.75); border: 1px solid rgba(255,193,7,0.22);
+      background: rgba(16,24,42,0.82); border: 1px solid rgba(255,193,7,0.22);
       border-radius: 20px; padding: 28px 20px; text-align: center;
       backdrop-filter: blur(12px);
     }
-    .auth-card img.logo { width: 96px; height: auto; margin: 0 auto 14px; display: block; }
+    .auth-card img.logo {
+      width: 88px; height: auto; margin: 0 auto 14px; display: block;
+      background: transparent !important; border-radius: 0;
+      object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.35));
+    }
     .auth-card h1 { font-size: 20px; color: #fff; margin: 0 0 6px; }
     .auth-card .sub { font-size: 13px; color: #8aa0b8; margin-bottom: 20px; }
     .auth-card label { display:block; text-align:left; font-size:12px; color:#cfd8dc; margin: 10px 0 4px; font-weight:600; }
-    .auth-card .form-input { width:100%; }
+    .auth-card .form-input { width:100%; background:#0d1220 !important; color:#fff !important; }
     .btn-auth {
       width: 100%; margin-top: 14px; padding: 14px;
       background: linear-gradient(90deg,#FFC107,#FF8F00); color:#0a0e18;
@@ -34,12 +39,13 @@
     .auth-links a { color: #FFC107; font-weight: 700; text-decoration: none; }
     .divider { display:flex; align-items:center; gap:10px; margin: 16px 0; color:#6b7a90; font-size:11px; }
     .divider::before, .divider::after { content:''; flex:1; height:1px; background:rgba(255,193,7,0.2); }
+    .auth-err { color:#ff8a80; font-size:12px; margin-top:10px; min-height:18px; }
   </style>
 </head>
 <body>
   <header class="header header-logo-only">
     <div class="brand brand-centered"><div class="logo-text-wrap">
-      <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full">
+      <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full" style="background:transparent">
     </div></div>
   </header>
   <div class="auth-wrap">
@@ -56,42 +62,74 @@
       <button type="button" class="btn-auth" id="btnReg">Daftar</button>
       <div class="divider">atau</div>
       <button type="button" class="btn-google" id="btnGoogle"><i class="fa-brands fa-google" style="color:#ea4335"></i> Daftar dengan Google</button>
+      <div class="auth-err" id="err"></div>
       <div class="auth-links">Sudah punya akun? <a href="login.html">Masuk</a></div>
       <div class="auth-links"><a href="index.html">← Kembali ke beranda</a></div>
     </div>
   </div>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="global-orders.js"></script>
   <script src="auth.js"></script>
   <script src="ui-enhance.js"></script>
   <script>
-    document.getElementById('btnGoogle').onclick = async function () {
-      if (!window.VoxyyAuth) return alert('Auth belum siap');
+  (function () {
+    function showErr(m) { document.getElementById('err').textContent = m || ''; }
+    function ensureFb() {
+      if (typeof firebase === 'undefined') throw new Error('Firebase SDK belum load');
+      if (!firebase.apps.length) {
+        var cfg = (window.VoxyyOrders && window.VoxyyOrders.FIREBASE_CONFIG) || null;
+        if (!cfg) throw new Error('Config Firebase tidak ada');
+        firebase.initializeApp(cfg);
+      }
       try {
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      } catch (e) {}
+      return firebase.auth();
+    }
+    try { ensureFb(); } catch (e) { showErr(e.message); }
+
+    document.getElementById('btnGoogle').onclick = async function () {
+      showErr('');
+      try {
+        ensureFb();
+        if (!window.VoxyyAuth) throw new Error('Auth belum siap');
         var u = await VoxyyAuth.loginGoogle();
         if (u) {
           localStorage.setItem('nailong_logged_in', '1');
+          sessionStorage.removeItem('nailong_login_gate');
           location.href = 'index.html';
         }
-      } catch (e) { alert(e.message || 'Gagal'); }
+      } catch (e) { showErr(e.message || 'Gagal daftar Google'); }
     };
+
     document.getElementById('btnReg').onclick = async function () {
+      showErr('');
       var name = document.getElementById('name').value.trim();
       var email = document.getElementById('email').value.trim();
       var pass = document.getElementById('pass').value;
-      if (!email || !pass || pass.length < 6) return alert('Email & password min 6 karakter');
+      if (!email || !pass || pass.length < 6) return showErr('Email & password min 6 karakter');
       try {
-        var auth = firebase.auth();
+        var auth = ensureFb();
         var cred = await auth.createUserWithEmailAndPassword(email, pass);
         if (cred.user && name) {
-          await cred.user.updateProfile({ displayName: name });
+          try { await cred.user.updateProfile({ displayName: name }); } catch (e) {}
         }
         localStorage.setItem('nailong_logged_in', '1');
+        sessionStorage.removeItem('nailong_login_gate');
         location.href = 'index.html';
       } catch (e) {
-        alert(e.message || 'Gagal daftar');
+        var msg = e.message || 'Gagal daftar';
+        if (String(e.code || '').indexOf('email-already-in-use') >= 0)
+          msg = 'Email sudah terdaftar. Silakan login.';
+        else if (String(e.code || '').indexOf('weak-password') >= 0)
+          msg = 'Password terlalu lemah (min 6 karakter).';
+        else if (String(e.code || '').indexOf('invalid-email') >= 0)
+          msg = 'Format email tidak valid.';
+        showErr(msg);
       }
     };
+  })();
   </script>
 </body>
 </html>
