@@ -18,14 +18,25 @@
     .gc-tabs button.active { background:linear-gradient(90deg,#FFC107,#FF8F00); color:#0a0e18; border-color:transparent; }
     .gc-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
     .gc-card {
-      background:rgba(16,24,42,0.65); border:1px solid rgba(255,193,7,0.14);
-      border-radius:14px; padding:12px; text-decoration:none; display:block; color:inherit;
+      background:#121a2b; border:2px solid #2a3548;
+      border-radius:6px; padding:0; text-decoration:none; display:block; color:inherit;
+      overflow:hidden; box-shadow: 3px 3px 0 #0a0e18;
     }
-    .gc-card b { display:block; color:#fff; font-size:13px; margin-bottom:4px; }
-    .gc-card span { font-size:11px; color:#8aa0b8; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-    .gc-card .tag { display:inline-block; margin-top:8px; font-size:10px; font-weight:800; padding:3px 8px; border-radius:999px; }
-    .gc-card .tag.on { background:rgba(105,240,174,0.15); color:#69f0ae; }
-    .gc-card .tag.off { background:rgba(255,193,7,0.1); color:#FFC107; }
+    .gc-card:active { transform: translate(1px,1px); box-shadow: 2px 2px 0 #0a0e18; }
+    .gc-art {
+      height:88px; display:block; overflow:hidden;
+      background:#0d1420; border-bottom:2px solid #2a3548;
+    }
+    .gc-art img {
+      width:100%; height:100%; object-fit:cover; display:block;
+      image-rendering: auto;
+    }
+    .gc-card .body { padding:10px; }
+    .gc-card b { display:block; color:#fff; font-size:12px; margin-bottom:4px; font-family: ui-monospace, monospace; }
+    .gc-card span { font-size:10px; color:#8aa0b8; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .gc-card .tag { display:inline-block; margin-top:8px; font-size:9px; font-weight:800; padding:3px 6px; border-radius:3px; font-family: ui-monospace, monospace; }
+    .gc-card .tag.on { background:#1b3a2a; color:#69f0ae; border:1px solid #2e7d4f; }
+    .gc-card .tag.off { background:#2a2410; color:#FFC107; border:1px solid #6b5a1a; }
     .gc-note { font-size:12px; color:#8aa0b8; margin-bottom:12px; line-height:1.45; }
     .gc-count { font-size:12px; color:#FFC107; margin-bottom:10px; font-weight:700; }
   </style>
@@ -60,6 +71,7 @@
     <div class="nav-indicator" id="navIndicator"></div>
   </nav>
   <script src="games-catalog.js"></script>
+  <script src="games-covers.js"></script>
   <script src="header-bar.js"></script>
   <script src="nav.js"></script>
   <script src="ui-enhance.js"></script>
@@ -79,9 +91,10 @@
       document.getElementById('cnt').textContent = list.length + ' game · ' + all.filter(function(x){return x.playable;}).length + ' bisa dimainkan';
       document.getElementById('grid').innerHTML = list.slice(0,120).map(function(g){
         var href = 'play.html?id=' + encodeURIComponent(g.key);
-        return '<a class="gc-card" href="'+href+'"><b>'+g.name+'</b><span>'+(g.how||'')+'</span>'+
-          '<span class="tag '+(g.playable?'on':'off')+'">'+(g.playable?'Main':'Cara main')+'</span></a>';
-      }).join('') + (list.length>120?'<p style="grid-column:1/-1;color:#8aa0b8;font-size:12px;">Menampilkan 120 pertama. Pakai pencarian untuk lebih spesifik.</p>':'');
+        var art = (window.NailongGameCovers && NailongGameCovers.coverFor(g.key, g.name)) || '';
+        return '<a class="gc-card" href="'+href+'"><div class="gc-art"><img src="'+art+'" alt=""></div><div class="body"><b>'+g.name+'</b><span>'+(g.how||'')+'</span>'+
+          '<span class="tag '+(g.playable?'on':'off')+'">'+(g.playable?'▶ MAIN':'📖 CARA')+'</span></div></a>';
+      }).join('') + (list.length>120?'<p style="grid-column:1/-1;color:#8aa0b8;font-size:12px;">Menampilkan 120 pertama. Pakai pencarian.</p>':'');
     }
     document.querySelectorAll('.gc-tabs button').forEach(function(b){
       b.onclick=function(){
