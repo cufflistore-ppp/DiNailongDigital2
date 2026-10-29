@@ -304,6 +304,8 @@
       <button class="admin-tab" data-tab="akunjual" onclick="switchTab('akunjual')">
         <i class="fa-solid fa-gamepad"></i> Akun Jual
       </button>
+      <button class="admin-tab" data-tab="withdraw" onclick="switchTab('withdraw')"><i class="fa-solid fa-money-bill-transfer"></i> Tarik DANA</button>
+      <button class="admin-tab" data-tab="tokoverify" onclick="switchTab('tokoverify')"><i class="fa-solid fa-store"></i> Verifikasi Toko</button>
       <button class="admin-tab" data-tab="saldo" onclick="switchTab('saldo')">
         <i class="fa-solid fa-wallet"></i> Saldo User
       </button>
@@ -670,5 +672,81 @@ document.addEventListener('DOMContentLoaded', function(){
   <script src="deploy-config.js"></script>
   <script src="deploy-system.js"></script>
   <script src="admin-deploy.js"></script>
+
+    <div class="admin-panel" id="panel-withdraw" style="display:none;">
+      <h3 style="color:#FFC107;">Pengajuan tarik DANA</h3>
+      <p style="font-size:12px;color:#8aa0b8;">Fee 4% · minimal 2.000 · hanya DANA</p>
+      <div id="wdList"><div class="nd-loading"><span></span><span></span></div></div>
+    </div>
+    <div class="admin-panel" id="panel-tokoverify" style="display:none;">
+      <h3 style="color:#FFC107;">Verifikasi toko</h3>
+      <p style="font-size:12px;color:#8aa0b8;">Email · nama toko · foto wajah/KTP/KK</p>
+      <div id="tvList"><div class="nd-loading"><span></span><span></span></div></div>
+    </div>
+    <script>
+    (function(){
+      function loadWd(){
+        var box = document.getElementById('wdList');
+        if (!box) return;
+        var list = [];
+        try { list = JSON.parse(localStorage.getItem('nd_withdraw_requests')||'[]'); } catch(e){}
+        if (!list.length) { box.innerHTML = '<p style="color:#8aa0b8">Belum ada pengajuan (local). Cek juga Firebase withdraw_requests.</p>'; return; }
+        box.innerHTML = list.map(function(r){
+          return '<div class="api-form-card" style="margin-bottom:10px;"><b style="color:#fff">'+r.id+'</b>'+
+            '<div style="font-size:12px;color:#cfd8dc;margin-top:6px;">UID: '+r.uid+'<br>DANA: <b style="color:#FFC107">'+r.dana+'</b><br>'+
+            'Jumlah: Rp '+(r.amount||0).toLocaleString('id-ID')+' · Fee: Rp '+(r.fee||0).toLocaleString('id-ID')+' · Net: Rp '+(r.net||0).toLocaleString('id-ID')+
+            '<br>Status: '+r.status+'</div>'+
+            '<button type="button" class="btn-topup" data-id="'+r.id+'" style="margin-top:8px;">Tandai selesai</button></div>';
+        }).join('');
+        box.querySelectorAll('button[data-id]').forEach(function(b){
+          b.onclick = function(){
+            var id = b.getAttribute('data-id');
+            list = list.map(function(r){ if(r.id===id) r.status='done'; return r; });
+            localStorage.setItem('nd_withdraw_requests', JSON.stringify(list));
+            loadWd();
+          };
+        });
+      }
+      function loadTv(){
+        var box = document.getElementById('tvList');
+        if (!box) return;
+        var stores = {};
+        try { stores = JSON.parse(localStorage.getItem('nd_stores')||'{}'); } catch(e){}
+        // also try NailongToko keys
+        try {
+          for (var i=0;i<localStorage.length;i++){
+            var k = localStorage.key(i);
+            if (k && k.indexOf('store')>=0) { /* skip */ }
+          }
+        } catch(e){}
+        var arr = Object.keys(stores).map(function(id){ return stores[id]; }).filter(function(s){ return s && (s.status==='pending_verify' || s.verify); });
+        if (!arr.length) {
+          box.innerHTML = '<p style="color:#8aa0b8">Belum ada toko pending di localStorage. Toko Firebase: stores/ dengan status pending_verify.</p>';
+          return;
+        }
+        box.innerHTML = arr.map(function(s){
+          var v = s.verify||{};
+          return '<div class="api-form-card" style="margin-bottom:12px;">'+
+            '<b style="color:#fff">'+((s.name)||'-')+'</b> <code style="color:#FFC107">'+s.storeId+'</code>'+
+            '<div style="font-size:12px;color:#cfd8dc;margin:6px 0;">Owner: '+(s.ownerName||s.ownerUid||'-')+' · status: '+s.status+'</div>'+
+            (v.facePhoto?'<img src="'+v.facePhoto+'" style="max-width:100px;border-radius:8px;margin:4px;">':'')+
+            (v.ktpPhoto?'<img src="'+v.ktpPhoto+'" style="max-width:140px;border-radius:8px;margin:4px;">':'')+
+            (v.kkPhoto?'<img src="'+v.kkPhoto+'" style="max-width:140px;border-radius:8px;margin:4px;">':'')+
+            '<div><button type="button" class="btn-pesan" data-approve="'+s.storeId+'" style="margin-top:8px;">Setujui</button> '+
+            '<button type="button" class="btn-topup" data-reject="'+s.storeId+'">Tolak</button></div></div>';
+        }).join('');
+      }
+      var _sw = window.switchTab;
+      window.switchTab = function(tab){
+        if (_sw) _sw(tab);
+        document.querySelectorAll('.admin-panel').forEach(function(p){ p.style.display='none'; });
+        var el = document.getElementById('panel-'+tab);
+        if (el) el.style.display='block';
+        if (tab==='withdraw') loadWd();
+        if (tab==='tokoverify') loadTv();
+      };
+    })();
+    </script>
+
 </body>
 </html>

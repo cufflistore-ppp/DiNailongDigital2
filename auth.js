@@ -218,12 +218,42 @@
     return auth.onAuthStateChanged(fn);
   }
 
+
+  async function loginEmail(email, password) {
+    var auth = ensureAuth();
+    if (!auth) throw new Error('Auth belum siap. Coba lagi.');
+    var cred = await auth.signInWithEmailAndPassword(email, password);
+    try { localStorage.setItem('nailong_logged_in', '1'); } catch (e) {}
+    return cred.user;
+  }
+
+  async function registerEmail(email, password, displayName) {
+    var auth = ensureAuth();
+    if (!auth) throw new Error('Auth belum siap. Coba lagi.');
+    var cred = await auth.createUserWithEmailAndPassword(email, password);
+    if (displayName && cred.user) {
+      try { await cred.user.updateProfile({ displayName: displayName }); } catch (e) {}
+    }
+    try { localStorage.setItem('nailong_logged_in', '1'); } catch (e) {}
+    return cred.user;
+  }
+
+  async function resetPassword(email) {
+    var auth = ensureAuth();
+    if (!auth) throw new Error('Auth belum siap');
+    await auth.sendPasswordResetEmail(email);
+  }
+
   window.VoxyyAuth = {
     getCurrentUser: currentUser,
     ensureAuth: ensureAuth,
     currentUser: currentUser,
     loginGoogle: loginGoogle,
+    loginEmail: loginEmail,
+    registerEmail: registerEmail,
+    resetPassword: resetPassword,
     logout: logout,
+    onAuth: onAuthChange,
     onAuthChange: onAuthChange,
     handleRedirectResult: handleRedirectResult,
     getClientId: getClientId,

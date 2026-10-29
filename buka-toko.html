@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
 </head>
 <body>
   <header class="header header-logo-only">
@@ -19,7 +20,7 @@
   <div class="page-content">
     <div class="badge">MARKETPLACE</div>
     <h2 class="page-title"><i class="fa-solid fa-store"></i> Buka Toko</h2>
-    <p class="page-desc">Semua akun terdaftar bisa buka toko <b>tanpa identitas</b>. Nama toko bebas. Produk publik (lintas akun/device). Harga jual <b>utuh tanpa potongan</b>.</p>
+    <p class="page-desc">Buka toko standar: verifikasi <b>foto wajah + KTP</b> (tanpa CV / surat usaha). Data terikat akun agar bisa dilacak jika ada laporan penipuan.</p>
 
     <div id="tokoPanel">
       <div class="nd-loading" style="padding:20px;justify-content:center;"><span></span><span></span></div>
@@ -59,7 +60,10 @@
           '<label style="margin-top:10px;">Foto logo toko</label>' +
           '<div class="upload-row"><input type="file" id="stLogoFile" accept="image/*"><img id="stLogoPrev" class="preview-sm" style="display:none;"></div>' +
           '<label style="margin-top:10px;">Banner (latar belakang logo)</label>' +
-          '<div class="upload-row"><input type="file" id="stBannerFile" accept="image/*"><img id="stBannerPrev" class="preview-sm" style="display:none;width:80px;height:40px;"></div>' +
+          '<div class="upload-row"><input type="file" id="stBannerFile" accept="image/*,video/*"><img id="stBannerPrev" class="preview-sm" style="display:none;width:80px;height:40px;"></div>' +
+          '<label style="margin-top:10px;display:block;font-size:12px;color:var(--nd-muted,#8aa0b8);font-weight:700;">Galeri toko (foto / video)</label>' +
+          '<input type="file" id="stGalleryFile" accept="image/*,video/*" multiple>' +
+          '<p style="font-size:11px;color:var(--nd-muted,#8aa0b8);margin:4px 0 0;">Bisa beberapa file. Video pendek lebih baik (max ~2MB/item disarankan).</p>' +
           '<label style="margin-top:10px;">Nomor WhatsApp toko (untuk chat pembeli)</label>' +
           '<input type="tel" id="stWa" class="form-input" placeholder="628xxxxxxxxxx">' +
           '<label style="margin-top:10px;">Link (opsional — sosial / website)</label>' +
@@ -68,6 +72,7 @@
           '</div>';
         window._stLogoData = '';
         window._stBannerData = '';
+        window._stGallery = [];
         function readFile(input, cb, prevId) {
           input.onchange = function () {
             var f = input.files && input.files[0];
@@ -84,17 +89,38 @@
         }
         readFile(document.getElementById('stLogoFile'), function (d) { window._stLogoData = d; }, 'stLogoPrev');
         readFile(document.getElementById('stBannerFile'), function (d) { window._stBannerData = d; }, 'stBannerPrev');
+        var gal = document.getElementById('stGalleryFile');
+        if (gal) gal.onchange = function () {
+          window._stGallery = [];
+          var files = Array.prototype.slice.call(gal.files || []).slice(0, 8);
+          var left = files.length;
+          if (!left) return;
+          files.forEach(function (f) {
+            if (f.size > 2.5e6) { console.warn('skip large', f.name); left--; return; }
+            var r = new FileReader();
+            r.onload = function () {
+              window._stGallery.push({ type: f.type.indexOf('video')===0 ? 'video' : 'image', data: r.result, name: f.name });
+              left--;
+            };
+            r.readAsDataURL(f);
+          });
+        };
+        readFile(document.getElementById('stFaceFile'), function (d) { window._stFaceData = d; }, 'stFacePrev');
+        readFile(document.getElementById('stKtpFile'), function (d) { window._stKtpData = d; }, 'stKtpPrev');
         document.getElementById('btnCreate').onclick = async function () {
           var res = await NailongToko.createStore({
             name: document.getElementById('stName').value,
             desc: document.getElementById('stDesc').value,
             logo: window._stLogoData || '',
             banner: window._stBannerData || '',
+            gallery: window._stGallery || [],
             link: document.getElementById('stLink').value,
-            wa: document.getElementById('stWa').value
+            wa: document.getElementById('stWa').value,
+            facePhoto: window._stFaceData || '',
+            ktpPhoto: window._stKtpData || ''
           });
           if (!res.ok) { alert(res.error); return; }
-          alert('Toko dibuat!\nID: ' + res.store.storeId);
+          alert('Toko dikirim!\nStatus: menunggu verifikasi admin.\nID: ' + res.store.storeId);
           render();
         };
         return;
@@ -103,14 +129,25 @@
       var avg = NailongToko.storeAvgRating(my);
       var bal = NailongToko.getSellerBalance(my.storeId);
       var prods = await NailongToko.getProductsByStore(my.storeId);
-      var statusLabel = my.status === 'blocked' ? '⛔ Diblokir' : (my.status === 'review' ? '🔍 Pemeriksaan' : '✅ Aktif');
+      var statusLabel = my.status === 'blocked' ? '⛔ Diblokir' : (my.status === 'pending_verify' ? '⏳ Verifikasi' : (my.status === 'review' ? '🔍 Pemeriksaan' : '✅ Aktif'));
+      var galHtml = '';
+      if (my.gallery && my.gallery.length) {
+        galHtml = '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0;">' +
+          my.gallery.map(function(g){
+            if (g.type==='video') return '<video src="'+g.data+'" controls playsinline style="width:100%;border-radius:12px;max-height:160px;background:#000;"></video>';
+            return '<img src="'+g.data+'" style="width:100%;border-radius:12px;aspect-ratio:1;object-fit:cover;">';
+          }).join('') + '</div>';
+      }
+      galHtml += '<label style="font-size:12px;color:var(--nd-muted,#8aa0b8);font-weight:700;">Tambah foto/video galeri</label>' +
+        '<input type="file" id="stAddGal" accept="image/*,video/*" multiple>' +
+        '<button type="button" class="btn-topup" id="btnAddGal" style="width:100%;margin-top:8px;">Simpan ke galeri</button>';
 
       var bannerHtml = '<div class="toko-banner-wrap">' +
         (my.banner ? '<img class="toko-banner" src="' + escapeH(my.banner) + '" alt="">' : '<div class="toko-banner" style="width:100%;height:100%;background:linear-gradient(135deg,#1a2740,#0d1220);"></div>') +
         (my.logo ? '<img class="toko-banner-logo" src="' + escapeH(my.logo) + '" alt="">' : '<div class="toko-banner-logo ph">' + escapeH((my.name||'T').charAt(0)) + '</div>') +
         '</div>';
       el.innerHTML =
-        '<div class="api-form-card">' + bannerHtml +
+        '<div class="api-form-card">' + bannerHtml + galHtml +
         '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">' +
         '<div><h3 style="margin:0;color:#fff;font-size:16px;">' + escapeH(my.name) + '</h3>' +
         '<p style="margin:4px 0 0;font-size:11px;color:#8aa0b8;">ID: <code style="color:#FFC107;">' + my.storeId + '</code></p>' +
@@ -173,6 +210,24 @@
         });
         if (!res.ok) { alert(res.error); return; }
         alert('Produk ditambahkan');
+        render();
+      };
+      var btnGal = document.getElementById('btnAddGal');
+      if (btnGal) btnGal.onclick = async function () {
+        var inp = document.getElementById('stAddGal');
+        var files = inp && inp.files ? Array.prototype.slice.call(inp.files).slice(0, 6) : [];
+        if (!files.length) { alert('Pilih foto/video dulu'); return; }
+        var gal = (my.gallery || []).slice();
+        for (var i = 0; i < files.length; i++) {
+          var f = files[i];
+          if (f.size > 2.5e6) { alert('Lewati '+f.name+' (terlalu besar)'); continue; }
+          var data = await new Promise(function(res,rej){ var r=new FileReader(); r.onload=function(){res(r.result);}; r.onerror=rej; r.readAsDataURL(f); });
+          gal.push({ type: f.type.indexOf('video')===0 ? 'video' : 'image', data: data, name: f.name });
+        }
+        gal = gal.slice(-12);
+        var up = await NailongToko.updateStore(my.storeId, { gallery: gal });
+        if (!up.ok) { alert(up.error || 'Gagal'); return; }
+        alert('Galeri disimpan');
         render();
       };
 

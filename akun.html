@@ -21,6 +21,7 @@
   <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
   <link rel="apple-touch-icon" href="nd-logo-gold.jpg">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
   <style>
     .akun-page {
       padding: 12px 14px 110px;
@@ -363,7 +364,7 @@
     </style>
 </head>
 <body>
-  <header class="header">
+  <header class="header header-logo-only">
     <div class="brand brand-centered">
       <div class="logo-text-wrap">
         <img src="nd-logo-gold.jpg" alt="Nailong Digital" class="logo-full"></div>
@@ -374,6 +375,53 @@
 
   <div class="akun-page">
     <div class="akun-page-title">Akun</div>
+    <div class="api-form-card" id="ndLocaleBox" style="margin-bottom:14px;">
+      <h3 style="margin:0 0 8px;font-size:14px;color:var(--nd-accent,#FFC107);"><i class="fa-solid fa-globe"></i> Negara &amp; agama</h3>
+      <label style="font-size:12px;color:#8aa0b8;">Cari negara</label>
+      <input type="text" id="akunCountrySearch" class="form-input" placeholder="Cari negara…">
+      <input type="hidden" id="akunCountryCode" value="ID">
+      <label style="font-size:12px;color:#8aa0b8;margin-top:8px;display:block;">Agama</label>
+      <select id="akunReligion" class="form-input">
+        <option value="islam">Islam</option>
+        <option value="kristen">Kristen</option>
+        <option value="katolik">Katolik</option>
+        <option value="hindu">Hindu</option>
+        <option value="buddha">Buddha</option>
+        <option value="konghucu">Konghucu</option>
+        <option value="lain">Lainnya</option>
+      </select>
+      <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:#cfd8dc;">
+        <input type="checkbox" id="akunRamadan"> Mode Ramadan (pengingat sahur / berbuka)
+      </label>
+      <button type="button" class="btn-pesan" id="btnSaveLocale" style="width:100%;margin-top:10px;">Simpan</button>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      if (!window.NDLocale) return;
+      var p = NDLocale.load();
+      var c = NDLocale.countryOf(p.country||'ID');
+      document.getElementById('akunCountryCode').value = c.code;
+      document.getElementById('akunCountrySearch').value = c.flag+' '+c.name;
+      document.getElementById('akunReligion').value = p.religion||'islam';
+      document.getElementById('akunRamadan').checked = !!p.ramadan;
+      document.getElementById('btnSaveLocale').onclick = function(){
+        NDLocale.saveProfile({
+          country: document.getElementById('akunCountryCode').value,
+          religion: document.getElementById('akunReligion').value,
+          ramadan: document.getElementById('akunRamadan').checked
+        });
+        alert('Profil negara & agama disimpan');
+        NDLocale.showNudgeBanner();
+      };
+      var inp = document.getElementById('akunCountrySearch');
+      inp.addEventListener('change', function(){
+        var q = inp.value.toLowerCase();
+        var hit = (NDLocale.COUNTRIES||[]).find(function(x){ return x.name.toLowerCase().indexOf(q)>=0||x.code.toLowerCase()===q; });
+        if (hit) { document.getElementById('akunCountryCode').value = hit.code; inp.value = hit.flag+' '+hit.name; }
+      });
+    });
+    </script>
+    <p style="margin:0 0 12px;"><a href="tema.html" class="theme-link"><i class="fa-solid fa-palette"></i> Tema &amp; warna</a> · <a href="buka-toko.html" class="theme-link">Toko</a></p>
     <div class="akun-page-sub" id="pageSub">Kelola profil dan akses layanan Nailong Digital.</div>
 
     <!-- ===== GUEST ===== -->
@@ -692,5 +740,6 @@
   })();
   </script>
   <script src="protect.js"></script>
+<script src="locale.js"></script>
 </body>
 </html>
