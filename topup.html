@@ -21,6 +21,7 @@
   <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
   <link rel="apple-touch-icon" href="nd-logo-gold.jpg">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
 </head>
 <body>
   <header class="header header-logo-only">
@@ -78,23 +79,66 @@
     </div>
   
     <div class="api-form-card" style="margin-top:16px;">
-      <h3 style="font-size:15px;margin:0 0 8px;color:#FFC107;"><i class="fa-solid fa-money-bill-transfer"></i> Tarik saldo</h3>
+      <h3 style="font-size:15px;margin:0 0 8px;color:#FFC107;"><i class="fa-solid fa-money-bill-transfer"></i> Tarik saldo (DANA saja)</h3>
       <p style="font-size:13px;color:#cfd8dc;line-height:1.5;margin:0 0 12px;">
-        Mau tarik saldo? Langsung <b>PM admin</b> via WhatsApp / Telegram / chat website.
-        Admin cek pengeluaran akun dulu (biar tidak ada klaim bohong).
+        Penarikan <b>hanya ke e-wallet DANA</b>. Minimal <b>Rp 2.000</b>.
+        Biaya admin <b>4%</b> dipotong dari jumlah penarikan. Request masuk panel admin untuk diproses.
       </p>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <a href="https://wa.me/6285124697215?text=Halo%20admin%2C%20saya%20mau%20tarik%20saldo" target="_blank" rel="noopener" class="btn-pesan" style="text-align:center;">
-          <i class="fa-brands fa-whatsapp"></i> WA Admin
-        </a>
-        <a href="https://t.me/" target="_blank" rel="noopener" class="btn-topup" style="text-align:center;display:block;">
-          <i class="fa-brands fa-telegram"></i> Telegram Admin
-        </a>
-        <a href="admin-chat.html" class="btn-topup" style="text-align:center;display:block;">
-          <i class="fa-solid fa-comments"></i> Chat di Website
-        </a>
-      </div>
+      <label style="font-size:12px;color:#8aa0b8;">Nomor DANA</label>
+      <input type="text" id="wdDana" class="form-input" placeholder="08xxxxxxxxxx" inputmode="numeric">
+      <label style="font-size:12px;color:#8aa0b8;margin-top:8px;display:block;">Jumlah penarikan (Rp)</label>
+      <input type="number" id="wdAmt" class="form-input" placeholder="Minimal 2000" min="2000" step="100">
+      <p id="wdFeeHint" style="font-size:12px;color:#8aa0b8;margin:8px 0;">Biaya 4% · kamu terima: —</p>
+      <button type="button" class="btn-pesan" id="btnWithdraw" style="width:100%;margin-top:8px;">
+        <i class="fa-solid fa-paper-plane"></i> Ajukan penarikan DANA
+      </button>
     </div>
+    <script>
+    (function(){
+      function feeCalc(){
+        var n = parseInt(document.getElementById('wdAmt').value,10)||0;
+        var fee = Math.ceil(n * 0.04);
+        var net = Math.max(0, n - fee);
+        document.getElementById('wdFeeHint').textContent = n>=2000
+          ? ('Biaya 4% = Rp '+fee.toLocaleString('id-ID')+' · kamu terima ± Rp '+net.toLocaleString('id-ID'))
+          : 'Minimal penarikan Rp 2.000';
+      }
+      document.getElementById('wdAmt').oninput = feeCalc;
+      document.getElementById('btnWithdraw').onclick = function(){
+        var dana = (document.getElementById('wdDana').value||'').replace(/\D/g,'');
+        var amt = parseInt(document.getElementById('wdAmt').value,10)||0;
+        if (dana.length < 10) { alert('Nomor DANA tidak valid'); return; }
+        if (amt < 2000) { alert('Minimal penarikan Rp 2.000'); return; }
+        var fee = Math.ceil(amt * 0.04);
+        var net = amt - fee;
+        var uid = 'guest';
+        try {
+          if (window.VoxyyAuth && VoxyyAuth.getCurrentUser()) uid = VoxyyAuth.getCurrentUser().uid;
+        } catch(e){}
+        var req = {
+          id: 'WD-'+Date.now(),
+          uid: uid,
+          dana: dana,
+          amount: amt,
+          fee: fee,
+          net: net,
+          status: 'pending',
+          createdAt: Date.now()
+        };
+        try {
+          var list = JSON.parse(localStorage.getItem('nd_withdraw_requests')||'[]');
+          list.unshift(req);
+          localStorage.setItem('nd_withdraw_requests', JSON.stringify(list.slice(0,100)));
+        } catch(e){}
+        try {
+          if (firebase && firebase.database && firebase.auth && firebase.auth().currentUser) {
+            firebase.database().ref('withdraw_requests/'+req.id).set(req);
+          }
+        } catch(e2){}
+        alert('Pengajuan terkirim ke admin.\nJumlah: Rp '+amt.toLocaleString('id-ID')+'\nBiaya 4%: Rp '+fee.toLocaleString('id-ID')+'\nDiterima: Rp '+net.toLocaleString('id-ID'));
+      };
+    })();
+    </script>
 
   </div>
 

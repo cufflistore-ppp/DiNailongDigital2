@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" href="nailong-digital-logo.png" type="image/png">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
   <style>
     .gc-search { display:flex; gap:8px; margin-bottom:12px; }
     .gc-search input { flex:1; }
@@ -52,9 +53,7 @@
     <h2 class="page-title"><i class="fa-solid fa-gamepad"></i> Nailong Games</h2>
     <p class="gc-note">Setiap game buka di <b>halaman sendiri</b> (tidak dicampur). Yang bertanda <b style="color:#69f0ae">Main</b> langsung bisa dimainkan. Lainnya menampilkan cara main (siap dikembangkan).</p>
     <div class="gc-tabs">
-      <button type="button" class="active" data-f="all">Semua</button>
-      <button type="button" data-f="playable">Bisa main</button>
-      <button type="button" data-f="catalog">Katalog</button>
+      <button type="button" class="active" data-f="playable">Bisa dimainkan</button>
     </div>
     <div class="gc-search">
       <input type="text" id="q" class="form-input" placeholder="Cari nama game...">
@@ -79,7 +78,7 @@
   <script>
   (function(){
     var all = window.NAILONG_GAMES_CATALOG || [];
-    var filter = 'all';
+    var filter = 'playable';
     function render(){
       var q = (document.getElementById('q').value||'').toLowerCase().trim();
       var list = all.filter(function(g){

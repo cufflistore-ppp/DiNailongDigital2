@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Canvas Tools - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <script src="canvas-api.js"></script>
+  <style>
+    .tc-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    .tc-card {
+      background:rgba(16,24,42,0.7); border:1px solid rgba(255,193,7,0.15);
+      border-radius:14px; padding:14px; cursor:pointer; text-align:center;
+    }
+    .tc-card i { font-size:22px; color:var(--nd-accent,#FFC107); display:block; margin-bottom:6px; }
+    .tc-card b { font-size:12px; color:#fff; display:block; }
+    .tc-card small { font-size:10px; color:#8aa0b8; }
+    .tc-panel { display:none; margin-top:12px; }
+    .tc-panel.active { display:block; }
+    .tc-panel label { display:block; font-size:11px; color:#8aa0b8; margin:8px 0 4px; font-weight:700; }
+    .tc-panel canvas {
+      width:100%; max-width:360px; display:block; margin:12px auto;
+      border-radius:12px; background:#111; touch-action:manipulation;
+    }
+    .tc-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+    .warn { font-size:11px; color:#ffab91; line-height:1.4; margin:8px 0; padding:8px; border-radius:10px; background:rgba(255,80,40,0.08); border:1px solid rgba(255,80,40,0.2); }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nailong-digital-logo.png" alt="Nailong" class="logo-full">
+    </div></div>
+  </header>
+  <div class="page-content">
+    <div class="badge">CANVAS TOOLS</div>
+    <h2 class="page-title"><i class="fa-solid fa-image"></i> Generator Gambar</h2>
+    <p class="page-desc">Template demo/parodi pakai Canvas API. Hasil ber-watermark. Bukan untuk penipuan.</p>
+    <p style="margin-bottom:10px;"><a href="tools.html" class="theme-link">← Semua tools</a></p>
+
+    <div class="tc-grid" id="menu">
+      <div class="tc-card" data-t="ovo"><i class="fa-solid fa-wallet"></i><b>OVO Demo</b><small>Ganti nominal</small></div>
+      <div class="tc-card" data-t="dana"><i class="fa-solid fa-wallet"></i><b>DANA Demo</b><small>Ganti nominal</small></div>
+      <div class="tc-card" data-t="sertifikat"><i class="fa-solid fa-certificate"></i><b>Sertifikat Meme</b><small>Ganti nama</small></div>
+      <div class="tc-card" data-t="wa"><i class="fa-brands fa-whatsapp"></i><b>Chat WA Mock</b><small>Jam, teks, operator</small></div>
+      <div class="tc-card" data-t="ff"><i class="fa-solid fa-gamepad"></i><b>FF Rank Card</b><small>Nama + rank</small></div>
+      <div class="tc-card" data-t="ml"><i class="fa-solid fa-shield"></i><b>ML Rank Card</b><small>Nama + rank</small></div>
+      <div class="tc-card" data-t="quote"><i class="fa-solid fa-quote-left"></i><b>Quote Image</b><small>Teks + penulis</small></div>
+      <div class="tc-card" data-t="ssweb"><i class="fa-solid fa-camera"></i><b>SS Web</b><small>Screenshot URL</small></div>
+      <div class="tc-card" data-t="preset"><i class="fa-solid fa-link"></i><b>Ambil Preset Link</b><small>Template dari URL</small></div>
+      <div class="tc-card" data-t="tiktok"><i class="fa-brands fa-tiktok"></i><b>Chat Style</b><small>Foto + chat</small></div>
+      <div class="tc-card" data-t="ktp"><i class="fa-solid fa-id-card"></i><b>KTP Parodi</b><small>DEMO · bukan resmi</small></div>
+    </div>
+
+    <div class="api-form-card tc-panel" id="panel">
+      <button type="button" class="g-btn sec" id="back" style="margin-bottom:10px;border:1px solid rgba(255,193,7,.3);background:rgba(255,193,7,.12);color:#FFC107;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;">← Kembali</button>
+      <div id="fields"></div>
+      <canvas id="cv" width="720" height="1280"></canvas>
+      <div class="tc-actions">
+        <button type="button" class="btn-pesan" id="btnGen" style="flex:1;">Generate</button>
+        <button type="button" class="btn-topup" id="btnDl" style="flex:1;">Download PNG</button>
+      </div>
+      <p class="warn">Output bertanda DEMO/PARODI. Dilarang dipakai menipu, memalsukan bukti transfer, atau dokumen resmi.</p>
+    </div>
+  </div>
+  <nav class="bottom-nav nav-5">
+    <a href="tools.html" class="nav-item active"><span class="nav-icon-wrap"><i class="fa-solid fa-screwdriver-wrench"></i></span><span>Tools</span></a>
+    <a href="game.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-gamepad"></i></span><span>Game</span></a>
+    <a href="index.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="youtube.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-brands fa-youtube"></i></span><span>YT</span></a>
+    <a href="akun.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script src="tools-canvas-app.js"></script>
+</body>
+</html>

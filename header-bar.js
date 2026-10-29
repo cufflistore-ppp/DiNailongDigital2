@@ -50,7 +50,7 @@
       drawer.className = 'side-drawer';
       drawer.innerHTML =
         '<div class="side-drawer-head">' +
-          '<div><div class="side-title">Nailong Menu</div><div class="side-sub">Pilih layanan</div></div>' +
+          '<div><div class="side-title">Menu Nailong</div><div class="side-sub">Semua halaman & layanan</div></div>' +
           '<button type="button" class="side-close" id="sideClose">&times;</button>' +
         '</div>' +
 
@@ -62,9 +62,13 @@
         '<a href="baca.html"><i class="fa-solid fa-book-open"></i><span>Baca / Anime</span></a>' +
         '<a href="music.html"><i class="fa-solid fa-music"></i><span>Music</span></a>' +
         '<a href="game.html"><i class="fa-solid fa-gamepad"></i><span>Game</span></a>' +
+        '<a href="youtube.html"><i class="fa-brands fa-youtube"></i><span>YouTube</span></a>' +
+        '<a href="tema.html"><i class="fa-solid fa-palette"></i><span>Tema / Warna</span></a>' +
+        '<a href="tools-canvas.html"><i class="fa-solid fa-image"></i><span>Canvas Tools</span></a>' +
 
         '<div class="side-section">LAYANAN BOT</div>' +
         '<a href="botwa.html"><i class="fa-brands fa-whatsapp"></i><span>Sewa Bot (JPM / Jaga)</span></a>' +
+        '<a href="badak-wa.html"><i class="fa-solid fa-bolt"></i><span>Badak WA</span></a>' +
         '<a href="push-kontak.html"><i class="fa-solid fa-paper-plane"></i><span>Push Kontak Otomatis</span></a>' +
         '<a href="joki.html"><i class="fa-solid fa-shield-halved"></i><span>Joki Kontak</span></a>' +
 

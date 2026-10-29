@@ -3019,14 +3019,13 @@ body:not(.has-video-bg) {
 }
 
 
-/* FORCE DARK VIDEO BG — jangan putih */
+/* Tema akun mengontrol warna dasar — video hanya aksen tipis */
 html, body {
-  background: #0a0e18 !important;
+  background: var(--nd-bg, #0c0f14) !important;
   min-height: 100%;
+  color: var(--nd-text, #e8eaed);
 }
-body.has-video-bg,
-body.has-video-bg .page-content,
-.page-content {
+body.has-video-bg .page-content {
   background: transparent !important;
 }
 .bg-video-wrap {
@@ -3035,11 +3034,13 @@ body.has-video-bg .page-content,
 }
 .bg-video-wrap video {
   width: 100%; height: 100%; object-fit: cover;
-  filter: brightness(0.45) saturate(1.05);
+  filter: brightness(0.28) saturate(0.85);
+  opacity: 0.55;
 }
 .bg-video-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(8,12,22,0.55) 0%, rgba(8,12,22,0.75) 50%, rgba(8,12,22,0.9) 100%);
+  background: linear-gradient(180deg, var(--nd-bg, #0c0f14) 0%, color-mix(in srgb, var(--nd-bg,#0c0f14) 75%, transparent) 40%, var(--nd-bg, #0c0f14) 100%);
+  opacity: 0.92;
 }
 
 /* Sembunyikan nailong run */
@@ -3189,3 +3190,328 @@ body { padding-bottom: 88px !important; }
 .nav-item.active .nav-icon-wrap,
 .nav-item.active span { color: var(--nd-accent, #d4a017) !important; }
 .nav-indicator { background: var(--nd-accent, #d4a017) !important; }
+
+
+/* ===== UI/UX cohesive (theme-aware) ===== */
+body {
+  background-color: var(--nd-bg, #0c0f14) !important;
+  color: var(--nd-text, #e8eaed);
+}
+.page-content, .api-form-card, .saldo-card, .info-box,
+.produk-section, .menu-item, .gc-card, .tool-card, .tc-card {
+  /* cards ikut tema */
+}
+.api-form-card, .saldo-card, .info-box {
+  background: var(--nd-card, rgba(16,24,42,0.72)) !important;
+  border-color: rgba(255,255,255,0.06) !important;
+}
+.page-title { color: var(--nd-text, #fff) !important; letter-spacing: -0.02em; }
+.page-desc, .subtitle { color: var(--nd-muted, #8aa0b8) !important; }
+.form-input, input.form-input, textarea.form-input, select.form-input {
+  background: rgba(0,0,0,0.25) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  color: var(--nd-text, #fff) !important;
+  border-radius: 12px !important;
+}
+.menu-item {
+  background: var(--nd-card, rgba(16,24,42,0.55)) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  border-radius: 14px !important;
+}
+.menu-item i { color: var(--nd-accent, #c9a227) !important; }
+.bottom-nav {
+  background: rgba(10,12,16,0.92) !important;
+  border-top: 1px solid rgba(255,255,255,0.06) !important;
+  backdrop-filter: blur(12px);
+}
+
+
+/* Tema variants — per akun */
+body.nd-glass .api-form-card,
+body.nd-variant-glass .api-form-card,
+body.nd-variant-glass .saldo-card,
+body.nd-variant-glass .menu-item,
+body.nd-variant-glass .info-box,
+body.nd-variant-glass .sp-item,
+body.nd-variant-glass .tool-card,
+body.nd-variant-glass .tc-card,
+body.nd-variant-glass .produk-card-uniform {
+  background: rgba(255,255,255,0.07) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+body.nd-variant-blur .api-form-card,
+body.nd-variant-blur .saldo-card,
+body.nd-variant-blur .menu-item {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(20,24,36,0.45) !important;
+}
+.nd-upload {
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; padding:28px 16px; border-radius:16px; cursor:pointer;
+  border:1.5px dashed rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.04);
+  text-align:center; transition: border-color .2s, background .2s;
+}
+.nd-upload:hover, .nd-upload.drag {
+  border-color: var(--nd-accent, #c9a227);
+  background: var(--nd-accent-soft, rgba(201,162,39,0.1));
+}
+.nd-upload i { font-size:28px; color: var(--nd-accent, #c9a227); }
+.nd-upload b { color: var(--nd-text,#fff); font-size:13px; }
+.nd-upload span { color: var(--nd-muted,#8aa0b8); font-size:11px; }
+.nd-upload input { display:none; }
+.nd-color-row {
+  display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px;
+}
+.nd-color-box {
+  background: var(--nd-card,#141a22); border-radius:14px; padding:12px;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.nd-color-box label { display:block; font-size:11px; color:var(--nd-muted,#8aa0b8); margin-bottom:6px; font-weight:700; }
+.nd-color-box input[type=color] {
+  width:100%; height:40px; border:none; background:transparent; cursor:pointer;
+}
+
+
+/* ===== Banyak varian tampilan (per akun) ===== */
+body.nd-variant-solid .api-form-card,
+body.nd-variant-solid .saldo-card,
+body.nd-variant-solid .menu-item {
+  background: var(--nd-card, #141a22) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+  backdrop-filter: none;
+}
+
+body.nd-variant-glass .api-form-card,
+body.nd-variant-glass .saldo-card,
+body.nd-variant-glass .menu-item,
+body.nd-variant-glass .info-box,
+body.nd-variant-glass .sp-item,
+body.nd-variant-glass .tool-card,
+body.nd-variant-glass .tc-card {
+  background: rgba(255,255,255,0.08) !important;
+  border: 1px solid rgba(255,255,255,0.14) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+body.nd-variant-blur .api-form-card,
+body.nd-variant-blur .saldo-card,
+body.nd-variant-blur .menu-item {
+  background: rgba(16,20,32,0.4) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+body.nd-variant-neon .api-form-card,
+body.nd-variant-neon .saldo-card,
+body.nd-variant-neon .menu-item {
+  background: rgba(8,10,18,0.85) !important;
+  border: 1px solid var(--nd-accent, #c9a227) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--nd-accent,#c9a227) 25%, transparent),
+              0 0 24px color-mix(in srgb, var(--nd-accent,#c9a227) 18%, transparent);
+}
+
+body.nd-variant-soft .api-form-card,
+body.nd-variant-soft .saldo-card,
+body.nd-variant-soft .menu-item {
+  background: color-mix(in srgb, var(--nd-card,#141a22) 80%, white 8%) !important;
+  border: none !important;
+  border-radius: 22px !important;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+}
+
+body.nd-variant-card .api-form-card,
+body.nd-variant-card .saldo-card,
+body.nd-variant-card .menu-item {
+  background: var(--nd-card, #141a22) !important;
+  border: none !important;
+  border-radius: 18px !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 2px 0 rgba(255,255,255,0.04) inset;
+  transform: translateZ(0);
+}
+
+body.nd-variant-outline .api-form-card,
+body.nd-variant-outline .saldo-card,
+body.nd-variant-outline .menu-item {
+  background: transparent !important;
+  border: 1.5px solid color-mix(in srgb, var(--nd-accent,#c9a227) 45%, rgba(255,255,255,0.2)) !important;
+  box-shadow: none !important;
+}
+
+body.nd-variant-gradient .api-form-card,
+body.nd-variant-gradient .saldo-card {
+  background: linear-gradient(145deg,
+    color-mix(in srgb, var(--nd-accent,#c9a227) 16%, var(--nd-card,#141a22)),
+    var(--nd-card, #141a22) 55%,
+    color-mix(in srgb, var(--nd-accent-2,#a68520) 10%, #0a0e14)) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+body.nd-variant-minimal .api-form-card,
+body.nd-variant-minimal .saldo-card,
+body.nd-variant-minimal .menu-item {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body.nd-variant-comic .api-form-card,
+body.nd-variant-comic .saldo-card,
+body.nd-variant-comic .menu-item {
+  background: var(--nd-card, #141a22) !important;
+  border: 2px solid #fff !important;
+  border-radius: 8px !important;
+  box-shadow: 4px 4px 0 var(--nd-accent, #c9a227);
+}
+
+body.nd-variant-aurora .api-form-card,
+body.nd-variant-aurora .saldo-card {
+  background:
+    radial-gradient(120% 80% at 0% 0%, color-mix(in srgb, var(--nd-accent,#c9a227) 22%, transparent), transparent 50%),
+    radial-gradient(100% 60% at 100% 0%, color-mix(in srgb, var(--nd-accent-2,#a68520) 18%, transparent), transparent 45%),
+    var(--nd-card, #141a22) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+body.nd-variant-terminal .api-form-card,
+body.nd-variant-terminal .saldo-card,
+body.nd-variant-terminal .menu-item {
+  background: #0a0f0a !important;
+  border: 1px solid #1f3d2a !important;
+  border-radius: 6px !important;
+  box-shadow: inset 0 0 0 1px rgba(80,200,120,0.08);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
+}
+body.nd-variant-terminal .page-title,
+body.nd-variant-terminal .menu-item span {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
+  letter-spacing: 0.02em;
+}
+
+.variant-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.variant-grid button {
+  padding: 12px 8px;
+  border-radius: 14px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: var(--nd-text, #fff);
+  font-weight: 700;
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.25;
+}
+.variant-grid button small {
+  display: block;
+  font-weight: 500;
+  font-size: 9px;
+  color: var(--nd-muted, #8aa0b8);
+  margin-top: 3px;
+}
+.variant-grid button.active {
+  border-color: var(--nd-accent, #c9a227);
+  background: var(--nd-accent-soft, rgba(201,162,39,0.12));
+  color: var(--nd-accent, #c9a227);
+}
+
+
+/* Side menu lebih rapi */
+.side-drawer {
+  background: var(--nd-bg, #0c0f14) !important;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+.side-drawer-head {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--nd-accent,#c9a227) 20%, transparent), transparent);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.side-title { color: var(--nd-text,#fff) !important; font-weight: 800; }
+.side-sub { color: var(--nd-muted,#8aa0b8) !important; }
+.side-section {
+  color: var(--nd-accent,#c9a227) !important;
+  font-size: 10px !important;
+  letter-spacing: 1px;
+  margin: 14px 14px 6px !important;
+}
+.side-drawer a {
+  margin: 2px 8px !important;
+  border-radius: 12px !important;
+  color: var(--nd-text,#e8eaed) !important;
+}
+.side-drawer a i { color: var(--nd-accent,#c9a227) !important; }
+.side-drawer a:active, .side-drawer a:hover {
+  background: var(--nd-accent-soft, rgba(201,162,39,0.12)) !important;
+}
+.side-foot {
+  font-size: 11px;
+  color: var(--nd-muted,#8aa0b8);
+  padding: 16px 14px 24px;
+  line-height: 1.4;
+}
+
+/* Akun polish theme-aware */
+.akun-page-title { color: var(--nd-text,#fff) !important; }
+.akun-page-sub { color: var(--nd-muted,#8aa0b8) !important; }
+.profil-card {
+  background: var(--nd-card, linear-gradient(135deg,#121a2e,#0d1424)) !important;
+  border-color: color-mix(in srgb, var(--nd-accent,#c9a227) 30%, transparent) !important;
+}
+
+
+/* Mode terang per akun */
+body.nd-light {
+  background: var(--nd-bg, #f4f5f7) !important;
+  color: var(--nd-text, #1a1d24) !important;
+}
+body.nd-light .header,
+body.nd-light .bottom-nav {
+  background: var(--nd-card, #fff) !important;
+  border-color: var(--nd-border, rgba(0,0,0,0.08)) !important;
+  color: var(--nd-text, #1a1d24) !important;
+}
+body.nd-light .api-form-card,
+body.nd-light .saldo-card,
+body.nd-light .menu-item,
+body.nd-light .info-box,
+body.nd-light .profil-card,
+body.nd-light .sp-item {
+  background: var(--nd-card, #fff) !important;
+  border-color: var(--nd-border, rgba(0,0,0,0.08)) !important;
+  color: var(--nd-text, #1a1d24) !important;
+}
+body.nd-light .page-title,
+body.nd-light .akun-page-title,
+body.nd-light h1, body.nd-light h2, body.nd-light h3 {
+  color: var(--nd-text, #1a1d24) !important;
+}
+body.nd-light .page-desc,
+body.nd-light .akun-page-sub,
+body.nd-light .nav-item span {
+  color: var(--nd-muted, #6b7280) !important;
+}
+body.nd-light .form-input,
+body.nd-light input, body.nd-light select, body.nd-light textarea {
+  background: #f0f2f5 !important;
+  color: var(--nd-text, #1a1d24) !important;
+  border-color: rgba(0,0,0,0.1) !important;
+}
+body.nd-light .side-drawer {
+  background: #fff !important;
+  color: #1a1d24 !important;
+}
+body.nd-light .side-drawer a { color: #1a1d24 !important; }
+body.nd-light .btn-pesan,
+body.nd-light .btn-apply {
+  background: var(--nd-accent) !important;
+  color: #0a0e18 !important;
+}

@@ -415,11 +415,34 @@
     }
   };
 
+  function openTool(t){
+    if (!handlers[t]) {
+      if (area) area.innerHTML = '<p style="color:#8aa0b8;">Tool tidak ditemukan. <a class="theme-link" href="tools.html">Kembali</a></p>';
+      return;
+    }
+    if (panel) panel.classList.add('active');
+    handlers[t]();
+  }
+
   document.addEventListener('DOMContentLoaded', function(){
     area=document.getElementById('toolArea'); panel=document.getElementById('toolPanel');
-    document.getElementById('toolBack').onclick=back;
+    var backBtn = document.getElementById('toolBack');
+    if (backBtn) backBtn.onclick = function(){
+      if (/tool\.html/i.test(location.pathname)) location.href = 'tools.html';
+      else back();
+    };
     document.querySelectorAll('.tool-card').forEach(function(c){
-      c.onclick=function(){ var t=c.getAttribute('data-tool'); if(handlers[t]) handlers[t](); };
+      c.onclick=function(){
+        var t=c.getAttribute('data-tool');
+        if (!t) return;
+        // halaman sendiri
+        location.href = 'tool.html?id=' + encodeURIComponent(t);
+      };
     });
+    // auto-open jika di tool.html?id=
+    var q = new URLSearchParams(location.search).get('id');
+    if (q && area) openTool(q);
   });
+
+  window.NailongTools = { open: openTool, handlers: handlers };
 })();

@@ -1,5 +1,75 @@
 
   
+  
+  function injectFlutterLogo() {
+    if (sessionStorage.getItem('nd_flutter_logo') === '1') return;
+    if (sessionStorage.getItem('nd_enter_anim') === '1') { /* allow once per session together */ }
+    try { sessionStorage.setItem('nd_flutter_logo', '1'); } catch (e) {}
+    var ov = document.createElement('div');
+    ov.id = 'ndFlutterLogo';
+    ov.innerHTML = '<div class="nd-flut-inner"><img src="nailong-digital-logo.png" alt="ND"><b>NAILONG DIGITAL</b></div>';
+    document.body.appendChild(ov);
+    if (!document.getElementById('ndFlutterStyle')) {
+      var st = document.createElement('style');
+      st.id = 'ndFlutterStyle';
+      st.textContent =
+        '#ndFlutterLogo{position:fixed;inset:0;z-index:10040;display:flex;align-items:center;justify-content:center;' +
+        'background:#0a0e18;transition:opacity .55s ease, transform .55s cubic-bezier(.22,1,.36,1);}' +
+        '#ndFlutterLogo .nd-flut-inner{text-align:center;animation:ndFlutIn .7s cubic-bezier(.22,1.2,.36,1) both;}' +
+        '#ndFlutterLogo img{width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 8px 24px rgba(255,193,7,.35));}' +
+        '#ndFlutterLogo b{display:block;margin-top:14px;color:#FFC107;letter-spacing:2px;font-size:14px;font-weight:800;}' +
+        '@keyframes ndFlutIn{from{opacity:0;transform:scale(.72) translateY(18px)}to{opacity:1;transform:none}}' +
+        '#ndFlutterLogo.out{opacity:0;transform:scale(1.06)}';
+      document.head.appendChild(st);
+    }
+    setTimeout(function () {
+      ov.classList.add('out');
+      setTimeout(function () { ov.remove(); }, 560);
+    }, 1100);
+  }
+
+  
+  function ensureLocale(){
+    if (window.NDLocale) return;
+    if (document.querySelector('script[data-nd-locale]')) return;
+    var s=document.createElement('script'); s.src='locale.js'; s.setAttribute('data-nd-locale','1');
+    document.head.appendChild(s);
+  }
+  function ensureUploadUi() {
+    if (window.NailongUploadUI) { try { NailongUploadUI.scan(); } catch(e){} return; }
+    if (document.querySelector('script[data-nd-upload]')) return;
+    var s = document.createElement('script');
+    s.src = 'upload-ui.js'; s.setAttribute('data-nd-upload','1');
+    s.onload = function(){ try { NailongUploadUI.scan(); } catch(e){} };
+    document.head.appendChild(s);
+  }
+
+  
+  function ensureIntro() {
+    try {
+      if (sessionStorage.getItem('nd_intro_seen') === '1') return;
+      if (location.pathname.indexOf('login') >= 0) return;
+      var v = document.createElement('div');
+      v.id = 'ndIntro';
+      v.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;';
+      v.innerHTML = '<video src="intro-nd.mp4" autoplay muted playsinline style="width:100%;height:100%;object-fit:contain;background:#000"></video>';
+      document.body.appendChild(v);
+      var vid = v.querySelector('video');
+      function done() {
+        try { sessionStorage.setItem('nd_intro_seen','1'); } catch(e){}
+        v.remove();
+        // if not logged in → login
+        try {
+          if (localStorage.getItem('nailong_logged_in') !== '1') {
+            if (!/login\.html/.test(location.href)) location.replace('login.html');
+          }
+        } catch(e2){}
+      }
+      vid.onended = done;
+      setTimeout(done, 9000);
+    } catch (e) {}
+  }
+
   function ensureTheme() {
     if (window.NailongTheme) { try { NailongTheme.apply(NailongTheme.load()); } catch(e){} return; }
     if (document.querySelector('script[data-nd-theme]')) return;
@@ -282,7 +352,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     injectIntroSplash();
     injectVideoBg();
-    try { ensureTheme(); ensureMusicPlayer(); } catch(e) {}
+    try { ensureTheme(); try{ensureUploadUi();}catch(e){} try{ensureLocale();}catch(e){} try{ensureIntro();}catch(e){} try{injectFlutterLogo();}catch(e){} ensureMusicPlayer(); } catch(e) {}
     injectFabChat();
     injectHalo();
     /* nailong run dihapus */

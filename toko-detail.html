@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
 </head>
 <body>
   <header class="header header-logo-only">
@@ -80,5 +81,32 @@
     });
   </script>
   <script src="ui-enhance.js"></script>
+
+<script>
+(function(){
+  async function paintGallery(){
+    if (!window.NailongToko) return;
+    var id = new URLSearchParams(location.search).get('id');
+    if (!id) return;
+    var s = await NailongToko.getStore(id);
+    if (!s || !s.gallery || !s.gallery.length) return;
+    var box = document.getElementById('storeGallery');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'storeGallery';
+      box.style.cssText = 'display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0;';
+      var host = document.querySelector('.page-content') || document.body;
+      host.appendChild(box);
+    }
+    box.innerHTML = s.gallery.map(function(g){
+      if (g.type === 'video') {
+        return '<video src="'+g.data+'" controls playsinline style="width:100%;border-radius:12px;background:#000;max-height:200px;"></video>';
+      }
+      return '<img src="'+g.data+'" alt="" style="width:100%;border-radius:12px;object-fit:cover;aspect-ratio:1;background:#111;">';
+    }).join('');
+  }
+  document.addEventListener('DOMContentLoaded', function(){ setTimeout(paintGallery, 700); });
+})();
+</script>
 </body>
 </html>

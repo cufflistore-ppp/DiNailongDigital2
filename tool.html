@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tool - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <style>
+    .tool-page-card { margin-top: 8px; }
+    #toolArea label { display:block; font-size:12px; color:#8aa0b8; margin:10px 0 4px; font-weight:700; }
+    #toolArea .form-input, #toolArea input, #toolArea textarea, #toolArea select {
+      width:100%; box-sizing:border-box;
+    }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nailong-digital-logo.png" alt="ND" class="logo-full">
+    </div></div>
+  </header>
+  <div class="page-content">
+    <p style="margin-bottom:8px;">
+      <a href="tools.html" class="theme-link"><i class="fa-solid fa-arrow-left"></i> Semua tools</a>
+      · <a href="tools-canvas.html" class="theme-link">Canvas Tools</a>
+    </p>
+    <div class="badge" id="toolBadge">TOOL</div>
+    <h2 class="page-title" id="toolTitle"><i class="fa-solid fa-screwdriver-wrench"></i> Tool</h2>
+    <div class="api-form-card tool-page-card">
+      <div id="toolArea"></div>
+    </div>
+    <!-- dummy panel for tools-app compatibility -->
+    <div id="toolPanel" class="active" style="display:none;"></div>
+    <button type="button" id="toolBack" style="display:none;"></button>
+  </div>
+  <nav class="bottom-nav nav-5">
+    <a href="tools.html" class="nav-item active"><span class="nav-icon-wrap"><i class="fa-solid fa-screwdriver-wrench"></i></span><span>Tools</span></a>
+    <a href="tools-canvas.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-image"></i></span><span>Canvas</span></a>
+    <a href="index.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="game.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-gamepad"></i></span><span>Game</span></a>
+    <a href="akun.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="deploy-config.js"></script>
+  <script src="deploy-system.js"></script>
+  <script src="tools-app.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script>
+  (function(){
+    var TITLES = {
+      wa:'WA Link', watext:'WA + Teks', vacall:'WA Call', sticker:'Teks Stiker', spam:'Spam Teks', fakechat:'Fake Chat UI',
+      uuid:'UUID', pass:'Password', nick:'Nickname', color:'Color Pick', lorem:'Lorem Ipsum', fakeid:'Fake ID Data',
+      encode:'Base64', url:'URL Encode', hash:'MD5 / SHA', case:'Case / Reverse', word:'Hitung Kata', morse:'Morse',
+      bin:'Binary', slug:'Slugify', json:'JSON Format', minify:'Minify', regex:'Regex Test', difftext:'Diff Teks',
+      uang:'Format Rupiah', persen:'Hitung %', waktu:'Unix Time', diff:'Selisih Hari', ip:'IP Info', useragent:'User Agent',
+      deploy:'Deploy ZIP', netlify:'Netlify Drop', cfpages:'CF Pages', tiiny:'Tiiny Host', zipview:'Buka ZIP', htmlhost:'HTML Preview',
+      fakeovo:'Fake OVO', fakedev:'FakeDev', quote:'Quote Gen', nokia:'Nokia SMS', prompt:'Prompt Gen', fakeid2:'Fake Data'
+    };
+    var id = new URLSearchParams(location.search).get('id') || '';
+    document.getElementById('toolTitle').innerHTML = '<i class="fa-solid fa-screwdriver-wrench"></i> ' + (TITLES[id] || id || 'Tool');
+    document.getElementById('toolBadge').textContent = (id || 'TOOL').toUpperCase();
+    document.title = (TITLES[id] || 'Tool') + ' - Nailong Digital';
+    document.addEventListener('DOMContentLoaded', function(){
+      setTimeout(function(){
+        if (window.NailongTools && NailongTools.open) NailongTools.open(id);
+        else if (!id) location.replace('tools.html');
+      }, 50);
+    });
+  })();
+  </script>
+</body>
+</html>

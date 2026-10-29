@@ -1,10 +1,14 @@
 /**
- * Nailong Music — player global (localStorage + audio tunggal)
- * Preview dari iTunes Search API (gratis, tanpa key).
- * Auto next saat lagu selesai. Mini player di semua halaman.
+ * Nailong Music — sumber legal/metadata:
+ * - MusicBrainz (artis, penulis/composer, rekaman)
+ * - Internet Archive (audio publik yang bisa di-stream)
+ * - Wikidata (info tambahan lewat MusicBrainz + entity)
+ * - iTunes (preview cadangan, beratribusi)
+ * User-Agent wajib untuk MusicBrainz.
  */
 (function () {
   var KEY = 'nd_music_state';
+  var UA = 'NailongDigitalMusic/1.0 ( https://nailong.digital ; music@nailong.local )';
   var audio = null;
 
   function state() {
@@ -23,6 +27,7 @@
         audio = document.createElement('audio');
         audio.id = 'ndGlobalAudio';
         audio.preload = 'metadata';
+        audio.crossOrigin = 'anonymous';
         audio.style.display = 'none';
         document.body.appendChild(audio);
       }
@@ -42,18 +47,18 @@
     return audio;
   }
 
+  function streamUrl(track) {
+    return (track && (track.streamUrl || track.previewUrl)) || '';
+  }
+
   function playTrack(track, queue, index) {
     var a = getAudio();
     var q = queue || state().queue || [];
     var idx = typeof index === 'number' ? index : 0;
-    save({
-      track: track,
-      queue: q,
-      index: idx,
-      playing: true
-    });
-    if (track && track.previewUrl) {
-      a.src = track.previewUrl;
+    save({ track: track, queue: q, index: idx, playing: true });
+    var url = streamUrl(track);
+    if (url) {
+      a.src = url;
       a.play().catch(function () {});
     }
     window.dispatchEvent(new CustomEvent('nd-music-tick', { detail: state() }));
@@ -63,8 +68,9 @@
     var a = getAudio();
     if (!a.src) {
       var s = state();
-      if (s.track && s.track.previewUrl) {
-        a.src = s.track.previewUrl;
+      var url = streamUrl(s.track);
+      if (url) {
+        a.src = url;
         if (s.currentTime) a.currentTime = s.currentTime;
       } else return;
     }
@@ -72,11 +78,16 @@
     else a.pause();
   }
 
+  function pause() {
+    var a = getAudio();
+    if (a && !a.paused) a.pause();
+  }
+
   function next(auto) {
     var s = state();
     var q = s.queue || [];
     if (!q.length) return;
-    var i = (s.index || 0) + 1;
+    var i = (typeof s.index === 'number' ? s.index : 0) + 1;
     if (i >= q.length) i = 0;
     playTrack(q[i], q, i);
   }
@@ -85,102 +96,234 @@
     var s = state();
     var q = s.queue || [];
     if (!q.length) return;
-    var i = (s.index || 0) - 1;
+    var a = getAudio();
+    if (a.currentTime > 3) { a.currentTime = 0; return; }
+    var i = (typeof s.index === 'number' ? s.index : 0) - 1;
     if (i < 0) i = q.length - 1;
     playTrack(q[i], q, i);
   }
 
-  /** Mini player di semua halaman */
-  function injectMini() {
-    if (document.getElementById('ndMusicMini')) return;
-    var path = (location.pathname || '').toLowerCase();
-    if (path.indexOf('music.html') >= 0) return; // full player di music page
-
-    var el = document.createElement('div');
-    el.id = 'ndMusicMini';
-    el.innerHTML =
-      '<img id="ndMiniArt" alt="">' +
-      '<div class="nd-mini-t"><b id="ndMiniTitle">Music</b><span id="ndMiniArtist"></span></div>' +
-      '<button type="button" id="ndMiniPrev"><i class="fa-solid fa-backward-step"></i></button>' +
-      '<button type="button" id="ndMiniPlay"><i class="fa-solid fa-play"></i></button>' +
-      '<button type="button" id="ndMiniNext"><i class="fa-solid fa-forward-step"></i></button>' +
-      '<a href="music.html" id="ndMiniOpen"><i class="fa-solid fa-up-right-from-square"></i></a>';
-    document.body.appendChild(el);
-
-    if (!document.getElementById('ndMusicMiniStyle')) {
-      var st = document.createElement('style');
-      st.id = 'ndMusicMiniStyle';
-      st.textContent =
-        '#ndMusicMini{position:fixed;left:8px;right:8px;bottom:70px;z-index:90;display:none;align-items:center;gap:8px;' +
-        'background:rgba(12,16,28,0.94);border:1px solid rgba(255,193,7,0.25);border-radius:14px;padding:8px 10px;backdrop-filter:blur(10px);}' +
-        '#ndMusicMini.show{display:flex;}' +
-        '#ndMusicMini img{width:40px;height:40px;border-radius:8px;object-fit:cover;background:#1a2740;}' +
-        '#ndMusicMini .nd-mini-t{flex:1;min-width:0;}' +
-        '#ndMusicMini .nd-mini-t b{display:block;font-size:12px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}' +
-        '#ndMusicMini .nd-mini-t span{font-size:10px;color:#8aa0b8;}' +
-        '#ndMusicMini button,#ndMusicMini a{border:none;background:transparent;color:#FFC107;font-size:14px;padding:6px;cursor:pointer;text-decoration:none;}' +
-        'body{padding-bottom:130px !important;}';
-      document.head.appendChild(st);
-    }
-
-    document.getElementById('ndMiniPlay').onclick = function (e) { e.preventDefault(); toggle(); };
-    document.getElementById('ndMiniNext').onclick = function (e) { e.preventDefault(); next(); };
-    document.getElementById('ndMiniPrev').onclick = function (e) { e.preventDefault(); prev(); };
-
-    function sync() {
-      var s = state();
-      if (!s.track) { el.classList.remove('show'); return; }
-      el.classList.add('show');
-      document.getElementById('ndMiniTitle').textContent = s.track.title || 'Lagu';
-      document.getElementById('ndMiniArtist').textContent = s.track.artist || '';
-      document.getElementById('ndMiniArt').src = s.track.art || 'nailong-digital-logo.png';
-      var ic = document.querySelector('#ndMiniPlay i');
-      if (ic) ic.className = s.playing ? 'fa-solid fa-pause' : 'fa-solid fa-play';
-      // restore play if was playing
-      var a = getAudio();
-      if (s.playing && s.track.previewUrl && a.paused) {
-        if (!a.src || a.src.indexOf(s.track.previewUrl) < 0) a.src = s.track.previewUrl;
-        if (s.currentTime && Math.abs((a.currentTime || 0) - s.currentTime) > 2) {
-          try { a.currentTime = s.currentTime; } catch (e) {}
-        }
-        a.play().catch(function () {});
-      }
-    }
-    window.addEventListener('nd-music-tick', sync);
-    sync();
+  async function fetchJson(url, opts) {
+    opts = opts || {};
+    var headers = Object.assign({ 'Accept': 'application/json' }, opts.headers || {});
+    // Browser menolak set User-Agent kustom; MusicBrainz tetap terima request halaman.
+    var r = await fetch(url, { headers: headers, mode: 'cors' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
   }
 
-  async function searchItunes(term) {
-    var url = 'https://itunes.apple.com/search?term=' + encodeURIComponent(term) + '&media=music&limit=25';
-    var r = await fetch(url);
-    var j = await r.json();
-    return (j.results || []).filter(function (x) { return x.previewUrl; }).map(function (x) {
+  /** MusicBrainz recording search + artist-credit + composer relations */
+  async function searchMusicBrainz(term, limit) {
+    limit = limit || 20;
+    var url = 'https://musicbrainz.org/ws/2/recording/?query=' + encodeURIComponent(term) +
+      '&fmt=json&limit=' + limit + '&inc=artist-credits+releases';
+    var j = await fetchJson(url);
+    var out = [];
+    (j.recordings || []).forEach(function (rec) {
+      var artists = (rec['artist-credit'] || []).map(function (ac) {
+        return (ac.name || (ac.artist && ac.artist.name) || '').trim();
+      }).filter(Boolean);
+      var artist = artists.join(', ') || 'Unknown artist';
+      var release = (rec.releases && rec.releases[0]) || null;
+      var mbid = rec.id;
+      var releaseId = release && release.id;
+      out.push({
+        id: 'mb-' + mbid,
+        mbid: mbid,
+        releaseId: releaseId || '',
+        title: rec.title || 'Untitled',
+        artist: artist,
+        composer: '', // diisi async optional
+        source: 'MusicBrainz',
+        license: 'Metadata © MusicBrainz contributors',
+        art: releaseId ? ('https://coverartarchive.org/release/' + releaseId + '/front-250') : 'nailong-digital-logo.png',
+        previewUrl: '',
+        streamUrl: '',
+        score: rec.score || 0
+      });
+    });
+    return out;
+  }
+
+  /** Ambil composer/lyricist dari work relations */
+  async function enrichComposer(track) {
+    if (!track || !track.mbid) return track;
+    try {
+      var url = 'https://musicbrainz.org/ws/2/recording/' + track.mbid + '?fmt=json&inc=artist-credits+work-rels+artist-rels';
+      var rec = await fetchJson(url);
+      var composers = [];
+      var rels = rec.relations || [];
+      rels.forEach(function (rel) {
+        if (rel.type === 'composer' || rel.type === 'lyricist' || rel.type === 'writer') {
+          if (rel.artist && rel.artist.name) composers.push(rel.artist.name + (rel.type === 'lyricist' ? ' (lirik)' : ''));
+        }
+        if (rel.work && rel.work.id) {
+          // work title only; deep fetch skipped for rate limits
+        }
+      });
+      // also check artist-credit for "composer" in attributes rarely
+      if (!composers.length && track.artist) composers.push(track.artist + ' (performer)');
+      track.composer = composers.join(', ');
+      track.artist = (rec['artist-credit'] || []).map(function (ac) {
+        return ac.name || (ac.artist && ac.artist.name);
+      }).filter(Boolean).join(', ') || track.artist;
+    } catch (e) {}
+    return track;
+  }
+
+  /** Internet Archive audio search */
+  async function searchInternetArchive(term, limit) {
+    limit = limit || 15;
+    var q = 'mediatype:audio AND (' + term + ')';
+    var url = 'https://archive.org/advancedsearch.php?q=' + encodeURIComponent(q) +
+      '&fl[]=identifier&fl[]=title&fl[]=creator&fl[]=description&fl[]=licenseurl&fl[]=year' +
+      '&rows=' + limit + '&page=1&output=json';
+    var j = await fetchJson(url);
+    var docs = (j.response && j.response.docs) || [];
+    return docs.map(function (d) {
+      var id = d.identifier;
       return {
-        id: String(x.trackId),
-        title: x.trackName,
-        artist: x.artistName,
-        art: (x.artworkUrl100 || '').replace('100x100', '200x200'),
-        previewUrl: x.previewUrl,
-        source: 'iTunes Preview'
+        id: 'ia-' + id,
+        iaId: id,
+        title: d.title || id,
+        artist: (Array.isArray(d.creator) ? d.creator.join(', ') : (d.creator || 'Internet Archive')),
+        composer: '',
+        source: 'Internet Archive',
+        license: d.licenseurl || 'Public / IA terms',
+        art: 'https://archive.org/services/img/' + id,
+        // generic download path — browser picks streamable file via /download/
+        streamUrl: 'https://archive.org/download/' + id + '/',
+        previewUrl: 'https://archive.org/download/' + id + '/',
+        year: d.year || ''
       };
     });
   }
 
+  /** Resolve actual audio file from IA item metadata */
+  async function resolveIaStream(track) {
+    if (!track || !track.iaId) return track;
+    try {
+      var meta = await fetchJson('https://archive.org/metadata/' + encodeURIComponent(track.iaId));
+      var files = meta.files || [];
+      var prefer = files.find(function (f) {
+        var n = (f.name || '').toLowerCase();
+        return /\.(mp3)$/i.test(n);
+      }) || files.find(function (f) {
+        return /\.(ogg|m4a|wav|flac)$/i.test(f.name || '');
+      });
+      if (prefer) {
+        track.streamUrl = 'https://archive.org/download/' + track.iaId + '/' + encodeURIComponent(prefer.name);
+        track.previewUrl = track.streamUrl;
+      }
+      if (meta.metadata) {
+        var md = meta.metadata;
+        if (md.creator && !track.artist) track.artist = Array.isArray(md.creator) ? md.creator.join(', ') : md.creator;
+        if (md.licenseurl) track.license = md.licenseurl;
+      }
+    } catch (e) {}
+    return track;
+  }
+
+  /** iTunes fallback previews */
+  async function searchWikidata(term) {
+    try {
+      var url = 'https://www.wikidata.org/w/api.php?action=wbsearchentities&search=' +
+        encodeURIComponent(term) + '&language=en&limit=3&format=json&origin=*';
+      var j = await fetchJson(url);
+      return (j.search || []).map(function (x) {
+        return { id: x.id, label: x.label, description: x.description || '' };
+      });
+    } catch (e) { return []; }
+  }
+
+  async function searchItunes(term, limit) {
+    limit = limit || 25;
+    var url = 'https://itunes.apple.com/search?term=' + encodeURIComponent(term) + '&media=music&limit=' + limit;
+    var r = await fetch(url);
+    var j = await r.json();
+    return (j.results || []).filter(function (x) { return x.previewUrl; }).map(function (x) {
+      return {
+        id: 'it-' + x.trackId,
+        title: x.trackName,
+        artist: x.artistName,
+        composer: x.collectionArtistName && x.collectionArtistName !== x.artistName ? x.collectionArtistName : x.artistName,
+        source: 'iTunes Preview',
+        license: '30s preview · © ' + (x.artistName || 'rights holder'),
+        art: (x.artworkUrl100 || '').replace('100x100', '300x300'),
+        previewUrl: x.previewUrl,
+        streamUrl: x.previewUrl
+      };
+    });
+  }
+
+  /**
+   * Gabungan: MusicBrainz + IA + iTunes
+   * Prioritas stream: IA full → iTunes preview; metadata: MB composer/artist
+   */
+  async function searchAll(term, limit) {
+    limit = limit || 30;
+    var results = [];
+    var seen = {};
+
+    function push(list) {
+      (list || []).forEach(function (t) {
+        var key = (t.title + '|' + t.artist).toLowerCase();
+        if (seen[key]) return;
+        seen[key] = 1;
+        results.push(t);
+      });
+    }
+
+    var jobs = await Promise.allSettled([
+      searchMusicBrainz(term, Math.min(limit, 20)),
+      searchInternetArchive(term, 12),
+      searchItunes(term, limit)
+    ]);
+
+    if (jobs[0].status === 'fulfilled') push(jobs[0].value);
+    if (jobs[1].status === 'fulfilled') push(jobs[1].value);
+    if (jobs[2].status === 'fulfilled') push(jobs[2].value);
+
+    // resolve a few IA streams
+    var iaTracks = results.filter(function (t) { return t.iaId; }).slice(0, 6);
+    await Promise.all(iaTracks.map(function (t) { return resolveIaStream(t); }));
+
+    // enrich top MB with composer (rate-limit friendly: 3 saja)
+    var mbTracks = results.filter(function (t) { return t.mbid; }).slice(0, 3);
+    await Promise.all(mbTracks.map(function (t) { return enrichComposer(t); }));
+
+    // only keep playable or rich metadata
+    results = results.filter(function (t) {
+      return streamUrl(t) || t.mbid || t.iaId;
+    });
+
+    return results.slice(0, limit);
+  }
+
+  // compat
+  async function searchItunesCompat(term, limit) {
+    return searchAll(term, limit);
+  }
+
   window.NailongMusic = {
-    state: state,
-    save: save,
     playTrack: playTrack,
     toggle: toggle,
+    pause: pause,
     next: next,
     prev: prev,
-    searchItunes: searchItunes,
-    injectMini: injectMini,
-    getAudio: getAudio
+    getAudio: getAudio,
+    state: state,
+    searchItunes: searchItunesCompat,
+    searchAll: searchAll,
+    searchMusicBrainz: searchMusicBrainz,
+    searchInternetArchive: searchInternetArchive,
+    searchWikidata: searchWikidata,
+    enrichComposer: enrichComposer,
+    resolveIaStream: resolveIaStream
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { injectMini(); getAudio(); });
-  } else {
-    injectMini(); getAudio();
-  }
+  // restore playing if needed
+  document.addEventListener('DOMContentLoaded', function () {
+    getAudio();
+  });
 })();

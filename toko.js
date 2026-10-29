@@ -106,6 +106,10 @@
     var existing = await getMyStore();
     if (existing) return { ok: false, error: 'Kamu sudah punya toko: ' + existing.name, store: existing };
 
+    if (!data.facePhoto) return { ok: false, error: 'Foto wajah wajib untuk verifikasi' };
+    if (!data.ktpPhoto) return { ok: false, error: 'Foto KTP wajib untuk verifikasi' };
+    var ageType = 'adult';
+
     var storeId = genStoreId();
     var store = {
       storeId: storeId,
@@ -115,10 +119,19 @@
       desc: (data.desc || '').trim().slice(0, 500),
       logo: data.logo || '',
       banner: data.banner || '',
+      gallery: Array.isArray(data.gallery) ? data.gallery.slice(0, 12) : [],
       link: (data.link || '').trim(),
       wa: (data.wa || '').replace(/\D/g, ''),
       createdAt: Date.now(),
-      status: 'active', // active | review | blocked
+      status: 'pending_verify', // pending_verify | active | review | blocked
+      verify: {
+        ageType: 'adult',
+        facePhoto: data.facePhoto || '',
+        ktpPhoto: data.ktpPhoto || '',
+        submittedAt: Date.now(),
+        ownerUid: id,
+        note: ''
+      },
       ratingSum: 0,
       ratingCount: 0,
       reportCount: 0,
@@ -182,7 +195,7 @@
     return Object.keys(all).map(function (k) { return all[k]; }).filter(function (p) {
       if (p.status === 'deleted') return false;
       var s = stores[p.storeId];
-      if (!s || s.status === 'blocked') return false;
+      if (!s || s.status === 'blocked' || s.status === 'pending_verify') return false;
       return true;
     }).sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
   }

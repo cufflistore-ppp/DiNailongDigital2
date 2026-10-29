@@ -1,18 +1,21 @@
 /**
- * Tema per-akun (localStorage + key user).
- * Tidak mengubah tema akun lain. Persist sampai user ganti lagi.
+ * Tema per-akun — sederhana seperti referensi:
+ * - Mode Gelap / Terang
+ * - Palet warna aksen (pastel)
+ * Berlaku di seluruh halaman untuk akun itu saja.
  */
 (function () {
   var KEY_GUEST = 'nd_theme_guest';
-  var PRESETS = {
-    amber:  { name: 'Amber',  accent: '#d4a017', accent2: '#b8860b', soft: 'rgba(212,160,23,0.14)' },
-    blue:   { name: 'Biru',   accent: '#3b82f6', accent2: '#2563eb', soft: 'rgba(59,130,246,0.14)' },
-    green:  { name: 'Hijau',  accent: '#22c55e', accent2: '#16a34a', soft: 'rgba(34,197,94,0.14)' },
-    purple: { name: 'Ungu',   accent: '#a855f7', accent2: '#9333ea', soft: 'rgba(168,85,247,0.14)' },
-    rose:   { name: 'Rose',   accent: '#f43f5e', accent2: '#e11d48', soft: 'rgba(244,63,94,0.14)' },
-    cyan:   { name: 'Cyan',   accent: '#06b6d4', accent2: '#0891b2', soft: 'rgba(6,182,212,0.14)' },
-    slate:  { name: 'Slate',  accent: '#94a3b8', accent2: '#64748b', soft: 'rgba(148,163,184,0.14)' },
-    orange: { name: 'Oranye', accent: '#f97316', accent2: '#ea580c', soft: 'rgba(249,115,22,0.14)' }
+
+  var PALETTES = {
+    peach:   { name: 'Peach Coral', sub: 'Original Pastel', accent: '#f0a48a', accent2: '#e08b6e' },
+    sky:     { name: 'Sky Blue', sub: 'Blueberry Pop', accent: '#5bb8f5', accent2: '#3a9de0' },
+    lemon:   { name: 'Lemon Custard', sub: 'Butter Yellow', accent: '#f0c94d', accent2: '#d4a82e' },
+    matcha:  { name: 'Matcha Mint', sub: 'Pastel Green', accent: '#7dcfb0', accent2: '#55b894' },
+    straw:   { name: 'Strawberry Pink', sub: 'Sweet Blossom', accent: '#f0a0b8', accent2: '#e07a9a' },
+    lavender:{ name: 'Sweet Lavender', sub: 'Soft Taro', accent: '#b8a0e0', accent2: '#9678c8' },
+    mikan:   { name: 'Mikan Orange', sub: 'Warm Citrus', accent: '#f0b070', accent2: '#e09040' },
+    gold:    { name: 'Nailong Gold', sub: 'Klasik', accent: '#c9a227', accent2: '#a68520' }
   };
 
   function uid() {
@@ -31,15 +34,27 @@
 
   function storageKey() {
     var id = uid();
-    return id ? ('nd_theme_' + id) : KEY_GUEST;
+    return id ? ('nd_theme_v4_' + id) : KEY_GUEST;
+  }
+
+  function defaultTheme() {
+    return { mode: 'dark', palette: 'gold' };
   }
 
   function load() {
     try {
       var raw = localStorage.getItem(storageKey());
-      if (raw) return JSON.parse(raw);
+      if (raw) return Object.assign(defaultTheme(), JSON.parse(raw));
     } catch (e) {}
-    return { preset: 'amber' };
+    // migrate v3
+    try {
+      var old = localStorage.getItem(uid() ? ('nd_theme_v3_' + uid()) : 'nd_theme_guest');
+      if (old) {
+        var o = JSON.parse(old);
+        return { mode: 'dark', palette: o.preset === 'navy' ? 'sky' : 'gold' };
+      }
+    } catch (e2) {}
+    return defaultTheme();
   }
 
   function save(theme) {
@@ -48,69 +63,120 @@
 
   function resolve(theme) {
     theme = theme || load();
-    if (theme.custom && theme.accent) {
+    var p = PALETTES[theme.palette] || PALETTES.gold;
+    var dark = theme.mode !== 'light';
+    if (dark) {
       return {
-        accent: theme.accent,
-        accent2: theme.accent2 || theme.accent,
-        soft: theme.soft || (theme.accent + '22')
+        mode: 'dark',
+        palette: theme.palette,
+        name: p.name,
+        accent: p.accent,
+        accent2: p.accent2,
+        soft: p.accent + '22',
+        bg: '#0c0f14',
+        bgTop: '#0c0f14',
+        bgBottom: '#080a0e',
+        card: '#141a22',
+        text: '#e8eaed',
+        muted: '#8b95a5',
+        border: 'rgba(255,255,255,0.08)'
       };
     }
-    return PRESETS[theme.preset] || PRESETS.amber;
+    return {
+      mode: 'light',
+      palette: theme.palette,
+      name: p.name,
+      accent: p.accent,
+      accent2: p.accent2,
+      soft: p.accent + '28',
+      bg: '#f4f5f7',
+      bgTop: '#f8f9fb',
+      bgBottom: '#eceef2',
+      card: '#ffffff',
+      text: '#1a1d24',
+      muted: '#6b7280',
+      border: 'rgba(0,0,0,0.08)'
+    };
   }
 
   function apply(theme) {
+    theme = theme || load();
     var c = resolve(theme);
     var r = document.documentElement;
     r.style.setProperty('--nd-accent', c.accent);
     r.style.setProperty('--nd-accent-2', c.accent2);
     r.style.setProperty('--nd-accent-soft', c.soft);
-    // legacy yellow hooks → map ke accent
+    r.style.setProperty('--nd-bg', c.bg);
+    r.style.setProperty('--nd-bg-top', c.bgTop);
+    r.style.setProperty('--nd-bg-bottom', c.bgBottom);
+    r.style.setProperty('--nd-card', c.card);
+    r.style.setProperty('--nd-text', c.text);
+    r.style.setProperty('--nd-muted', c.muted);
+    r.style.setProperty('--nd-border', c.border);
     r.style.setProperty('--accent', c.accent);
     r.style.setProperty('--accent-2', c.accent2);
+    if (document.body) {
+      document.body.style.backgroundColor = c.bg;
+      document.body.style.color = c.text;
+      document.body.classList.toggle('nd-light', c.mode === 'light');
+      document.body.classList.toggle('nd-dark', c.mode === 'dark');
+    }
+    // header / nav common
+    try {
+      document.querySelectorAll('.header, .bottom-nav, .side-drawer').forEach(function (el) {
+        if (c.mode === 'light') {
+          el.style.backgroundColor = c.card;
+          el.style.color = c.text;
+        } else {
+          el.style.backgroundColor = '';
+          el.style.color = '';
+        }
+      });
+    } catch (e) {}
   }
 
-  function setPreset(key) {
-    if (!PRESETS[key]) return;
-    var t = { preset: key };
+  function setTheme(opts) {
+    var t = load();
+    if (opts.mode) t.mode = opts.mode;
+    if (opts.palette) t.palette = opts.palette;
     save(t);
     apply(t);
     return t;
   }
 
-  function setCustom(hex) {
-    hex = String(hex || '').trim();
-    if (!/^#?[0-9a-fA-F]{6}$/.test(hex.replace('#',''))) return null;
-    if (hex[0] !== '#') hex = '#' + hex;
-    var t = { custom: true, accent: hex, accent2: hex, soft: hex + '24' };
-    save(t);
-    apply(t);
-    return t;
-  }
-
-  // apply ASAP
   apply(load());
 
-  // re-apply after auth ready (switch key guest → user)
-  function rebind() {
-    apply(load());
-  }
+  function rebind() { apply(load()); }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () {
-      setTimeout(rebind, 400);
-      setTimeout(rebind, 1500);
+      setTimeout(rebind, 300);
+      setTimeout(rebind, 1200);
     });
-  } else {
-    setTimeout(rebind, 400);
-  }
+  } else setTimeout(rebind, 300);
 
+  // compat lama
   window.NailongTheme = {
-    PRESETS: PRESETS,
+    PALETTES: PALETTES,
+    PRESETS: PALETTES,
+    VARIANTS: {},
     load: load,
     save: save,
     apply: apply,
-    setPreset: setPreset,
-    setCustom: setCustom,
     resolve: resolve,
+    setTheme: setTheme,
+    setPreset: function (k) { return setTheme({ palette: k }); },
+    setColors: function (o) {
+      var t = {};
+      if (o.variant === 'glass') { /* ignore complex variants */ }
+      if (o.accent) {
+        // map nearest or custom store as gold override
+        t.palette = 'gold';
+      }
+      return setTheme(t);
+    },
+    setCustom: function () { return setTheme({}); },
+    setMedia: function () { return Promise.resolve(); },
+    clearMedia: function () { return Promise.resolve(); },
     storageKey: storageKey
   };
 })();

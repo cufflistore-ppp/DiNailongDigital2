@@ -3,138 +3,280 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Login - Nailong Digital</title>
+  <title>Masuk · Nailong Digital</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="icon" href="nailong-digital-logo.png" type="image/png">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
   <style>
-    body { background: #0a0e18 !important; }
-    .auth-wrap { max-width: 400px; margin: 0 auto; padding: 24px 16px 100px; }
-    .auth-card {
-      background: rgba(16,24,42,0.82); border: 1px solid rgba(255,193,7,0.22);
-      border-radius: 20px; padding: 28px 20px; text-align: center;
-      backdrop-filter: blur(12px);
+    html, body { height: 100%; margin: 0; background: #0a0e18 !important; }
+    body { min-height: 100dvh; }
+    .auth-full {
+      min-height: 100dvh; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      padding: 28px 16px 40px; box-sizing: border-box;
     }
-    .auth-card img.logo {
-      width: 88px; height: auto; margin: 0 auto 14px; display: block;
-      background: transparent !important; border-radius: 0;
-      object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.35));
+    .auth-brand { text-align: center; margin-bottom: 18px; }
+    .auth-brand img {
+      width: 72px; height: auto; display: block; margin: 0 auto 10px;
+      filter: drop-shadow(0 6px 16px rgba(255,193,7,0.25));
     }
-    .auth-card h1 { font-size: 20px; color: #fff; margin: 0 0 6px; }
-    .auth-card .sub { font-size: 13px; color: #8aa0b8; margin-bottom: 20px; }
-    .auth-card label { display:block; text-align:left; font-size:12px; color:#cfd8dc; margin: 10px 0 4px; font-weight:600; }
-    .auth-card .form-input { width:100%; background:#0d1220 !important; color:#fff !important; }
-    .btn-auth {
-      width: 100%; margin-top: 14px; padding: 14px;
-      background: linear-gradient(90deg,#FFC107,#FF8F00); color:#0a0e18;
-      border: none; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer;
+    .auth-brand h1 {
+      margin: 0; font-size: 22px; font-weight: 800; color: #fff;
+      letter-spacing: 0.5px;
     }
+    .auth-brand h1 span { color: #FFC107; }
+    .auth-brand p { margin: 6px 0 0; font-size: 13px; color: #8aa0b8; }
+    .auth-sheet {
+      width: 100%; max-width: 420px; flex: 1;
+      background: #fff; border-radius: 28px 28px 0 0;
+      padding: 22px 20px 28px; color: #1a1d24;
+      box-shadow: 0 -8px 40px rgba(0,0,0,0.35);
+      margin-top: auto;
+    }
+    .auth-tabs {
+      display: flex; background: #f0f2f5; border-radius: 14px; padding: 4px; margin-bottom: 18px;
+    }
+    .auth-tabs button {
+      flex: 1; border: none; background: transparent; padding: 12px;
+      border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; color: #6b7280;
+    }
+    .auth-tabs button.active { background: #0a0e18; color: #FFC107; }
+    .field { margin-bottom: 12px; }
+    .field label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12px; font-weight: 700; color: #b45309; margin-bottom: 6px;
+    }
+    .field label i { color: #FFC107; }
+    .field input, .field select {
+      width: 100%; padding: 14px 14px; border-radius: 14px; border: 1.5px solid #e5e7eb;
+      background: #f8f9fb; font-size: 14px; box-sizing: border-box; color: #1a1d24;
+    }
+    .field input:focus, .field select:focus {
+      outline: none; border-color: #FFC107; background: #fff;
+    }
+    .field .err { font-size: 11px; color: #e11d48; margin-top: 4px; display: none; }
+    .field.bad input { border-color: #e11d48; }
+    .field.bad .err { display: block; }
+    .row-between { display: flex; justify-content: space-between; align-items: center; margin: 8px 0 14px; font-size: 12px; }
+    .row-between label { display: flex; align-items: center; gap: 6px; color: #4b5563; font-weight: 600; }
+    .row-between a { color: #d97706; font-weight: 700; text-decoration: none; }
+    .btn-main {
+      width: 100%; padding: 15px; border: none; border-radius: 14px;
+      background: linear-gradient(90deg, #FFC107, #FF8F00); color: #0a0e18;
+      font-weight: 800; font-size: 15px; cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255,193,7,0.35);
+    }
+    .btn-main:disabled { opacity: 0.6; cursor: wait; }
+    .divider {
+      display: flex; align-items: center; gap: 12px; margin: 18px 0 12px;
+      color: #9ca3af; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
     .btn-google {
-      width: 100%; margin-top: 10px; padding: 13px;
-      background: #fff; color: #1a1a1a; border: none; border-radius: 12px;
-      font-weight: 700; font-size: 14px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 13px; border-radius: 14px; border: 1.5px solid #e5e7eb;
+      background: #fff; font-weight: 700; font-size: 14px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px; color: #1a1d24;
     }
-    .auth-links { margin-top: 16px; font-size: 13px; color: #8aa0b8; }
-    .auth-links a { color: #FFC107; font-weight: 700; text-decoration: none; }
-    .divider { display:flex; align-items:center; gap:10px; margin: 16px 0; color:#6b7a90; font-size:11px; }
-    .divider::before, .divider::after { content:''; flex:1; height:1px; background:rgba(255,193,7,0.2); }
-    .auth-err { color:#ff8a80; font-size:12px; margin-top:10px; min-height:18px; }
+    .meta-box {
+      display: none; margin-top: 8px; padding-top: 8px;
+      border-top: 1px dashed #e5e7eb;
+    }
+    .meta-box.show { display: block; }
+    .search-country {
+      position: relative;
+    }
+    .country-list {
+      display: none; position: absolute; left: 0; right: 0; top: 100%; z-index: 20;
+      max-height: 180px; overflow: auto; background: #fff; border: 1px solid #e5e7eb;
+      border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    .country-list button {
+      display: block; width: 100%; text-align: left; padding: 10px 12px;
+      border: none; background: #fff; font-size: 13px; cursor: pointer; color: #1a1d24;
+    }
+    .country-list button:hover { background: #fff8e6; }
+    #msg { margin-top: 10px; font-size: 13px; color: #e11d48; text-align: center; min-height: 18px; }
   </style>
 </head>
 <body>
-  <header class="header header-logo-only">
-    <div class="brand brand-centered"><div class="logo-text-wrap">
-      <img src="nailong-digital-logo.png" alt="Nailong Digital" class="logo-full" style="background:transparent">
-    </div></div>
-  </header>
-  <div class="auth-wrap">
-    <div class="auth-card">
-      <img src="nailong-digital-logo.png" alt="ND" class="logo">
-      <h1>Masuk</h1>
-      <p class="sub">Login ke Nailong Digital untuk order &amp; fitur lengkap.</p>
-      <label>Email</label>
-      <input type="email" id="email" class="form-input" placeholder="email@contoh.com" autocomplete="username">
-      <label>Password</label>
-      <input type="password" id="pass" class="form-input" placeholder="••••••••" autocomplete="current-password">
-      <button type="button" class="btn-auth" id="btnLogin">Masuk</button>
-      <div class="divider">atau</div>
-      <button type="button" class="btn-google" id="btnGoogle"><i class="fa-brands fa-google" style="color:#ea4335"></i> Lanjut dengan Google</button>
-      <div class="auth-err" id="err"></div>
-      <div class="auth-links">Belum punya akun? <a href="register.html">Daftar</a></div>
-      <div class="auth-links"><a href="index.html">← Kembali ke beranda</a></div>
+  <div class="auth-full">
+    <div class="auth-brand">
+      <img src="nailong-digital-logo.png" alt="ND">
+      <h1>NAILONG <span>DIGITAL</span></h1>
+      <p id="welcomeText">Selamat datang kembali.</p>
+    </div>
+    <div class="auth-sheet">
+      <div class="auth-tabs">
+        <button type="button" class="active" data-tab="in" id="tabIn">Masuk</button>
+        <button type="button" data-tab="up" id="tabUp">Daftar</button>
+      </div>
+
+      <form id="formAuth" autocomplete="on">
+        <div class="field" id="nameField" style="display:none;">
+          <label><i class="fa-solid fa-user"></i> Nama lengkap</label>
+          <input type="text" id="name" placeholder="Nama kamu" maxlength="40">
+        </div>
+        <div class="field">
+          <label><i class="fa-solid fa-envelope"></i> Alamat email</label>
+          <input type="email" id="email" placeholder="Masukkan email" required>
+          <div class="err">Email wajib diisi.</div>
+        </div>
+        <div class="field">
+          <label><i class="fa-solid fa-lock"></i> Kata sandi</label>
+          <input type="password" id="pass" placeholder="Masukkan kata sandi" required minlength="6">
+          <div class="err">Minimal 6 karakter.</div>
+        </div>
+
+        <div class="meta-box" id="metaBox">
+          <div class="field search-country">
+            <label><i class="fa-solid fa-globe"></i> Negara</label>
+            <input type="text" id="countrySearch" placeholder="Cari negara…" autocomplete="off">
+            <input type="hidden" id="countryCode" value="ID">
+            <div class="country-list" id="countryList"></div>
+          </div>
+          <div class="field">
+            <label><i class="fa-solid fa-moon"></i> Agama</label>
+            <select id="religion">
+              <option value="islam">Islam</option>
+              <option value="kristen">Kristen</option>
+              <option value="katolik">Katolik</option>
+              <option value="hindu">Hindu</option>
+              <option value="buddha">Buddha</option>
+              <option value="konghucu">Konghucu</option>
+              <option value="lain">Lainnya / prefer tidak bilang</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row-between" id="rowKeep">
+          <label><input type="checkbox" id="keep" checked> Tetap masuk</label>
+          <a href="#" id="forgot">Lupa sandi?</a>
+        </div>
+
+        <button type="submit" class="btn-main" id="btnSubmit">Masuk</button>
+      </form>
+
+      <div class="divider">ATAU LANJUT DENGAN</div>
+      <button type="button" class="btn-google" id="btnGoogle">
+        <i class="fa-brands fa-google" style="color:#ea4335"></i> Google
+      </button>
+      <div id="msg"></div>
     </div>
   </div>
+
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-  <script src="global-orders.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
   <script src="auth.js"></script>
-  <script src="ui-enhance.js"></script>
+  <script src="locale.js"></script>
+  <script src="protect.js"></script>
   <script>
-  (function () {
-    function showErr(m) { document.getElementById('err').textContent = m || ''; }
-    function ensureFb() {
-      if (typeof firebase === 'undefined') throw new Error('Firebase SDK belum load');
-      if (!firebase.apps.length) {
-        var cfg = (window.VoxyyOrders && window.VoxyyOrders.FIREBASE_CONFIG) || null;
-        if (!cfg) throw new Error('Config Firebase tidak ada');
-        firebase.initializeApp(cfg);
-      }
-      try {
-        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-      } catch (e) {}
-      return firebase.auth();
+  (function(){
+    var mode = 'in';
+    function $(id){ return document.getElementById(id); }
+    function setMode(m){
+      mode = m;
+      $('tabIn').classList.toggle('active', m==='in');
+      $('tabUp').classList.toggle('active', m==='up');
+      $('nameField').style.display = m==='up' ? 'block' : 'none';
+      $('metaBox').classList.toggle('show', m==='up');
+      $('rowKeep').style.display = m==='in' ? 'flex' : 'none';
+      $('btnSubmit').textContent = m==='in' ? 'Masuk' : 'Daftar';
+      $('welcomeText').textContent = m==='in' ? 'Selamat datang kembali.' : 'Buat akun baru — mulai dari sini.';
     }
-    try { ensureFb(); } catch (e) { showErr(e.message); }
+    $('tabIn').onclick = function(){ setMode('in'); };
+    $('tabUp').onclick = function(){ setMode('up'); };
 
-    document.getElementById('btnGoogle').onclick = async function () {
-      showErr('');
-      try {
-        ensureFb();
-        if (!window.VoxyyAuth) throw new Error('Auth belum siap');
-        var u = await VoxyyAuth.loginGoogle();
-        if (u) {
-          localStorage.setItem('nailong_logged_in', '1');
-          sessionStorage.removeItem('nailong_login_gate');
-          location.href = sessionStorage.getItem('nailong_return_after_login') || 'index.html';
-        }
-      } catch (e) { showErr(e.message || 'Gagal login Google'); }
-    };
+    // countries
+    var countries = window.ND_COUNTRIES || [];
+    var list = $('countryList');
+    var search = $('countrySearch');
+    function renderC(q){
+      q = (q||'').toLowerCase();
+      var hits = countries.filter(function(c){
+        return !q || c.name.toLowerCase().indexOf(q)>=0 || c.code.toLowerCase()===q;
+      }).slice(0, 40);
+      list.innerHTML = hits.map(function(c){
+        return '<button type="button" data-code="'+c.code+'">'+c.flag+' '+c.name+' ('+c.currency+')</button>';
+      }).join('');
+      list.style.display = hits.length ? 'block' : 'none';
+      list.querySelectorAll('button').forEach(function(b){
+        b.onclick = function(){
+          var code = b.getAttribute('data-code');
+          var c = countries.find(function(x){ return x.code===code; });
+          $('countryCode').value = code;
+          search.value = c ? (c.flag+' '+c.name) : code;
+          list.style.display = 'none';
+        };
+      });
+    }
+    search.onfocus = function(){ renderC(search.value); };
+    search.oninput = function(){ renderC(search.value); };
+    document.addEventListener('click', function(e){
+      if (!e.target.closest('.search-country')) list.style.display = 'none';
+    });
+    // default Indonesia
+    var idn = countries.find(function(c){ return c.code==='ID'; });
+    if (idn) { search.value = idn.flag+' '+idn.name; $('countryCode').value='ID'; }
 
-    document.getElementById('btnLogin').onclick = async function () {
-      showErr('');
-      var email = document.getElementById('email').value.trim();
-      var pass = document.getElementById('pass').value;
-      if (!email || !pass) return showErr('Isi email & password');
+    function msg(t, ok){ $('msg').style.color = ok?'#059669':'#e11d48'; $('msg').textContent = t||''; }
+
+    $('formAuth').onsubmit = async function(e){
+      e.preventDefault();
+      var email = $('email').value.trim();
+      var pass = $('pass').value;
+      var btn = $('btnSubmit');
+      btn.disabled = true;
+      msg('');
       try {
-        var auth = ensureFb();
-        var cred = await auth.signInWithEmailAndPassword(email, pass);
-        if (cred && cred.user) {
-          localStorage.setItem('nailong_logged_in', '1');
-          sessionStorage.removeItem('nailong_login_gate');
-          location.href = sessionStorage.getItem('nailong_return_after_login') || 'index.html';
+        if (mode === 'in') {
+          await VoxyyAuth.loginEmail(email, pass);
+        } else {
+          var name = $('name').value.trim() || email.split('@')[0];
+          await VoxyyAuth.registerEmail(email, pass, name);
+          if (window.NDLocale) {
+            NDLocale.saveProfile({
+              country: $('countryCode').value || 'ID',
+              religion: $('religion').value || 'islam'
+            });
+          }
         }
-      } catch (e) {
-        var msg = e.message || 'Login gagal';
-        if (String(msg).indexOf('user-not-found') >= 0 || String(e.code||'').indexOf('user-not-found') >= 0)
-          msg = 'Akun tidak ditemukan. Daftar dulu.';
-        else if (String(e.code||'').indexOf('wrong-password') >= 0 || String(msg).indexOf('wrong-password') >= 0)
-          msg = 'Password salah.';
-        else if (String(e.code||'').indexOf('invalid-credential') >= 0)
-          msg = 'Email atau password salah.';
-        showErr(msg);
+        try { localStorage.setItem('nailong_logged_in','1'); } catch(e2){}
+        msg('Berhasil! Mengalihkan…', true);
+        setTimeout(function(){ location.href = 'index.html'; }, 500);
+      } catch (err) {
+        msg((err && err.message) || 'Gagal. Coba lagi.');
+        btn.disabled = false;
       }
     };
 
-    // sudah login → home
-    setTimeout(function () {
+    $('btnGoogle').onclick = function(){
+      if (window.VoxyyAuth && VoxyyAuth.loginGoogle) VoxyyAuth.loginGoogle();
+      else msg('Google login belum tersedia di perangkat ini.');
+    };
+    $('forgot').onclick = function(e){
+      e.preventDefault();
+      var email = $('email').value.trim();
+      if (!email) { msg('Isi email dulu untuk reset sandi.'); return; }
+      if (window.VoxyyAuth && VoxyyAuth.resetPassword) {
+        VoxyyAuth.resetPassword(email).then(function(){ msg('Link reset dikirim ke email.', true); })
+          .catch(function(err){ msg(err.message||'Gagal kirim reset'); });
+      } else msg('Hubungi admin untuk reset sandi.');
+    };
+
+    // already logged in?
+    function goIfIn(){
       try {
-        if (firebase.apps.length && firebase.auth().currentUser) {
-          localStorage.setItem('nailong_logged_in', '1');
-          location.href = 'index.html';
+        if (localStorage.getItem('nailong_logged_in')==='1') {
+          location.replace('index.html');
         }
-      } catch (e) {}
-    }, 800);
+      } catch(e){}
+    }
+    if (window.VoxyyAuth && VoxyyAuth.onAuth) {
+      VoxyyAuth.onAuth(function(u){ if (u) location.replace('index.html'); });
+    }
+    setTimeout(goIfIn, 800);
   })();
   </script>
 </body>

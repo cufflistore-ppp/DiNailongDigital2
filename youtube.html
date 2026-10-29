@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>YouTube - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <style>
+    .yt-search { display:flex; gap:8px; margin-bottom:12px; }
+    .yt-search input { flex:1; }
+    .yt-frame-wrap { position:relative; width:100%; padding-top:56.25%; background:#000; border-radius:14px; overflow:hidden; margin-bottom:12px; }
+    .yt-frame-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .yt-list { display:flex; flex-direction:column; gap:8px; }
+    .yt-item { display:flex; gap:10px; padding:10px; background:rgba(16,24,42,0.65); border-radius:12px; cursor:pointer; border:1px solid rgba(255,193,7,0.12); }
+    .yt-item img { width:120px; height:68px; object-fit:cover; border-radius:8px; background:#111; }
+    .yt-item b { display:block; color:#fff; font-size:13px; }
+    .yt-item span { font-size:11px; color:#8aa0b8; }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nailong-digital-logo.png" alt="ND" class="logo-full">
+    </div></div>
+  </header>
+  <div class="page-content">
+    <div class="badge">YOUTUBE</div>
+    <h2 class="page-title"><i class="fa-brands fa-youtube" style="color:#f44;"></i> Tonton di sini</h2>
+    <div class="yt-search">
+      <input id="q" class="form-input" placeholder="Tempel link YouTube atau kata kunci…">
+      <button type="button" class="btn-pesan" id="go">Putar</button>
+    </div>
+    <div class="yt-frame-wrap" id="playerBox" style="display:none;">
+      <iframe id="player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="yt-list" id="list"></div>
+  </div>
+  <nav class="bottom-nav nav-5">
+    <a href="baca.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-book"></i></span><span>Baca</span></a>
+    <a href="youtube.html" class="nav-item active"><span class="nav-icon-wrap"><i class="fa-brands fa-youtube"></i></span><span>YT</span></a>
+    <a href="index.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="music.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-music"></i></span><span>Music</span></a>
+    <a href="akun.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script>
+  (function(){
+    function idFrom(u){
+      u = String(u||'').trim();
+      var m = u.match(/[?&]v=([\w-]{6,})/) || u.match(/youtu\.be\/([\w-]{6,})/) || u.match(/shorts\/([\w-]{6,})/) || u.match(/^([\w-]{6,11})$/);
+      return m ? m[1] : null;
+    }
+    function play(id){
+      if(!id) return;
+      document.getElementById('playerBox').style.display='block';
+      document.getElementById('player').src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+    }
+    document.getElementById('go').onclick = function(){
+      var q = document.getElementById('q').value.trim();
+      var id = idFrom(q);
+      if(id){ play(id); return; }
+      // keyword → youtube search page embed not allowed; open search suggestions via no-api links list
+      document.getElementById('list').innerHTML = '<a class="yt-item" href="https://www.youtube.com/results?search_query='+encodeURIComponent(q)+'" target="_blank" rel="noopener"><div><b>Cari di YouTube: '+q+'</b><span>Tempel link video untuk putar di sini</span></div></a>';
+    };
+    // sample
+    var samples = [
+      {id:'jNQXAC9IVRw', t:'Me at the zoo (sample)'},
+      {id:'dQw4w9WgXcQ', t:'Sample music video'}
+    ];
+    document.getElementById('list').innerHTML = samples.map(function(s){
+      return '<div class="yt-item" data-id="'+s.id+'"><img src="https://i.ytimg.com/vi/'+s.id+'/hqdefault.jpg" alt=""><div><b>'+s.t+'</b><span>Tap untuk putar di halaman ini</span></div></div>';
+    }).join('');
+    document.getElementById('list').onclick = function(e){
+      var it = e.target.closest('.yt-item'); if(!it) return;
+      play(it.getAttribute('data-id'));
+    };
+  })();
+  </script>
+</body>
+</html>
