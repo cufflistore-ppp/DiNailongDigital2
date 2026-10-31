@@ -63,7 +63,6 @@
         '<a href="music.html"><i class="fa-solid fa-music"></i><span>Music</span></a>' +
         '<a href="game.html"><i class="fa-solid fa-gamepad"></i><span>Game</span></a>' +
         '<a href="youtube.html"><i class="fa-brands fa-youtube"></i><span>YouTube</span></a>' +
-        '<a href="tema.html"><i class="fa-solid fa-palette"></i><span>Tema / Warna</span></a>' +
         '<a href="tools-canvas.html"><i class="fa-solid fa-image"></i><span>Canvas Tools</span></a>' +
 
         '<div class="side-section">LAYANAN BOT</div>' +

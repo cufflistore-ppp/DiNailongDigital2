@@ -29,33 +29,38 @@
     </div></div>
   </header>
   <div class="page-content">
-    <div class="badge">TOOLS NEXUS</div>
-    <h2 class="page-title"><i class="fa-solid fa-screwdriver-wrench"></i> All Tools</h2>
-    <p style="margin-bottom:10px;"><a href="tools-canvas.html" class="theme-link"><i class="fa-solid fa-image"></i> Canvas Tools (OVO/DANA/Chat/SS Web)</a> · <a href="badak-wa.html" class="theme-link">Badak WA</a></p>
-    <p class="page-desc">Banyak tools praktis — WA, teks, generate, cek, konversi. Bukan basic doang.</p>
+    <div class="badge">TOOLS</div>
+    <h2 class="page-title"><i class="fa-solid fa-screwdriver-wrench"></i> Tools</h2>
+    <p class="page-desc">Semua tools dalam satu tempat — canvas, WA, teks, generate, dll.</p>
 
-    <div class="tools-cat">WHATSAPP &amp; SOSMED</div>
-    <div class="tools-grid">
+    <div class="tools-grid" id="toolsAll">
+      <a class="tool-card" href="tools-canvas.html?t=ovo" style="text-decoration:none;"><img src="tools-tpl/ovo.jpg" alt="" style="width:100%;height:48px;object-fit:cover;border-radius:8px;margin-bottom:6px;"><span>OVO Saldo</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=dana" style="text-decoration:none;"><img src="tools-tpl/dana.jpg" alt="" style="width:100%;height:48px;object-fit:cover;border-radius:8px;margin-bottom:6px;"><span>DANA Saldo</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=wa" style="text-decoration:none;"><img src="tools-tpl/wa.jpg" alt="" style="width:100%;height:48px;object-fit:cover;border-radius:8px;margin-bottom:6px;"><span>Chat WA</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=ktp" style="text-decoration:none;"><img src="tools-tpl/ktp.jpg" alt="" style="width:100%;height:48px;object-fit:cover;border-radius:8px;margin-bottom:6px;"><span>KTP Parodi</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=ff" style="text-decoration:none;"><img src="tools-tpl/ff.jpg" alt="" style="width:100%;height:48px;object-fit:cover;border-radius:8px;margin-bottom:6px;"><span>FF Rank</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=ml" style="text-decoration:none;"><img src="tools-tpl/ml.jpg" alt="" style="width:100%;height:48px;object-fit:cover;border-radius:8px;margin-bottom:6px;"><span>ML Rank</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=sertifikat" style="text-decoration:none;"><img src="tools-tpl/sertifikat.jpg" alt="" style="width:100%;height:48px;object-fit:cover;border-radius:8px;margin-bottom:6px;"><span>Sertifikat</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=quote" style="text-decoration:none;"><img src="tools-tpl/quote.jpg" alt="" style="width:100%;height:48px;object-fit:cover;border-radius:8px;margin-bottom:6px;"><span>Quote</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=tiktok" style="text-decoration:none;"><img src="tools-tpl/tiktok.jpg" alt="" style="width:100%;height:48px;object-fit:cover;border-radius:8px;margin-bottom:6px;"><span>TikTok</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=ssweb" style="text-decoration:none;"><i class="fa-solid fa-camera" style="font-size:20px;color:#FFC107;display:block;margin-bottom:6px;"></i><span>SS Web</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=preset" style="text-decoration:none;"><i class="fa-solid fa-layer-group" style="font-size:20px;color:#FFC107;display:block;margin-bottom:6px;"></i><span>Preset Link</span></a>
       <div class="tool-card" data-tool="wa"><i class="fa-brands fa-whatsapp"></i><span>WA Link</span></div>
       <div class="tool-card" data-tool="watext"><i class="fa-solid fa-message"></i><span>WA + Teks</span></div>
       <div class="tool-card" data-tool="vacall"><i class="fa-solid fa-phone"></i><span>WA Call Link</span></div>
       <div class="tool-card" data-tool="sticker"><i class="fa-solid fa-note-sticky"></i><span>Teks Stiker</span></div>
       <div class="tool-card" data-tool="spam"><i class="fa-solid fa-bomb"></i><span>Spam Teks</span></div>
       <div class="tool-card" data-tool="fakechat"><i class="fa-solid fa-comments"></i><span>Fake Chat UI</span></div>
-    </div>
+    
 
-    <div class="tools-cat">GENERATE &amp; RANDOM</div>
-    <div class="tools-grid">
       <div class="tool-card" data-tool="uuid"><i class="fa-solid fa-key"></i><span>UUID</span></div>
       <div class="tool-card" data-tool="pass"><i class="fa-solid fa-lock"></i><span>Password</span></div>
       <div class="tool-card" data-tool="nick"><i class="fa-solid fa-user-ninja"></i><span>Nickname</span></div>
       <div class="tool-card" data-tool="color"><i class="fa-solid fa-palette"></i><span>Color Pick</span></div>
       <div class="tool-card" data-tool="lorem"><i class="fa-solid fa-align-left"></i><span>Lorem Ipsum</span></div>
       <div class="tool-card" data-tool="fakeid"><i class="fa-solid fa-id-card"></i><span>Fake ID Data</span></div>
-    </div>
+    
 
-    <div class="tools-cat">TEKS &amp; ENCODE</div>
-    <div class="tools-grid">
       <div class="tool-card" data-tool="encode"><i class="fa-solid fa-code"></i><span>Base64</span></div>
       <div class="tool-card" data-tool="url"><i class="fa-solid fa-link"></i><span>URL Encode</span></div>
       <div class="tool-card" data-tool="hash"><i class="fa-solid fa-fingerprint"></i><span>MD5 / SHA</span></div>
@@ -65,32 +70,24 @@
       <div class="tool-card" data-tool="bin"><i class="fa-solid fa-1"></i><span>Binary</span></div>
       <div class="tool-card" data-tool="slug"><i class="fa-solid fa-minus"></i><span>Slugify</span></div>
       <div class="tool-card" data-tool="json"><i class="fa-solid fa-brackets-curly"></i><span>JSON Format</span></div>
-    </div>
+    
 
-    <div class="tools-cat">QR · SCAN · MEDIA</div>
-    <div class="tools-grid">
       <div class="tool-card" data-tool="qr"><i class="fa-solid fa-qrcode"></i><span>QR Generator</span></div>
       <div class="tool-card" data-tool="barcode"><i class="fa-solid fa-barcode"></i><span>Barcode Text</span></div>
       <div class="tool-card" data-tool="yt"><i class="fa-brands fa-youtube"></i><span>YT Thumbnail</span></div>
       <div class="tool-card" data-tool="meta"><i class="fa-solid fa-globe"></i><span>Meta Preview</span></div>
-    </div>
+    
 
-    <div class="tools-cat">DEPLOY &amp; HOSTING</div>
-    <div class="tools-grid">
       <div class="tool-card" data-tool="deployzip"><i class="fa-solid fa-cloud-arrow-up"></i><span>Deploy ZIP</span></div>
       <div class="tool-card" data-tool="hostcheck"><i class="fa-solid fa-signal"></i><span>Cek Host</span></div>
       <div class="tool-card" data-tool="htmlpreview"><i class="fa-solid fa-code"></i><span>HTML Preview</span></div>
       <div class="tool-card" data-tool="minify"><i class="fa-solid fa-compress"></i><span>Minify</span></div>
-    </div>
+    
 
-    <div class="tools-cat">DEV &amp; TEXT</div>
-    <div class="tools-grid">
       <div class="tool-card" data-tool="regex"><i class="fa-solid fa-asterisk"></i><span>Regex Test</span></div>
       <div class="tool-card" data-tool="difftext"><i class="fa-solid fa-code-compare"></i><span>Diff Teks</span></div>
-    </div>
+    
 
-    <div class="tools-cat">UTILITAS</div>
-    <div class="tools-grid">
       <div class="tool-card" data-tool="uang"><i class="fa-solid fa-money-bill"></i><span>Format Rupiah</span></div>
       <div class="tool-card" data-tool="persen"><i class="fa-solid fa-percent"></i><span>Hitung %</span></div>
       <div class="tool-card" data-tool="waktu"><i class="fa-solid fa-clock"></i><span>Unix Time</span></div>
@@ -100,7 +97,6 @@
     </div>
 
     
-    <div class="tools-cat">HOSTING · DEPLOY CEPAT</div>
     <div class="tools-grid">
       <div class="tool-card" data-tool="deploy"><i class="fa-solid fa-rocket"></i><span>Deploy ZIP</span></div>
       <div class="tool-card" data-tool="netlify"><i class="fa-solid fa-cloud"></i><span>Netlify Drop</span></div>
@@ -108,10 +104,8 @@
       <div class="tool-card" data-tool="tiiny"><i class="fa-solid fa-link"></i><span>Tiiny Host</span></div>
       <div class="tool-card" data-tool="zipview"><i class="fa-solid fa-file-zipper"></i><span>Buka ZIP</span></div>
       <div class="tool-card" data-tool="htmlhost"><i class="fa-solid fa-code"></i><span>HTML Preview</span></div>
-    </div>
+    
 
-    <div class="tools-cat">NEXUS STYLE</div>
-    <div class="tools-grid">
       <div class="tool-card" data-tool="fakeovo"><i class="fa-solid fa-wallet"></i><span>Fake OVO</span></div>
       <div class="tool-card" data-tool="fakedev"><i class="fa-solid fa-laptop-code"></i><span>FakeDev</span></div>
       <div class="tool-card" data-tool="quote"><i class="fa-solid fa-quote-left"></i><span>Quote Gen</span></div>

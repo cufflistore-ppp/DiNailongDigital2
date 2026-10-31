@@ -375,7 +375,52 @@
 
   <div class="akun-page">
     <div class="akun-page-title">Akun</div>
-    <div class="api-form-card" id="ndLocaleBox" style="margin-bottom:14px;">
+    <div class="akun-page-sub" id="pageSub">Kelola profil dan akses layanan Nailong Digital.</div>
+
+    <!-- ===== GUEST ===== -->
+    <div id="viewGuest">
+      <div class="guest-card">
+        <div class="guest-icon"><i class="fa-solid fa-user-lock"></i></div>
+        <h3>Masuk ke Nailong Digital</h3>
+        <p>Login Google untuk order, pantau antrian, dan akses fitur akun.</p>
+        <button type="button" class="btn-google" id="btnGoogle">
+          <svg class="g-icon" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Masuk dengan Google</button>
+        <a href="login.html" class="btn-topup" style="display:block;text-align:center;margin-top:10px;">Masuk / Daftar</a>
+      </div>
+      <div class="login-hint">
+        <i class="fa-solid fa-circle-info"></i>
+        Tanpa login, pesanan tidak bisa diproses dan status antrian tidak bisa dipantau.
+      </div>
+    </div>
+
+    <!-- ===== LOGGED IN ===== -->
+    <div id="viewLoggedIn">
+      <div class="profil-card">
+        <div class="profil-avatar-wrap">
+          <div id="profilAvatar" class="profil-avatar ph">?</div>
+          <span class="profil-badge-dot" title="Online"></span>
+        </div>
+        <div class="profil-info">
+          <div class="profil-name" id="profilName">—</div>
+          <div class="profil-email" id="profilEmail">—</div>
+          <div class="profil-meta" id="profilMeta">Terhubung dengan Google</div>
+          <div class="profil-status-pill" id="profilPill"> Aktif</div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-num" id="statOrder">0</div>
+          <div class="stat-label">Order aktif</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statDone">0</div>
+          <div class="stat-label">Selesai (perangkat)</div>
+        </div>
+      </div>
+
+      <div class="api-form-card" id="ndLocaleBox" style="margin:14px 0;">
       <h3 style="margin:0 0 8px;font-size:14px;color:var(--nd-accent,#FFC107);"><i class="fa-solid fa-globe"></i> Negara &amp; agama</h3>
       <label style="font-size:12px;color:#8aa0b8;">Cari negara</label>
       <input type="text" id="akunCountrySearch" class="form-input" placeholder="Cari negara…">
@@ -421,54 +466,8 @@
       });
     });
     </script>
-    <p style="margin:0 0 12px;"><a href="tema.html" class="theme-link"><i class="fa-solid fa-palette"></i> Tema &amp; warna</a> · <a href="buka-toko.html" class="theme-link">Toko</a></p>
-    <div class="akun-page-sub" id="pageSub">Kelola profil dan akses layanan Nailong Digital.</div>
-
-    <!-- ===== GUEST ===== -->
-    <div id="viewGuest">
-      <div class="guest-card">
-        <div class="guest-icon"><i class="fa-solid fa-user-lock"></i></div>
-        <h3>Masuk ke Nailong Digital</h3>
-        <p>Login Google untuk order, pantau antrian, dan akses fitur akun.</p>
-        <button type="button" class="btn-google" id="btnGoogle">
-          <svg class="g-icon" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-          Masuk dengan Google</button>
-        <a href="login.html" class="btn-topup" style="display:block;text-align:center;margin-top:10px;">Login</a></div><div style="margin-top:8px;"><a href="register.html" class="btn-pesan" style="display:block;text-align:center;">Daftar Akun
-        </button>
-      </div>
-      <div class="login-hint">
-        <i class="fa-solid fa-circle-info"></i>
-        Tanpa login, pesanan tidak bisa diproses dan status antrian tidak bisa dipantau.
-      </div>
-    </div>
-
-    <!-- ===== LOGGED IN ===== -->
-    <div id="viewLoggedIn">
-      <div class="profil-card">
-        <div class="profil-avatar-wrap">
-          <div id="profilAvatar" class="profil-avatar ph">?</div>
-          <span class="profil-badge-dot" title="Online"></span>
-        </div>
-        <div class="profil-info">
-          <div class="profil-name" id="profilName">—</div>
-          <div class="profil-email" id="profilEmail">—</div>
-          <div class="profil-meta" id="profilMeta">Terhubung dengan Google</div>
-          <div class="profil-status-pill" id="profilPill"> Aktif</div>
-        </div>
-      </div>
-
-      <div class="stats-row">
-        <div class="stat-box">
-          <div class="stat-num" id="statOrder">0</div>
-          <div class="stat-label">Order aktif</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num" id="statDone">0</div>
-          <div class="stat-label">Selesai (perangkat)</div>
-        </div>
-      </div>
-
-      <div class="menu-section-title">Menu Akun</div>
+    
+    <div class="menu-section-title">Menu Akun</div>
       <div class="menu-list">
         <a class="menu-item" href="antrian.html">
           <span class="mi-icon"><i class="fa-solid fa-clock"></i></span>

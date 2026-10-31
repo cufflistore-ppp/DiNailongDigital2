@@ -4,6 +4,40 @@
   function $(id) { return document.getElementById(id); }
   function val(id) { var el = $(id); return el ? el.value : ''; }
 
+  var TPL = {
+    ovo: 'tools-tpl/ovo.jpg',
+    dana: 'tools-tpl/dana.jpg',
+    wa: 'tools-tpl/wa.jpg',
+    ktp: 'tools-tpl/ktp.jpg',
+    ff: 'tools-tpl/ff.jpg',
+    ml: 'tools-tpl/ml.jpg',
+    sertifikat: 'tools-tpl/sertifikat.jpg',
+    quote: 'tools-tpl/quote.jpg',
+    tiktok: 'tools-tpl/tiktok.jpg'
+  };
+
+  function loadTpl(key) {
+    return new Promise(function (resolve) {
+      var src = TPL[key];
+      if (!src) return resolve(null);
+      var img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = function () { resolve(img); };
+      img.onerror = function () { resolve(null); };
+      img.src = src;
+    });
+  }
+
+  function coverImage(img, w, h) {
+    if (!img) return;
+    cv.width = w; cv.height = h;
+    var ir = img.width / img.height, cr = w / h;
+    var sx=0, sy=0, sw=img.width, sh=img.height;
+    if (ir > cr) { sw = img.height * cr; sx = (img.width - sw) / 2; }
+    else { sh = img.width / cr; sy = (img.height - sh) / 2; }
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+  }
+
   function open(m) {
     mode = m;
     try { document.title = m.toUpperCase() + ' · Canvas Tools'; } catch(e){}
@@ -81,18 +115,62 @@
 
   async function draw() {
     ctx.clearRect(0, 0, cv.width, cv.height);
-    if (mode === 'ovo') drawOvo();
-    else if (mode === 'dana') drawDana();
-    else if (mode === 'sertifikat') drawSert();
-    else if (mode === 'wa') drawWa();
-    else if (mode === 'ff') drawFf();
-    else if (mode === 'ml') drawMl();
-    else if (mode === 'quote') drawQuote();
-    else if (mode === 'ktp') await drawKtp();
-    else if (mode === 'tiktok') await drawTiktok();
+    if (mode === 'ovo' || mode === 'dana') await drawWallet(mode);
+    else if (false) {}
+    else if (mode === 'sertifikat') await drawWithTpl('sertifikat', drawSert, function(){ ctx.fillStyle='#111'; ctx.font='bold 28px serif'; ctx.textAlign='center'; ctx.fillText(val('f_name')||'Nama', cv.width/2, cv.height*0.55); ctx.textAlign='left'; });
+    else if (mode === 'wa') await drawWithTpl('wa', drawWa, function(){ ctx.fillStyle='#fff'; ctx.font='bold 20px sans-serif'; ctx.fillText(val('f_name')||'Teman', 120, 70); ctx.font='16px sans-serif'; ctx.fillStyle='#111'; round(40, 200, Math.min(520, cv.width-80), 60, 12, '#dcf8c6'); ctx.fillStyle='#111'; ctx.fillText(val('f_msg')||'Hai', 55, 238); });
+    else if (mode === 'ff') await drawWithTpl('ff', drawFf, function(){ ctx.fillStyle='#fff'; ctx.font='bold 32px sans-serif'; ctx.textAlign='center'; ctx.fillText(val('f_name')||'Player', cv.width/2, cv.height*0.78); ctx.fillStyle='#ffd54f'; ctx.font='bold 20px sans-serif'; ctx.fillText(val('f_rank')||'STARDOM', cv.width/2, cv.height*0.82); ctx.textAlign='left'; });
+    else if (mode === 'ml') await drawWithTpl('ml', drawMl, function(){ ctx.fillStyle='#ffd54f'; ctx.font='bold 28px sans-serif'; ctx.textAlign='center'; ctx.fillText(val('f_name')||'Player', cv.width/2, cv.height*0.82); ctx.fillStyle='#fff'; ctx.font='18px sans-serif'; ctx.fillText(val('f_rank')||'Mythic', cv.width/2, cv.height*0.86); ctx.textAlign='left'; });
+    else if (mode === 'quote') await drawWithTpl('quote', drawQuote, function(){ ctx.fillStyle='#222'; ctx.font='italic 28px Georgia,serif'; ctx.textAlign='center'; wrapText(val('f_text')||'Quote', cv.width/2, cv.height*0.4, cv.width*0.75, 40); ctx.font='18px sans-serif'; ctx.fillStyle='#444'; ctx.fillText('— '+(val('f_name')||''), cv.width/2, cv.height*0.72); ctx.textAlign='left'; });
+    else if (mode === 'ktp') { var _k=await loadTpl('ktp'); if(_k){ coverImage(_k, 1011, 638); ctx.fillStyle='#111'; ctx.font='bold 18px Arial'; ctx.fillText(val('f_name')||'NAMA', 220, 175); ctx.fillText(val('f_nik')||'0000', 220, 130); ctx.save(); ctx.translate(505,340); ctx.rotate(-0.4); ctx.font='bold 36px Arial'; ctx.fillStyle='rgba(200,0,0,0.3)'; ctx.textAlign='center'; ctx.fillText('PARODI — BUKAN DOKUMEN RESMI',0,0); ctx.restore(); } else await drawKtp(); }
+    else if (mode === 'tiktok') await drawWithTpl('tiktok', drawTiktok, function(){ ctx.fillStyle='#fff'; ctx.font='bold 22px sans-serif'; ctx.fillText(val('f_name')||'Nailong', 100, 80); ctx.fillStyle='#eee'; ctx.font='16px sans-serif'; ctx.fillText(val('f_msg')||'Hallo', 40, 200); });
     else if (mode === 'ssweb') await drawSsweb();
     else if (mode === 'preset') await drawPreset();
     NailongCanvas.watermark(ctx, cv.width, cv.height);
+  }
+
+
+  async function drawWallet(kind) {
+    var img = await loadTpl(kind);
+    var w = 720, h = 1280;
+    if (img) {
+      coverImage(img, w, h);
+    } else if (kind === 'ovo') {
+      drawOvo(); return;
+    } else {
+      drawDana(); return;
+    }
+    // tulis ulang nominal di area saldo (perkiraan posisi template)
+    var nom = money(val('f_nom'));
+    var name = val('f_name') || '';
+    ctx.fillStyle = 'rgba(0,0,0,0.25)';
+    if (kind === 'ovo') {
+      ctx.fillRect(40, 150, 500, 90);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 40px sans-serif';
+      ctx.fillText(nom, 55, 210);
+      if (name) { ctx.font = '16px sans-serif'; ctx.fillStyle = '#e8dfff'; ctx.fillText(name, 55, 240); }
+    } else {
+      ctx.fillRect(30, 60, 480, 80);
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 36px sans-serif';
+      ctx.fillText(nom, 45, 115);
+      if (name) { ctx.font = '15px sans-serif'; ctx.fillText(name, 45, 140); }
+    }
+  }
+
+  async function drawWithTpl(key, fallbackFn, overlayFn) {
+    var img = await loadTpl(key);
+    if (img) {
+      // keep natural aspect ~ phone or card
+      var w = img.width > 1000 ? 900 : 720;
+      var h = Math.round(w * (img.height / img.width));
+      if (h > 1400) { h = 1280; w = Math.round(h * (img.width / img.height)); }
+      coverImage(img, w, h);
+      if (overlayFn) overlayFn();
+    } else if (fallbackFn) {
+      fallbackFn();
+    }
   }
 
   function drawOvo() {

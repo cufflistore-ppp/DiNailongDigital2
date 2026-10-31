@@ -2,6 +2,7 @@
   
   
   function injectFlutterLogo() {
+    return; // dimatikan — user minta video saja, tanpa animasi logo
     if (sessionStorage.getItem('nd_flutter_logo') === '1') return;
     if (sessionStorage.getItem('nd_enter_anim') === '1') { /* allow once per session together */ }
     try { sessionStorage.setItem('nd_flutter_logo', '1'); } catch (e) {}
@@ -48,25 +49,36 @@
   function ensureIntro() {
     try {
       if (sessionStorage.getItem('nd_intro_seen') === '1') return;
-      if (location.pathname.indexOf('login') >= 0) return;
+      // video full screen only — no logo animation
       var v = document.createElement('div');
       v.id = 'ndIntro';
-      v.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;';
-      v.innerHTML = '<video src="intro-nd.mp4" autoplay muted playsinline style="width:100%;height:100%;object-fit:contain;background:#000"></video>';
+      v.style.cssText = 'position:fixed;inset:0;z-index:10050;background:#000;display:flex;align-items:center;justify-content:center;';
+      v.innerHTML = '<video id="ndIntroVid" src="intro-nd.mp4" autoplay muted playsinline preload="auto" style="width:100%;height:100%;object-fit:contain;background:#000"></video>';
       document.body.appendChild(v);
       var vid = v.querySelector('video');
+      var finished = false;
       function done() {
+        if (finished) return;
+        finished = true;
         try { sessionStorage.setItem('nd_intro_seen','1'); } catch(e){}
-        v.remove();
-        // if not logged in → login
+        try { v.remove(); } catch(e){}
         try {
-          if (localStorage.getItem('nailong_logged_in') !== '1') {
-            if (!/login\.html/.test(location.href)) location.replace('login.html');
-          }
+          var logged = localStorage.getItem('nailong_logged_in') === '1';
+          var onLogin = /login\.html/i.test(location.href);
+          if (!logged && !onLogin) location.replace('login.html');
         } catch(e2){}
       }
       vid.onended = done;
-      setTimeout(done, 9000);
+      vid.onerror = done;
+      // safety only if video metadata fails to load after long wait (not to cut early)
+      vid.addEventListener('loadedmetadata', function () {
+        var dur = (vid.duration || 0) * 1000;
+        if (dur > 0 && isFinite(dur)) {
+          setTimeout(done, dur + 800);
+        }
+      });
+      // absolute fallback 30s if browser blocks video
+      setTimeout(function () { if (!finished) done(); }, 30000);
     } catch (e) {}
   }
 
@@ -329,6 +341,7 @@
 
   
   function injectIntroSplash() {
+    return; // diganti ensureIntro video penuh
     try {
       if (sessionStorage.getItem('nd_intro_done') === '1') return;
     } catch (e) {}

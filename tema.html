@@ -2,151 +2,16 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Tema & Warna - Nailong Digital</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tema</title>
   <link rel="stylesheet" href="style.css">
   <script src="theme.js"></script>
-  <style>
-    .sheet {
-      max-width: 420px; margin: 0 auto;
-      background: var(--nd-card, #141a22);
-      border: 1px solid var(--nd-border, rgba(255,255,255,0.08));
-      border-radius: 20px; padding: 18px 16px 22px;
-    }
-    .sheet h2 { margin: 0 0 4px; font-size: 18px; color: var(--nd-text,#fff); }
-    .sheet .sub { font-size: 12px; color: var(--nd-muted,#8aa0b8); margin-bottom: 16px; }
-    .mode-row {
-      display:flex; align-items:center; justify-content:space-between;
-      padding: 14px 14px; border-radius: 14px;
-      background: rgba(127,127,127,0.08);
-      border: 1px solid var(--nd-border, rgba(255,255,255,0.08));
-      margin-bottom: 18px;
-    }
-    .mode-row b { display:block; font-size: 13px; color: var(--nd-text,#fff); }
-    .mode-row span { font-size: 11px; color: var(--nd-muted,#8aa0b8); }
-    .switch {
-      width: 48px; height: 28px; border-radius: 999px; border: none; cursor: pointer;
-      background: #3a3f4a; position: relative; flex-shrink: 0;
-    }
-    .switch.on { background: #7dcfb0; }
-    .switch i {
-      position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%;
-      background: #fff; transition: transform .2s;
-    }
-    .switch.on i { transform: translateX(20px); }
-    .sec-label {
-      font-size: 11px; font-weight: 800; letter-spacing: 0.6px;
-      color: var(--nd-muted,#8aa0b8); margin: 0 0 10px;
-    }
-    .pal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .pal {
-      display:flex; align-items:center; gap:10px; padding: 12px;
-      border-radius: 14px; cursor: pointer; text-align: left;
-      border: 1.5px solid var(--nd-border, rgba(255,255,255,0.1));
-      background: transparent; color: var(--nd-text,#fff);
-    }
-    .pal.active { border-color: var(--nd-accent, #c9a227); box-shadow: 0 0 0 1px var(--nd-accent); }
-    .pal .dot { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; }
-    .pal b { display:block; font-size: 12px; }
-    .pal small { display:block; font-size: 10px; color: var(--nd-muted,#8aa0b8); }
-    .btn-apply {
-      width: 100%; margin-top: 18px; padding: 14px;
-      border: none; border-radius: 14px; cursor: pointer;
-      background: var(--nd-accent, #c9a227); color: #0a0e18;
-      font-weight: 800; font-size: 14px;
-    }
-    .toast {
-      display:none; position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-      background: #1b4332; color: #b7f0c8; border: 1px solid #2d6a4f;
-      padding: 10px 16px; border-radius: 12px; font-size: 13px; font-weight: 700; z-index: 99;
-    }
-    .toast.show { display: block; }
-  </style>
 </head>
 <body>
-  <header class="header header-logo-only">
-    <div class="brand brand-centered"><div class="logo-text-wrap">
-      <img src="nailong-digital-logo.png" alt="ND" class="logo-full">
-    </div></div>
-  </header>
-  <div class="page-content" style="padding-top:12px;">
-    <div class="sheet">
-      <h2>Pilihan Tema &amp; Warna</h2>
-      <p class="sub">Pilih warna favorit untuk tampilan web. Hanya akun kamu.</p>
-
-      <div class="mode-row">
-        <div>
-          <b>Mode Gelap (Dark Mode)</b>
-          <span id="modeHint">Sedang aktif: Mode Gelap</span>
-        </div>
-        <button type="button" class="switch on" id="modeSwitch" aria-label="Toggle mode"><i></i></button>
-      </div>
-
-      <div class="sec-label">PILIH PALET WARNA AKSEN:</div>
-      <div class="pal-grid" id="palGrid"></div>
-      <button type="button" class="btn-apply" id="btnApply"><i class="fa-solid fa-check"></i> Terapkan Tema</button>
-    </div>
-    <p style="text-align:center;margin-top:14px;"><a href="akun.html" class="theme-link">← Akun</a> · <a href="index.html" class="theme-link">Beranda</a></p>
+  <div class="page-content" style="padding:24px;">
+    <h2 class="page-title">Tema</h2>
+    <p class="page-desc">Tampilan website tetap <b>mode gelap</b> dengan aksen emas Nailong. Tidak ada ganti tema terang/warna lain.</p>
+    <a href="index.html" class="theme-link">← Beranda</a>
   </div>
-  <div class="toast" id="toast">✓ Tema tampilan berhasil disimpan!</div>
-  <nav class="bottom-nav nav-5">
-    <a href="index.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
-    <a href="akun.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
-    <a href="tema.html" class="nav-item active"><span class="nav-icon-wrap"><i class="fa-solid fa-palette"></i></span><span>Tema</span></a>
-    <a href="music.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-music"></i></span><span>Music</span></a>
-    <a href="game.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-gamepad"></i></span><span>Game</span></a>
-    <div class="nav-indicator" id="navIndicator"></div>
-  </nav>
-  <script src="header-bar.js"></script>
-  <script src="nav.js"></script>
-  <script src="ui-enhance.js"></script>
-  <script>
-  (function(){
-    var draft = NailongTheme.load();
-    var grid = document.getElementById('palGrid');
-    var sw = document.getElementById('modeSwitch');
-    var hint = document.getElementById('modeHint');
-
-    function syncModeUi() {
-      var dark = draft.mode !== 'light';
-      sw.classList.toggle('on', dark);
-      hint.textContent = 'Sedang aktif: Mode ' + (dark ? 'Gelap' : 'Terang');
-    }
-    function syncPalUi() {
-      grid.querySelectorAll('.pal').forEach(function(b){
-        b.classList.toggle('active', b.getAttribute('data-k') === draft.palette);
-      });
-    }
-
-    Object.keys(NailongTheme.PALETTES).forEach(function(k){
-      var p = NailongTheme.PALETTES[k];
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'pal';
-      b.setAttribute('data-k', k);
-      b.innerHTML = '<span class="dot" style="background:'+p.accent+'"></span><span><b>'+p.name+'</b><small>'+p.sub+'</small></span>';
-      b.onclick = function(){ draft.palette = k; syncPalUi(); };
-      grid.appendChild(b);
-    });
-    syncModeUi();
-    syncPalUi();
-
-    sw.onclick = function(){
-      draft.mode = draft.mode === 'light' ? 'dark' : 'light';
-      syncModeUi();
-      // preview instantly
-      NailongTheme.setTheme({ mode: draft.mode, palette: draft.palette });
-    };
-
-    document.getElementById('btnApply').onclick = function(){
-      NailongTheme.setTheme({ mode: draft.mode, palette: draft.palette });
-      var t = document.getElementById('toast');
-      t.classList.add('show');
-      setTimeout(function(){ t.classList.remove('show'); }, 2200);
-    };
-  })();
-  </script>
 </body>
 </html>

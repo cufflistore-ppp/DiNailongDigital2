@@ -17,7 +17,9 @@
     .sp-hero h1 { margin:0; font-size:22px; color:var(--nd-text,#fff); font-weight:800; letter-spacing:-0.02em; }
     .sp-hero p { margin:6px 0 0; font-size:12px; color:var(--nd-muted,#8aa0b8); line-height:1.4; }
     .sp-search { display:flex; gap:8px; margin-bottom:12px; }
-    .sp-search input { flex:1; border-radius:999px !important; padding-left:16px !important; }
+    .sp-search { background:rgba(255,255,255,0.08); border-radius:999px; padding:4px 4px 4px 14px; align-items:center; }
+    .sp-search input { flex:1; border-radius:999px !important; padding:12px 8px !important; background:transparent !important; border:none !important; color:#fff !important; }
+    .sp-search button { border-radius:999px !important; min-width:48px; }
     .sp-tabs { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
     .sp-tabs button {
       border:none; background:rgba(255,255,255,0.06); color:var(--nd-text,#cfd8dc);
@@ -96,7 +98,7 @@
   <div class="page-content">
     <div class="sp-hero">
       <h1><i class="fa-solid fa-music"></i> Music</h1>
-      <p>Metadata MusicBrainz · audio Internet Archive · cadangan iTunes preview. Ditampilkan: <b>penyanyi</b> &amp; <b>penulis</b> (jika ada). Tema mengikuti akun kamu.</p>
+      <p>Cari jutaan lagu — hasil dari MusicBrainz, Internet Archive &amp; iTunes. Tampil <b>penyanyi</b> &amp; <b>penulis</b>.</p>
     </div>
 
     <div class="sp-tabs">
@@ -110,7 +112,7 @@
       <button type="button" data-tab="queue">Antrian</button>
     </div>
     <div class="sp-search" id="searchRow">
-      <input type="text" id="q" class="form-input" placeholder="Cari lagu, artis, penulis…">
+      <input type="text" id="q" class="form-input" placeholder="Judul lagu, artis, album, genre…">
       <button type="button" class="btn-pesan" id="btnSearch" style="padding:12px 18px;border-radius:999px;"><i class="fa-solid fa-magnifying-glass"></i></button>
     </div>
     <div class="sp-list" id="list"></div>
