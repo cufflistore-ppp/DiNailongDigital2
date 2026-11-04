@@ -64,8 +64,13 @@
         try { v.remove(); } catch(e){}
         try {
           var logged = localStorage.getItem('nailong_logged_in') === '1';
-          var onLogin = /login\.html/i.test(location.href);
-          if (!logged && !onLogin) location.replace('login.html');
+          var path = location.pathname || '';
+          var onLogin = /login\.html/i.test(path);
+          // halaman publik — tidak dipaksa login
+          var pub = /index\.html|tools|music|youtube|baca|game|play|donasi|tentang|channel|login|register/i.test(path) || path === '/' || path.endsWith('/');
+          if (!logged && !onLogin && !pub) {
+            // order/akun/admin tetap minta login lewat auth-guard, bukan hard redirect di sini
+          }
         } catch(e2){}
       }
       vid.onended = done;
@@ -385,4 +390,23 @@
     tryAuth();
     setTimeout(tryAuth, 1500);
   });
+})();
+
+/** Inject theme toggle + floating stickers on main pages */
+(function(){
+  function inject(){
+    if (document.querySelector('[data-theme-toggle]')) return;
+    var bar = document.createElement('div');
+    bar.className = 'neo-top-actions';
+    bar.innerHTML = '<button type="button" class="theme-toggle-btn" data-theme-toggle><i class="fa-solid fa-sun"></i><span>Terang</span></button>';
+    var header = document.querySelector('header.header') || document.querySelector('header');
+    if (header && header.parentNode) header.parentNode.insertBefore(bar, header.nextSibling);
+    else document.body.insertBefore(bar, document.body.firstChild);
+    if (window.NailongTheme && NailongTheme.apply) NailongTheme.apply();
+    document.querySelectorAll('[data-theme-toggle]').forEach(function(btn){
+      btn.addEventListener('click', function(e){ e.preventDefault(); NailongTheme.toggle(); });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
 })();

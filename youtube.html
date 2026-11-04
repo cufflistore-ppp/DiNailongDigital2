@@ -5,93 +5,157 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>YouTube - Nailong Digital</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
   <style>
-    body { background: #0f0f0f !important; color: #fff; }
+    body { background: #0f0f0f !important; color: #f1f1f1; padding-bottom: 0 !important; }
+    .yt-app { min-height: 100dvh; background: #0f0f0f; }
     .yt-top {
-      position: sticky; top: 0; z-index: 20;
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px; background: #0f0f0f;
+      position: sticky; top: 0; z-index: 30;
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px; background: #0f0f0f;
       border-bottom: 1px solid #272727;
     }
-    .yt-logo { display:flex; align-items:center; gap:6px; font-weight:800; font-size:18px; color:#fff; text-decoration:none; white-space:nowrap; }
-    .yt-logo i { color: #f00; font-size: 22px; }
+    .yt-logo {
+      display: flex; align-items: center; gap: 4px;
+      text-decoration: none; color: #fff; font-weight: 700; font-size: 17px;
+      flex-shrink: 0; letter-spacing: -0.3px;
+    }
+    .yt-logo .play {
+      width: 28px; height: 20px; background: #f00; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      margin-right: 2px;
+    }
+    .yt-logo .play i { color: #fff; font-size: 11px; }
+    .yt-search-wrap { flex: 1; display: flex; justify-content: center; }
     .yt-search {
-      flex: 1; display: flex; max-width: 640px; margin: 0 auto;
+      display: flex; width: 100%; max-width: 640px;
+      height: 38px;
     }
     .yt-search input {
-      flex: 1; background: #121212; border: 1px solid #303030; border-right: none;
-      border-radius: 40px 0 0 40px; padding: 10px 16px; color: #fff; font-size: 14px;
+      flex: 1; background: #121212; border: 1px solid #303030;
+      border-right: none; border-radius: 40px 0 0 40px;
+      padding: 0 14px; color: #fff; font-size: 15px; outline: none;
     }
+    .yt-search input:focus { border-color: #1c62b9; }
     .yt-search button {
-      background: #222; border: 1px solid #303030; border-radius: 0 40px 40px 0;
-      padding: 0 18px; color: #fff; cursor: pointer;
+      width: 56px; background: #222; border: 1px solid #303030;
+      border-radius: 0 40px 40px 0; color: #fff; cursor: pointer;
     }
-    .yt-chips { display:flex; gap:8px; overflow-x:auto; padding: 10px 12px; scrollbar-width:none; }
-    .yt-chips::-webkit-scrollbar { display:none; }
+    .yt-icon-btn {
+      width: 38px; height: 38px; border-radius: 50%; border: none;
+      background: transparent; color: #fff; font-size: 17px; cursor: pointer;
+      flex-shrink: 0;
+    }
+    .yt-chips {
+      display: flex; gap: 10px; overflow-x: auto; padding: 10px 12px;
+      background: #0f0f0f; scrollbar-width: none;
+      border-bottom: 1px solid #272727;
+      position: sticky; top: 54px; z-index: 25;
+    }
+    .yt-chips::-webkit-scrollbar { display: none; }
     .yt-chips button {
-      flex-shrink:0; border:none; border-radius:8px; padding:7px 12px;
-      background: #272727; color:#fff; font-size:12px; font-weight:600; cursor:pointer;
+      flex-shrink: 0; border: none; border-radius: 8px;
+      padding: 7px 12px; font-size: 13px; font-weight: 500;
+      background: #272727; color: #f1f1f1; cursor: pointer;
+      white-space: nowrap;
     }
-    .yt-chips button.active { background:#fff; color:#0f0f0f; }
-    .yt-grid {
-      display: grid; grid-template-columns: 1fr; gap: 18px;
-      padding: 8px 12px 110px;
-    }
-    @media(min-width:600px){ .yt-grid { grid-template-columns: 1fr 1fr; } }
-    .yt-card { cursor: pointer; }
+    .yt-chips button.active { background: #f1f1f1; color: #0f0f0f; }
+    .yt-feed { padding: 0 0 100px; }
+    .yt-card { margin-bottom: 18px; cursor: pointer; }
     .yt-thumb {
       position: relative; width: 100%; aspect-ratio: 16/9;
-      background: #222; border-radius: 12px; overflow: hidden;
+      background: #222; overflow: hidden;
     }
-    .yt-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
-    .yt-meta { display:flex; gap:10px; margin-top:10px; }
-    .yt-avatar {
-      width:36px; height:36px; border-radius:50%; background:#333; flex-shrink:0;
-      display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; color:#aaa;
+    .yt-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .yt-thumb .dur {
+      position: absolute; right: 6px; bottom: 6px;
+      background: rgba(0,0,0,.85); color: #fff;
+      font-size: 12px; font-weight: 600; padding: 2px 5px; border-radius: 4px;
     }
-    .yt-meta b { display:block; font-size:14px; line-height:1.3; color:#f1f1f1; font-weight:600; }
-    .yt-meta span { font-size:12px; color:#aaa; }
-    .yt-player-wrap {
-      display:none; position:fixed; inset:0; z-index:50; background:#000;
-      flex-direction: column;
+    .yt-meta {
+      display: flex; gap: 12px; padding: 10px 12px 0;
     }
-    .yt-player-wrap.open { display:flex; }
-    .yt-player-wrap iframe { flex:1; width:100%; border:none; }
+    .yt-av {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg,#333,#555);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px; color: #ddd; flex-shrink: 0;
+      overflow: hidden;
+    }
+    .yt-av img { width: 100%; height: 100%; object-fit: cover; }
+    .yt-meta-text { flex: 1; min-width: 0; }
+    .yt-meta-text h3 {
+      margin: 0 0 3px; font-size: 14px; font-weight: 600;
+      line-height: 1.35; color: #f1f1f1;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .yt-meta-text p {
+      margin: 0; font-size: 12px; color: #aaa; line-height: 1.35;
+    }
+    .yt-player {
+      display: none; position: fixed; inset: 0; z-index: 80;
+      background: #000; flex-direction: column;
+    }
+    .yt-player.open { display: flex; }
     .yt-player-bar {
-      display:flex; align-items:center; gap:10px; padding:10px 12px;
-      background:#212121; color:#fff;
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; background: #212121;
     }
-    .yt-player-bar button { border:none; background:transparent; color:#fff; font-size:20px; cursor:pointer; }
+    .yt-player-bar button {
+      border: none; background: transparent; color: #fff; font-size: 20px; cursor: pointer;
+    }
+    .yt-player-bar b {
+      flex: 1; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .yt-player iframe { flex: 1; width: 100%; border: 0; background: #000; }
+    .yt-loading { text-align: center; padding: 40px 16px; color: #aaa; }
   </style>
+<script src="api-config.js"></script>
 </head>
 <body>
-  <div class="yt-top">
-    <a class="yt-logo" href="index.html"><i class="fa-brands fa-youtube"></i> YouTube</a>
-    <form class="yt-search" id="ytForm">
-      <input type="search" id="ytQ" placeholder="Cari" autocomplete="off">
-      <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-    </form>
-  </div>
-  <div class="yt-chips" id="chips">
-    <button type="button" class="active" data-q="trending">Semua</button>
-    <button type="button" data-q="music">Musik</button>
-    <button type="button" data-q="gaming">Game</button>
-    <button type="button" data-q="anime">Anime</button>
-    <button type="button" data-q="news indonesia">Berita</button>
-    <button type="button" data-q="tutorial">Tutorial</button>
-    <button type="button" data-q="comedy">Komedi</button>
-    <button type="button" data-q="olahraga">Olahraga</button>
-  </div>
-  <div class="yt-grid" id="grid"><p style="color:#aaa;padding:20px;">Memuat…</p></div>
-
-  <div class="yt-player-wrap" id="playerWrap">
-    <div class="yt-player-bar">
-      <button type="button" id="ytClose"><i class="fa-solid fa-arrow-left"></i></button>
-      <b id="ytTitle" style="flex:1;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"></b>
+  <div class="yt-app">
+    <div class="yt-top">
+      <a class="yt-logo" href="index.html">
+        <span class="play"><i class="fa-solid fa-play"></i></span>
+        YouTube
+      </a>
+      <div class="yt-search-wrap">
+        <form class="yt-search" id="ytForm">
+          <input type="search" id="ytQ" placeholder="Cari" autocomplete="off">
+          <button type="submit" aria-label="Cari"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+      </div>
+      <button type="button" class="yt-icon-btn" id="ytMic" aria-label="Home" onclick="location.href='index.html'">
+        <i class="fa-solid fa-house"></i>
+      </button>
     </div>
-    <iframe id="ytFrame" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <div class="yt-chips" id="chips">
+      <button type="button" class="active" data-q="trending">Semua</button>
+      <button type="button" data-q="music">Musik</button>
+      <button type="button" data-q="gaming">Game</button>
+      <button type="button" data-q="mix anime">Anime</button>
+      <button type="button" data-q="news">Berita</button>
+      <button type="button" data-q="live">Live</button>
+      <button type="button" data-q="tutorial">Tutorial</button>
+      <button type="button" data-q="olahraga">Olahraga</button>
+      <button type="button" data-q="podcast">Podcast</button>
+      <button type="button" data-q="film">Film</button>
+    </div>
+
+    <div class="yt-feed" id="feed">
+      <div class="yt-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat video…</div>
+    </div>
+  </div>
+
+  <div class="yt-player" id="player">
+    <div class="yt-player-bar">
+      <button type="button" id="ytBack"><i class="fa-solid fa-arrow-left"></i></button>
+      <b id="ytTitle"></b>
+    </div>
+    <iframe id="ytFrame" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
   </div>
 
   <nav class="bottom-nav nav-5">
@@ -106,82 +170,135 @@
   <script src="nav.js"></script>
   <script src="ui-enhance.js"></script>
   <script>
-  (function(){
-    var grid = document.getElementById('grid');
-    function card(v){
-      var id = v.id.videoId || v.id;
-      var sn = v.snippet || {};
-      var thumb = (sn.thumbnails && (sn.thumbnails.medium||sn.thumbnails.default||{}).url) || ('https://i.ytimg.com/vi/'+id+'/hqdefault.jpg');
-      var title = sn.title || 'Video';
-      var ch = sn.channelTitle || '';
-      return '<div class="yt-card" data-id="'+id+'" data-title="'+title.replace(/"/g,'&quot;')+'">'+
-        '<div class="yt-thumb"><img src="'+thumb+'" alt="" loading="lazy"></div>'+
-        '<div class="yt-meta"><div class="yt-avatar">'+(ch.charAt(0)||'Y')+'</div><div><b>'+title+'</b><span>'+ch+'</span></div></div></div>';
+  (function () {
+    var feed = document.getElementById('feed');
+
+    function fmtViews(n) {
+      n = Number(n) || 0;
+      if (n >= 1e9) return (n / 1e9).toFixed(1).replace(/\.0$/, '') + ' B x ditonton';
+      if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + ' jt x ditonton';
+      if (n >= 1e3) return (n / 1e3).toFixed(1).replace(/\.0$/, '') + ' rb x ditonton';
+      return n ? n + ' x ditonton' : '';
     }
-    async function search(q){
-      grid.innerHTML = '<p style="color:#aaa;padding:20px;">Mencari…</p>';
-      // YouTube oEmbed / no-key: use Invidious-like public search mirrors or Google without API key via rss
-      // Practical: use YouTube search page scrape alternative - piped / invidious API
+    function fmtDur(s) {
+      s = Number(s) || 0;
+      if (!s) return '';
+      var m = Math.floor(s / 60), sec = s % 60;
+      if (m >= 60) {
+        var h = Math.floor(m / 60);
+        m = m % 60;
+        return h + ':' + String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+      }
+      return m + ':' + String(sec).padStart(2, '0');
+    }
+
+    function card(v) {
+      var id = v.id;
+      var thumb = v.thumb || ('https://i.ytimg.com/vi/' + id + '/hqdefault.jpg');
+      var title = v.title || 'Video';
+      var ch = v.channel || '';
+      var av = (ch.charAt(0) || 'Y').toUpperCase();
+      var sub = [ch, fmtViews(v.views), v.ago].filter(Boolean).join(' · ');
+      var dur = fmtDur(v.duration);
+      return '<article class="yt-card" data-id="' + id + '" data-title="' + title.replace(/"/g, '&quot;') + '">' +
+        '<div class="yt-thumb"><img src="' + thumb + '" alt="" loading="lazy">' +
+        (dur ? '<span class="dur">' + dur + '</span>' : '') + '</div>' +
+        '<div class="yt-meta"><div class="yt-av">' + av + '</div>' +
+        '<div class="yt-meta-text"><h3>' + title + '</h3><p>' + sub + '</p></div></div></article>';
+    }
+
+    function bindCards() {
+      feed.querySelectorAll('.yt-card').forEach(function (el) {
+        el.onclick = function () {
+          var id = el.getAttribute('data-id');
+          document.getElementById('ytTitle').textContent = el.getAttribute('data-title') || '';
+          document.getElementById('ytFrame').src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+          document.getElementById('player').classList.add('open');
+        };
+      });
+    }
+
+    function normalize(list) {
+      return (list || []).map(function (v) {
+        var id = v.videoId || v.id || '';
+        if (typeof id === 'object') id = id.videoId || '';
+        if (v.url && !id) id = String(v.url).replace(/.*v=/, '').replace(/.*\//, '');
+        var thumb = v.thumbnail || v.thumbnails?.[0]?.url ||
+          (v.videoThumbnails && (v.videoThumbnails.find(function (t) { return t.quality === 'medium'; }) || v.videoThumbnails[0] || {}).url) ||
+          ('https://i.ytimg.com/vi/' + id + '/hqdefault.jpg');
+        return {
+          id: id,
+          title: v.title || 'Video',
+          channel: v.uploaderName || v.author || v.owner || v.channel || '',
+          views: v.views || v.viewCount || 0,
+          duration: v.duration || v.lengthSeconds || 0,
+          ago: v.uploadedDate || v.publishedText || '',
+          thumb: thumb
+        };
+      }).filter(function (v) { return v.id; });
+    }
+
+    async function search(q) {
+      feed.innerHTML = '<div class="yt-loading"><i class="fa-solid fa-spinner fa-spin"></i> Mencari…</div>';
+      var base = (window.NAILONG_API || '').replace(/\/$/, '');
+      if (base) {
+        try {
+          var r0 = await fetch(base + '/api/youtube/search?q=' + encodeURIComponent(q));
+          var j0 = await r0.json();
+          if (j0 && j0.results && j0.results.length) {
+            items = j0.results;
+            feed.innerHTML = items.slice(0, 40).map(card).join('');
+            bindCards();
+            return;
+          }
+        } catch (e0) {}
+      }
       var endpoints = [
-        'https://piped.video/api/v1/search?q='+encodeURIComponent(q)+'&filter=videos',
-        'https://invidious.nerdvpn.de/api/v1/search?q='+encodeURIComponent(q)+'&type=video'
+        'https://piped.video/api/v1/search?q=' + encodeURIComponent(q) + '&filter=videos',
+        'https://pipedapi.kavin.rocks/api/v1/search?q=' + encodeURIComponent(q) + '&filter=videos',
+        'https://invidious.nerdvpn.de/api/v1/search?q=' + encodeURIComponent(q) + '&type=video'
       ];
       var items = [];
-      for (var i=0;i<endpoints.length;i++){
+      for (var i = 0; i < endpoints.length; i++) {
         try {
           var r = await fetch(endpoints[i]);
           if (!r.ok) continue;
           var j = await r.json();
-          if (Array.isArray(j)) items = j;
-          else if (j.items) items = j.items;
+          items = normalize(Array.isArray(j) ? j : (j.items || []));
           if (items.length) break;
-        } catch(e){}
+        } catch (e) {}
       }
       if (!items.length) {
-        // fallback popular static embeds ids
-        grid.innerHTML = '<p style="color:#aaa;padding:12px;">Pencarian publik sibuk. Coba kata lain atau buka langsung YouTube.</p>'+
-          ['dQw4w9WgXcQ','jNQXAC9IVRw','9bZkp7q19f0'].map(function(id){
-            return card({ id:{videoId:id}, snippet:{ title:'Video', channelTitle:'YouTube', thumbnails:{ medium:{ url:'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'}}}});
-          }).join('');
-      } else {
-        grid.innerHTML = items.slice(0,24).map(function(v){
-          var id = v.videoId || v.id || (v.url && v.url.replace('https://www.youtube.com/watch?v=',''));
-          return card({
-            id: { videoId: id },
-            snippet: {
-              title: v.title || 'Video',
-              channelTitle: v.uploaderName || v.author || v.owner || '',
-              thumbnails: { medium: { url: (v.thumbnail || (v.videoThumbnails && v.videoThumbnails[0] && v.videoThumbnails[0].url) || ('https://i.ytimg.com/vi/'+id+'/hqdefault.jpg')) } }
-            }
-          });
-        }).join('');
+        // trending fallback ids with real thumbs
+        items = [
+          { id: 'jNQXAC9IVRw', title: 'Me at the zoo', channel: 'jawed', thumb: 'https://i.ytimg.com/vi/jNQXAC9IVRw/hqdefault.jpg' },
+          { id: '9bZkp7q19f0', title: 'PSY - GANGNAM STYLE', channel: 'officialpsy', thumb: 'https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg' },
+          { id: 'kJQP7kiw5Fk', title: 'Luis Fonsi - Despacito ft. Daddy Yankee', channel: 'LuisFonsiVEVO', thumb: 'https://i.ytimg.com/vi/kJQP7kiw5Fk/hqdefault.jpg' },
+          { id: 'OPf0YbXqDm0', title: 'Mark Ronson - Uptown Funk ft. Bruno Mars', channel: 'MarkRonsonVEVO', thumb: 'https://i.ytimg.com/vi/OPf0YbXqDm0/hqdefault.jpg' },
+          { id: 'RgKAFK5djSk', title: 'Wiz Khalifa - See You Again ft. Charlie Puth', channel: 'Warner Records Music', thumb: 'https://i.ytimg.com/vi/RgKAFK5djSk/hqdefault.jpg' },
+          { id: 'fJ9rUzIMcZQ', title: 'Queen – Bohemian Rhapsody', channel: 'Queen Official', thumb: 'https://i.ytimg.com/vi/fJ9rUzIMcZQ/hqdefault.jpg' }
+        ];
       }
-      grid.querySelectorAll('.yt-card').forEach(function(el){
-        el.onclick = function(){
-          var id = el.getAttribute('data-id');
-          document.getElementById('ytTitle').textContent = el.getAttribute('data-title')||'';
-          document.getElementById('ytFrame').src = 'https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1';
-          document.getElementById('playerWrap').classList.add('open');
-        };
-      });
+      feed.innerHTML = items.slice(0, 40).map(card).join('');
+      bindCards();
     }
-    document.getElementById('ytForm').onsubmit = function(e){
+
+    document.getElementById('ytForm').onsubmit = function (e) {
       e.preventDefault();
-      var q = document.getElementById('ytQ').value.trim() || 'trending';
-      search(q);
+      search(document.getElementById('ytQ').value.trim() || 'trending');
     };
-    document.getElementById('chips').querySelectorAll('button').forEach(function(b){
-      b.onclick = function(){
-        document.getElementById('chips').querySelectorAll('button').forEach(function(x){ x.classList.remove('active'); });
+    document.getElementById('chips').querySelectorAll('button').forEach(function (b) {
+      b.onclick = function () {
+        document.getElementById('chips').querySelectorAll('button').forEach(function (x) { x.classList.remove('active'); });
         b.classList.add('active');
         search(b.getAttribute('data-q'));
       };
     });
-    document.getElementById('ytClose').onclick = function(){
-      document.getElementById('playerWrap').classList.remove('open');
+    document.getElementById('ytBack').onclick = function () {
+      document.getElementById('player').classList.remove('open');
       document.getElementById('ytFrame').src = '';
     };
-    search('music indonesia');
+    search('music');
   })();
   </script>
 </body>

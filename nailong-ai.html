@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Chat Nailong AI - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <style>
+    .page-content { padding: 12px 14px 100px; max-width: 520px; margin: 0 auto; }
+    .avatar-stage {
+      position: relative; height: 220px; border-radius: 20px; overflow: hidden;
+      background: radial-gradient(ellipse at 50% 30%, #2a2208 0%, #0a0e18 70%);
+      border: 1px solid rgba(255,193,7,0.25); margin-bottom: 12px;
+    }
+    .nailong-wrap {
+      position: absolute; left: 50%; bottom: 8px; transform: translateX(-50%);
+      width: 160px; height: 180px; transition: transform 0.25s;
+    }
+    .nailong-wrap.bounce { animation: ndBounce 0.5s ease; }
+    .nailong-wrap.shake { animation: ndShake 0.45s ease; }
+    .nailong-wrap.shy { animation: ndShy 0.8s ease; }
+    @keyframes ndBounce {
+      0%,100%{ transform: translateX(-50%) translateY(0); }
+      40%{ transform: translateX(-50%) translateY(-14px); }
+      70%{ transform: translateX(-50%) translateY(-4px); }
+    }
+    @keyframes ndShake {
+      0%,100%{ transform: translateX(-50%) rotate(0); }
+      25%{ transform: translateX(-50%) rotate(-8deg); }
+      75%{ transform: translateX(-50%) rotate(8deg); }
+    }
+    @keyframes ndShy {
+      0%,100%{ transform: translateX(-50%) scale(1); }
+      50%{ transform: translateX(-50%) scale(0.92) translateY(6px); }
+    }
+    .nailong-body {
+      width: 100%; height: 100%; object-fit: contain; display: block;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.45));
+      transition: filter 0.3s;
+    }
+    .mouth {
+      position: absolute; left: 50%; bottom: 38px; width: 28px; height: 10px;
+      margin-left: -14px; background: #3d2914; border-radius: 0 0 14px 14px;
+      transform-origin: top center; opacity: 0.85;
+    }
+    .mouth.talk {
+      animation: lip 0.18s infinite alternate ease-in-out;
+    }
+    @keyframes lip {
+      from { height: 6px; border-radius: 4px; }
+      to { height: 16px; border-radius: 0 0 16px 16px; }
+    }
+    .emotion-tag {
+      position: absolute; top: 10px; right: 10px;
+      background: rgba(0,0,0,0.55); color: #FFC107; font-size: 11px; font-weight: 800;
+      padding: 4px 10px; border-radius: 999px;
+    }
+    .chat-box {
+      height: 280px; overflow-y: auto; border-radius: 16px; padding: 12px;
+      background: rgba(12,16,28,0.9); border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 10px;
+    }
+    .bubble {
+      max-width: 88%; padding: 10px 12px; border-radius: 14px; margin: 8px 0;
+      font-size: 13px; line-height: 1.4; word-break: break-word;
+    }
+    .bubble.bot {
+      background: rgba(255,193,7,0.12); border: 1px solid rgba(255,193,7,0.25);
+      color: #ffe9a8; border-bottom-left-radius: 4px;
+    }
+    .bubble.user {
+      background: rgba(255,255,255,0.08); color: #e8eef7;
+      margin-left: auto; border-bottom-right-radius: 4px;
+    }
+    .compose {
+      display: flex; gap: 8px; align-items: flex-end;
+    }
+    .compose textarea {
+      flex: 1; min-height: 44px; max-height: 100px; resize: none;
+      border-radius: 14px; border: 1px solid rgba(255,255,255,0.12);
+      background: #0d1220; color: #fff; padding: 12px; font-size: 14px;
+    }
+    .compose button {
+      border: none; border-radius: 14px; width: 48px; height: 48px;
+      background: linear-gradient(135deg,#FFC107,#FF8F00); color: #0a0e18;
+      font-size: 18px; cursor: pointer;
+    }
+    .quick { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .quick button {
+      border: 1px solid rgba(255,193,7,0.25); background: rgba(255,193,7,0.08);
+      color: #FFC107; border-radius: 999px; padding: 6px 10px; font-size: 11px;
+      font-weight: 700; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nd-logo-gold.jpg" alt="ND" class="logo-full">
+        <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <p style="margin:0 0 10px;"><a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Kembali</a></p>
+    <h2 class="page-title"><i class="fa-solid fa-comments"></i> Ngobrol sama Nailong</h2>
+    <p class="page-desc">Nailong-nya gaul, bisa salting, cemburu, kesel. Tanya produk, sewa bot, atau curhat ringan.</p>
+
+    <div class="avatar-stage">
+      <span class="emotion-tag" id="emoTag">😎 santai</span>
+      <div class="nailong-wrap" id="nailongWrap">
+        <img src="nailong.png" alt="Nailong" class="nailong-body" id="nailongImg"
+             onerror="this.src='nailong1.png'; this.onerror=function(){this.src='nd-logo-gold.jpg'}">
+        <div class="mouth" id="mouth"></div>
+      </div>
+    </div>
+
+    <div class="quick" id="quick">
+      <button type="button" data-q="Halo Nailong!">Halo</button>
+      <button type="button" data-q="Cara sewa bot gimana?">Sewa bot</button>
+      <button type="button" data-q="Kamu cemburu nggak?">Cemburu?</button>
+      <button type="button" data-q="Lagu hits apa sekarang?">Lagu hits</button>
+    </div>
+
+    <div class="chat-box" id="chat"></div>
+    <div class="compose">
+      <textarea id="inp" rows="1" placeholder="Ketik pesan… (bahasa gaul juga boleh)"></textarea>
+      <button type="button" id="btnSend" aria-label="Kirim"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="tools.html" class="nav-item" data-nav="tools"><span class="nav-icon-wrap"><i class="fa-solid fa-screwdriver-wrench"></i></span><span>Tools</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script>
+  (function () {
+    var chat = document.getElementById('chat');
+    var inp = document.getElementById('inp');
+    var wrap = document.getElementById('nailongWrap');
+    var mouth = document.getElementById('mouth');
+    var emoTag = document.getElementById('emoTag');
+    var img = document.getElementById('nailongImg');
+
+    var memory = { name: '', lastTopic: '' };
+
+    function setEmotion(kind) {
+      wrap.classList.remove('bounce', 'shake', 'shy');
+      var map = {
+        happy: { tag: '😁 senang', filter: 'brightness(1.08) saturate(1.15)', anim: 'bounce' },
+        angry: { tag: '😤 kesel', filter: 'hue-rotate(-15deg) saturate(1.3)', anim: 'shake' },
+        shy: { tag: '😳 salting', filter: 'brightness(1.12) contrast(0.95)', anim: 'shy' },
+        jealous: { tag: '😒 cemburu', filter: 'hue-rotate(20deg) saturate(0.9)', anim: 'shake' },
+        cool: { tag: '😎 santai', filter: 'none', anim: '' }
+      };
+      var m = map[kind] || map.cool;
+      emoTag.textContent = m.tag;
+      img.style.filter = m.filter;
+      if (m.anim) {
+        void wrap.offsetWidth;
+        wrap.classList.add(m.anim);
+      }
+    }
+
+    function addBubble(text, who) {
+      var d = document.createElement('div');
+      d.className = 'bubble ' + who;
+      d.textContent = text;
+      chat.appendChild(d);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function speak(text) {
+      if (!window.speechSynthesis) return;
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = 'id-ID';
+      u.rate = 1.05;
+      u.pitch = 1.15;
+      mouth.classList.add('talk');
+      u.onend = function () { mouth.classList.remove('talk'); };
+      u.onerror = function () { mouth.classList.remove('talk'); };
+      // approx lip duration
+      var ms = Math.min(12000, Math.max(1200, text.length * 55));
+      setTimeout(function () { mouth.classList.remove('talk'); }, ms);
+      window.speechSynthesis.speak(u);
+    }
+
+    function detectEmotion(user, reply) {
+      var t = (user + ' ' + reply).toLowerCase();
+      if (/cemburu|selingkuh|mantan|gebetan orang/.test(t)) return 'jealous';
+      if (/sayang|cantik|ganteng|suka kamu|crush/.test(t)) return 'shy';
+      if (/bodoh|tolol|jelek|sampah|marah|kesel/.test(t)) return 'angry';
+      if (/haha|wkwk|asik|mantap|thanks|makasih|keren/.test(t)) return 'happy';
+      return 'cool';
+    }
+
+    function replyTo(msg) {
+      var t = msg.toLowerCase().trim();
+      memory.lastTopic = t;
+
+      // name
+      var nameHit = t.match(/(?:nama (?:aku|gw|saya)|panggil(?: aku)?)[=\s:]+([a-z0-9_ ]{2,20})/i);
+      if (nameHit) memory.name = nameHit[1].trim();
+
+      var n = memory.name ? memory.name : 'bro';
+
+      if (/halo|hai|hi|pagi|siang|malam/.test(t)) {
+        return 'Woy ' + n + '! Gue Nailong, asisten gaulnya Nailong Digital. Mau sewa bot, joki, tools, atau cuma nongkrong nanya-nanya? Gas.';
+      }
+      if (/sewa bot|bot wa|pairing|jpm|jb/.test(t)) {
+        return 'Kalo mau sewa bot: buka menu Botwa → pilih paket (1 hari sampe 2 tahun) → bayar dulu baru dapat pairing. Mau tambah nomor +Rp 1.000, bot lama tetep jalan. Santai, gampang kok.';
+      }
+      if (/harga|berapa|paket/.test(t)) {
+        return 'Paket sewa bot mulai Rp 3.000 (1 hari) sampe Rp 130.000 (2 tahun). Tambah nomor +1k. Joki & push kontak beda menu ya, jangan ketuker.';
+      }
+      if (/push kontak/.test(t)) {
+        return 'Push kontak itu halaman terpisah, bukan di sewa bot. Baca peringatannya dulu — bisa kenon/limit, tanggung jawab pemakai. Kalo berani, isi link grup + nomor + prompt chatnya.';
+      }
+      if (/lagu|hits|musik|spotify/.test(t)) {
+        return 'Lagu hits & terbaru ada di menu Music. Cover-nya dari katalog resmi, bisa diputar preview-nya. Kalo mau full song legal, ya tetap ke app musik aslinya ya ' + n + '.';
+      }
+      if (/komik|anime|nonton|youtube/.test(t)) {
+        return 'Komik & tontonan covernya resmi (katalog), trailer bisa diputar. YouTube di web ini pakai embed beneran — tinggal cari, pencet, nonton.';
+      }
+      if (/cemburu/.test(t)) {
+        return 'Cemburu? ...ya kalo kamu sibuk chat bot lain terus, gue agak greget sih. Tapi ya udah, gue tetep di sini. Jangan digituin mulu lah.';
+      }
+      if (/sayang|cinta|suka kamu|gemes/.test(t)) {
+        return 'Woy jangan gitu, gue salting nih 😳 Fokus ke fitur dulu lah, nanti gue yang bantu orderan kamu sampe beres.';
+      }
+      if (/bodoh|tolol|jelek|guna/.test(t)) {
+        return 'Eh pelan-pelan, ' + n + '. Gue bisa bantu sewa bot, tools, sampe nanya produk. Kalo cuma nyinyir, gue juga bisa cuek mode on.';
+      }
+      if (/siapa (kamu|lu|loe|elo)|kamu siapa/.test(t)) {
+        return 'Gue Nailong — maskot & CS gaul Nailong Digital. Bukan admin manusia, tapi bisa nemenin nanya soal web ini.';
+      }
+      if (/admin|wa admin|hubungi/.test(t)) {
+        return 'Butuh manusia beneran? Klik Akun → Hubungi Admin (WhatsApp). Jangan lupa sopan, biar dibalasnya cepet.';
+      }
+      if (/3d|foto 3d/.test(t)) {
+        return 'Ada tools Foto 3D — upload fotomu, trus bisa diputar-putar di ruang 3D. Cek di menu Tools.';
+      }
+      if (/makasih|thanks|thx|terima kasih/.test(t)) {
+        return 'Sip ' + n + ', sama-sama. Kalo butuh lagi, mentingin aja di sini. Gue ga kadores kok.';
+      }
+      if (/bye|dadah|pulang/.test(t)) {
+        return 'Okie, hati-hati ya. Kalo kangen sama gue... eh maksudnya butuh bantuan, balik lagi aja.';
+      }
+
+      // default gaul
+      var defaults = [
+        'Hmm ' + n + ', gue tangkep. Coba perjelas dikit — soal bot, joki, musik, atau yang lain?',
+        'Bisa dijelasin lagi? Gue pinteran kalo pertanyaannya spesifik, bukan misterius gitu.',
+        'Oke gas. Mau gue arahin ke menu yang pas, atau nanya tips dulu?',
+        'Santuy. Kalo soal Nailong Digital, gue ready. Tembak aja pertanyaannya.'
+      ];
+      return defaults[Math.floor(Math.random() * defaults.length)];
+    }
+
+    function send(text) {
+      text = (text || '').trim();
+      if (!text) return;
+      addBubble(text, 'user');
+      inp.value = '';
+      setTimeout(function () {
+        var ans = replyTo(text);
+        var emo = detectEmotion(text, ans);
+        setEmotion(emo);
+        addBubble(ans, 'bot');
+        speak(ans);
+      }, 350 + Math.random() * 400);
+    }
+
+    document.getElementById('btnSend').onclick = function () { send(inp.value); };
+    inp.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(inp.value); }
+    });
+    document.getElementById('quick').querySelectorAll('button').forEach(function (b) {
+      b.onclick = function () { send(b.getAttribute('data-q')); };
+    });
+
+    addBubble('Hai! Gue Nailong. Langsung aja nanya — sewa bot, lagu hits, atau cuma nyapa juga boleh.', 'bot');
+    setEmotion('cool');
+  })();
+  </script>
+</body>
+</html>

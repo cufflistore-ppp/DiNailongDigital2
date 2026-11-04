@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Foto 3D - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <style>
+    .page-content { padding: 12px 14px 100px; max-width: 640px; margin: 0 auto; }
+    #c3d {
+      width: 100%; height: 360px; border-radius: 16px; background: #0a0e18;
+      border: 1px solid rgba(255,193,7,0.2); touch-action: none;
+    }
+    .tools-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .tools-row label, .tools-row button {
+      border-radius: 12px; padding: 10px 14px; font-size: 12px; font-weight: 700; cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06); color: #eee;
+    }
+    .tools-row input[type="file"] { display: none; }
+    .tools-row .primary { background: linear-gradient(90deg,#FFC107,#FF8F00); color: #0a0e18; border: none; }
+    .sliders label { display: block; font-size: 12px; color: #8aa0b8; margin: 10px 0 4px; }
+    .sliders input[type="range"] { width: 100%; }
+    .hint { font-size: 12px; color: #8aa0b8; line-height: 1.45; }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nd-logo-gold.jpg" alt="ND" class="logo-full">
+        <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <p style="margin:0 0 10px;"><a href="tools.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Kembali</a></p>
+    <h2 class="page-title"><i class="fa-solid fa-cube"></i> Foto 3D</h2>
+    <p class="page-desc">Upload foto → putar & edit di ruang 3D (rotasi, zoom, kemiringan, cahaya). Efek 3D interaktif di browser.</p>
+
+    <canvas id="c3d"></canvas>
+
+    <div class="tools-row">
+      <label class="primary"><i class="fa-solid fa-image"></i> Pilih foto
+        <input type="file" id="file" accept="image/*">
+      </label>
+      <button type="button" id="btnReset"><i class="fa-solid fa-rotate"></i> Reset sudut</button>
+      <button type="button" id="btnSpin"><i class="fa-solid fa-rotate-right"></i> Auto putar</button>
+    </div>
+
+    <div class="sliders">
+      <label>Kedalaman / tebal mesh: <span id="vDepth">0.35</span></label>
+      <input type="range" id="depth" min="0.05" max="1.2" step="0.01" value="0.35">
+      <label>Intensitas cahaya: <span id="vLight">1.2</span></label>
+      <input type="range" id="light" min="0.3" max="2.5" step="0.05" value="1.2">
+      <label>Zoom: <span id="vZoom">2.8</span></label>
+      <input type="range" id="zoom" min="1.2" max="5" step="0.05" value="2.8">
+    </div>
+    <p class="hint">Geser di canvas untuk memutar. Ini model 3D dari foto (relief), bukan AI generate mesh full tubuh. Cocok untuk logo, potret, produk.</p>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="tools.html" class="nav-item active" data-nav="tools"><span class="nav-icon-wrap"><i class="fa-solid fa-screwdriver-wrench"></i></span><span>Tools</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script>
+  (function () {
+    var canvas = document.getElementById('c3d');
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    var scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0a0e18);
+    var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 0, 2.8);
+
+    var light = new THREE.DirectionalLight(0xffffff, 1.2);
+    light.position.set(2, 3, 4);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0x445566, 0.6));
+
+    var mesh = null;
+    var autoSpin = false;
+    var drag = false, px = 0, py = 0;
+    var rotY = 0.4, rotX = -0.2;
+
+    function size() {
+      var w = canvas.clientWidth, h = canvas.clientHeight || 360;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    size();
+    window.addEventListener('resize', size);
+
+    function buildFromImage(img, depthScale) {
+      if (mesh) { scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); }
+      var maxW = 128;
+      var scale = Math.min(1, maxW / img.width);
+      var w = Math.max(32, Math.floor(img.width * scale));
+      var h = Math.max(32, Math.floor(img.height * scale));
+      var c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      var ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      var data = ctx.getImageData(0, 0, w, h).data;
+
+      var geo = new THREE.PlaneGeometry(2.2, 2.2 * (h / w), w - 1, h - 1);
+      var pos = geo.attributes.position;
+      for (var i = 0; i < pos.count; i++) {
+        var ix = i % w;
+        var iy = Math.floor(i / w);
+        var p = (iy * w + ix) * 4;
+        var lum = (data[p] + data[p + 1] + data[p + 2]) / (3 * 255);
+        pos.setZ(i, (lum - 0.5) * depthScale);
+      }
+      pos.needsUpdate = true;
+      geo.computeVertexNormals();
+
+      var tex = new THREE.CanvasTexture(c);
+      tex.anisotropy = 4;
+      var mat = new THREE.MeshStandardMaterial({
+        map: tex, roughness: 0.65, metalness: 0.08, side: THREE.DoubleSide
+      });
+      mesh = new THREE.Mesh(geo, mat);
+      scene.add(mesh);
+    }
+
+    function loadFile(file) {
+      if (!file) return;
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        buildFromImage(img, parseFloat(document.getElementById('depth').value));
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    }
+
+    document.getElementById('file').onchange = function () {
+      loadFile(this.files && this.files[0]);
+    };
+    document.getElementById('depth').oninput = function () {
+      document.getElementById('vDepth').textContent = this.value;
+      if (mesh && window._lastImg) buildFromImage(window._lastImg, parseFloat(this.value));
+    };
+    document.getElementById('light').oninput = function () {
+      document.getElementById('vLight').textContent = this.value;
+      light.intensity = parseFloat(this.value);
+    };
+    document.getElementById('zoom').oninput = function () {
+      document.getElementById('vZoom').textContent = this.value;
+      camera.position.z = parseFloat(this.value);
+    };
+    document.getElementById('btnReset').onclick = function () { rotX = -0.2; rotY = 0.4; };
+    document.getElementById('btnSpin').onclick = function () {
+      autoSpin = !autoSpin;
+      this.innerHTML = autoSpin ? '<i class="fa-solid fa-pause"></i> Stop putar' : '<i class="fa-solid fa-rotate-right"></i> Auto putar';
+    };
+
+    // patch file load to keep img
+    document.getElementById('file').onchange = function () {
+      var file = this.files && this.files[0];
+      if (!file) return;
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () {
+        window._lastImg = img;
+        buildFromImage(img, parseFloat(document.getElementById('depth').value));
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    };
+    document.getElementById('depth').oninput = function () {
+      document.getElementById('vDepth').textContent = this.value;
+      if (window._lastImg) buildFromImage(window._lastImg, parseFloat(this.value));
+    };
+
+    function onDown(e) {
+      drag = true;
+      px = (e.touches ? e.touches[0].clientX : e.clientX);
+      py = (e.touches ? e.touches[0].clientY : e.clientY);
+    }
+    function onMove(e) {
+      if (!drag) return;
+      var x = (e.touches ? e.touches[0].clientX : e.clientX);
+      var y = (e.touches ? e.touches[0].clientY : e.clientY);
+      rotY += (x - px) * 0.01;
+      rotX += (y - py) * 0.01;
+      px = x; py = y;
+    }
+    function onUp() { drag = false; }
+    canvas.addEventListener('mousedown', onDown);
+    canvas.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+    canvas.addEventListener('touchstart', onDown, { passive: true });
+    canvas.addEventListener('touchmove', onMove, { passive: true });
+    canvas.addEventListener('touchend', onUp);
+
+    // default: logo ND
+    var def = new Image();
+    def.crossOrigin = 'anonymous';
+    def.onload = function () {
+      window._lastImg = def;
+      buildFromImage(def, 0.35);
+    };
+    def.src = 'nd-logo-gold.jpg';
+
+    (function loop() {
+      requestAnimationFrame(loop);
+      if (autoSpin) rotY += 0.012;
+      if (mesh) {
+        mesh.rotation.y = rotY;
+        mesh.rotation.x = rotX;
+      }
+      renderer.render(scene, camera);
+    })();
+  })();
+  </script>
+</body>
+</html>

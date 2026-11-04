@@ -1,143 +1,142 @@
 (function () {
   var CATS = {
-    hits: ['popular recordings', 'classical piano', 'jazz standards'],
-    indo: ['indonesia', 'keroncong', 'dangdut', 'tulus'],
-    korea: ['korea', 'k-pop', 'korean traditional'],
-    japan: ['japan', 'j-pop', 'anime soundtrack'],
-    us: ['american folk', 'blues', 'rock'],
-    kids: ['children songs', 'nursery rhymes', 'kids music']
+    hits: [
+      'top hits 2025', 'top hits 2024', 'indonesia top charts', 'viral tiktok songs',
+      'kpop hits', 'dangdut koplo hits', 'pop indonesia hits', 'global top 50'
+    ],
+    baru: [
+      'new music friday', 'lagu baru indonesia', 'new song 2025', 'latest kpop',
+      'new releases pop', 'lagu terbaru viral'
+    ],
+    indo: ['tulus', 'rais a', 'bernadya', 'nadin amizah', 'dangdut koplo', 'fiersa besari', 'mahalini'],
+    korea: ['blackpink', 'bts', 'newjeans', 'ive', 'seventeen', 'k-pop'],
+    japan: ['yoasobi', 'lisa', 'official hige dandism', 'anime opening', 'j-pop'],
+    us: ['taylor swift', 'bruno mars', 'the weeknd', 'billie eilish', 'drake', 'ed sheeran'],
+    kids: ['nursery rhymes', 'baby shark', 'kids songs english', 'lagu anak indonesia']
   };
+  var lastTracks = [];
 
   function $(id) { return document.getElementById(id); }
 
-  function attrLine(t) {
-    var parts = [];
-    if (t.artist) parts.push('Penyanyi: ' + t.artist);
-    if (t.composer && t.composer !== t.artist) parts.push('Penulis: ' + t.composer);
-    return parts.join(' · ');
+  function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+
+  function artUrl(t) {
+    if (t.art && !/nailong/i.test(t.art)) return t.art;
+    return 'https://placehold.co/300x300/1a1a2e/FFC107/png?text=' + encodeURIComponent((t.title || 'M').charAt(0));
   }
 
   function renderList(tracks) {
+    lastTracks = tracks || [];
     var box = $('list');
-    if (!tracks.length) {
-      box.innerHTML = '<p style="color:var(--nd-muted,#8aa0b8);font-size:13px;padding:8px;">Tidak ada hasil. Coba kata lain.</p>';
+    if (!box) return;
+    if (!lastTracks.length) {
+      box.innerHTML = '<p style="color:#8aa0b8;font-size:13px;padding:12px;">Tidak ada hasil. Coba kata kunci lain.</p>';
       return;
     }
-    box.innerHTML = tracks.map(function (t, i) {
-      var sub = attrLine(t) || (t.source || '');
-      var chip = '<span class="src-chip">' + (t.source || '') + '</span>';
+    box.innerHTML = lastTracks.map(function (t, i) {
       return '<div class="sp-item" data-i="' + i + '">' +
-        '<img src="' + (t.art || 'nailong-digital-logo.png') + '" alt="" loading="lazy" onerror="this.src=\'nailong-digital-logo.png\'">' +
-        '<div class="meta"><b>' + escapeHtml(t.title) + chip + '</b>' +
-        '<span>' + escapeHtml(t.artist || '—') + '</span>' +
-        (t.composer ? '<em>Penulis: ' + escapeHtml(t.composer) + '</em>' : '<em>' + escapeHtml(t.license || t.source || '') + '</em>') +
+        '<img src="' + artUrl(t) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src=\'https://placehold.co/300x300/1a1a2e/FFC107/png?text=♪\'">' +
+        '<div class="meta"><b>' + escapeHtml(t.title) + '</b>' +
+        '<span>' + escapeHtml(t.artist || '—') + (t.album ? ' · ' + escapeHtml(t.album) : '') + '</span>' +
+        '<em>' + escapeHtml(t.source || '') + (t.composer ? ' · Penulis: ' + escapeHtml(t.composer) : '') + '</em>' +
         '</div><i class="fa-solid fa-play play-ic"></i></div>';
     }).join('');
     box.querySelectorAll('.sp-item').forEach(function (el) {
       el.onclick = async function () {
         var i = +el.getAttribute('data-i');
-        var track = tracks[i];
-        // resolve IA file if needed
-        if (track.iaId && (!track.streamUrl || /\/$/.test(track.streamUrl))) {
-          el.querySelector('.play-ic').className = 'fa-solid fa-spinner fa-spin play-ic';
-          try { track = await NailongMusic.resolveIaStream(track); tracks[i] = track; } catch (e) {}
+        var track = lastTracks[i];
+        var ic = el.querySelector('.play-ic');
+        if (ic) ic.className = 'fa-solid fa-spinner fa-spin play-ic';
+        try {
+          if (track.iaId && !track.streamUrl) track = await NailongMusic.resolveIaStream(track);
+          if (!track.streamUrl && !track.previewUrl) {
+            alert('Lagu ini metadata saja. Coba lagu bertanda iTunes (ada preview).');
+            if (ic) ic.className = 'fa-solid fa-play play-ic';
+            return;
+          }
+          await NailongMusic.playTrack(track, lastTracks);
+        } catch (e) {
+          alert('Gagal putar: ' + (e.message || e));
         }
-        if (track.mbid && !track.composer) {
-          try { track = await NailongMusic.enrichComposer(track); tracks[i] = track; } catch (e) {}
-        }
-        if (!track.streamUrl && !track.previewUrl) {
-          alert('Lagu ini metadata saja (MusicBrainz). Pilih yang bertanda Internet Archive / iTunes Preview untuk diputar.');
-          el.querySelector('.play-ic').className = 'fa-solid fa-play play-ic';
-          return;
-        }
-        NailongMusic.playTrack(track, tracks, i);
-        $('playerBox').style.display = 'block';
-        syncPlayer();
-        el.querySelector('.play-ic').className = 'fa-solid fa-play play-ic';
+        if (ic) ic.className = 'fa-solid fa-play play-ic';
       };
     });
-    window._ndTracks = tracks;
   }
 
-  function escapeHtml(s) {
-    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
-  }
-
-  function syncPlayer() {
-    var s = NailongMusic.state();
-    var t = s.track;
-    if (!t) return;
-    if ($('nowTitle')) $('nowTitle').textContent = t.title || '-';
-    if ($('nowArtist')) $('nowArtist').textContent = 'Penyanyi: ' + (t.artist || '—');
-    if ($('nowComposer')) {
-      $('nowComposer').textContent = t.composer
-        ? ('Penulis: ' + t.composer)
-        : (t.license || t.source || '');
-    }
-    if ($('nowArt')) $('nowArt').src = t.art || 'nailong-digital-logo.png';
-    var ic = document.querySelector('#btnPlay i');
-    if (ic) ic.className = s.playing ? 'fa-solid fa-pause' : 'fa-solid fa-play';
-    var a = NailongMusic.getAudio();
-    var pct = a.duration ? (a.currentTime / a.duration * 100) : 0;
-    if ($('prog')) $('prog').style.width = pct + '%';
-    if ($('playerBox') && t) $('playerBox').style.display = 'block';
-  }
-
-  async function loadQuery(q) {
-    $('list').innerHTML = '<p style="color:var(--nd-muted,#8aa0b8);font-size:13px;">Mencari MusicBrainz · Internet Archive · iTunes…</p>';
+  async function runSearch(q) {
+    var box = $('list');
+    if (box) box.innerHTML = '<p style="color:#8aa0b8;padding:16px;"><i class="fa-solid fa-spinner fa-spin"></i> Mencari hits & lagu baru…</p>';
     try {
-      var tracks = await NailongMusic.searchAll(q, 35);
+      var tracks = await NailongMusic.searchAll(q, 80);
       renderList(tracks);
     } catch (e) {
-      $('list').innerHTML = '<p style="color:#ff8a80;font-size:13px;">Gagal: ' + (e.message || e) + '</p>';
+      if (box) box.innerHTML = '<p style="color:#e11d48;padding:12px;">Gagal: ' + (e.message || e) + '</p>';
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    if ($('btnSearch')) {
-      $('btnSearch').onclick = function () {
-        var q = $('q').value.trim();
-        if (q) loadQuery(q);
+  /** Gabung beberapa query hits/baru biar selalu ada lagu populer + terbaru */
+  async function loadHomeHits() {
+    var box = $('list');
+    if (box) box.innerHTML = '<p style="color:#8aa0b8;padding:16px;"><i class="fa-solid fa-spinner fa-spin"></i> Memuat chart hits & rilis baru…</p>';
+    var queries = [
+      'top hits 2025',
+      'indonesia hits',
+      'viral tiktok',
+      'new music',
+      'kpop',
+      'lagu terbaru indonesia'
+    ];
+    var seen = {};
+    var all = [];
+    for (var i = 0; i < queries.length; i++) {
+      try {
+        var part = await NailongMusic.searchAll(queries[i], 25);
+        (part || []).forEach(function (t) {
+          var k = (t.title + '|' + t.artist).toLowerCase();
+          if (seen[k]) return;
+          seen[k] = 1;
+          all.push(t);
+        });
+      } catch (e) {}
+    }
+    renderList(all.slice(0, 80));
+  }
+
+  function bind() {
+    var form = $('searchForm') || document.querySelector('.sp-search');
+    var input = $('q') || document.querySelector('.sp-search input');
+    if (form && form.tagName === 'FORM') {
+      form.onsubmit = function (e) {
+        e.preventDefault();
+        runSearch((input && input.value) || 'top hits');
       };
-      $('q').onkeydown = function (e) { if (e.key === 'Enter') $('btnSearch').click(); };
     }
     document.querySelectorAll('.sp-tabs button').forEach(function (b) {
       b.onclick = function () {
         document.querySelectorAll('.sp-tabs button').forEach(function (x) { x.classList.remove('active'); });
         b.classList.add('active');
-        var tab = b.getAttribute('data-tab');
-        if ($('searchRow')) $('searchRow').style.display = tab === 'cari' ? 'flex' : 'none';
-        if (tab === 'cari') {
-          $('list').innerHTML = '<p style="color:var(--nd-muted,#8aa0b8);font-size:13px;">Cari judul / artis / penulis…</p>';
+        var tab = b.getAttribute('data-tab') || b.getAttribute('data-q') || 'hits';
+        if (tab === 'hits' || tab === 'baru') {
+          loadHomeHits();
           return;
         }
-        if (tab === 'queue') {
-          renderList((NailongMusic.state().queue) || []);
-          return;
-        }
-        if (CATS[tab]) {
-          var arr = CATS[tab];
-          loadQuery(arr[Math.floor(Math.random() * arr.length)]);
-        }
+        var list = CATS[tab];
+        var q = list ? list[Math.floor(Math.random() * list.length)] : tab;
+        if (input) input.value = q;
+        runSearch(q);
       };
     });
-    if ($('btnPlay')) $('btnPlay').onclick = function () { NailongMusic.toggle(); syncPlayer(); };
-    if ($('btnNext')) $('btnNext').onclick = function () { NailongMusic.next(); syncPlayer(); };
-    if ($('btnPrev')) $('btnPrev').onclick = function () { NailongMusic.prev(); syncPlayer(); };
-    if ($('seek')) $('seek').onclick = function (e) {
-      var a = NailongMusic.getAudio();
-      if (!a.duration) return;
-      var r = this.getBoundingClientRect();
-      a.currentTime = ((e.clientX - r.left) / r.width) * a.duration;
-    };
-    if ($('btnClosePlayer')) {
-      $('btnClosePlayer').onclick = function () {
-        NailongMusic.pause();
-        $('playerBox').style.display = 'none';
-      };
-    }
-    window.addEventListener('nd-music-tick', syncPlayer);
-    syncPlayer();
-    loadQuery('classical piano');
-  });
+    loadHomeHits();
+    // refresh hits tiap 30 menit (lagu baru/hits)
+    setInterval(function () {
+      if (document.visibilityState === 'visible') loadHomeHits();
+    }, 30 * 60 * 1000);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
 })();

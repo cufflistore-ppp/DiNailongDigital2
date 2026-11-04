@@ -5,24 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Baca & Nonton - Nailong Digital</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="icon" href="nailong-digital-logo.png" type="image/png">
+  <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
   <link rel="stylesheet" href="style.css">
   <script src="theme.js"></script>
+  <script src="api-config.js"></script>
   <style>
+    .page-content { padding: 12px 14px 100px; max-width: 640px; margin: 0 auto; }
     .baca-tabs { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
     .baca-tabs button {
       border:1px solid rgba(255,193,7,0.25); background:rgba(16,24,42,0.6);
       color:#cfd8dc; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;
     }
-    .baca-tabs button.active { background:linear-gradient(90deg,var(--nd-accent,#FFC107),var(--nd-accent-2,#FF8F00)); color:#0a0e18; border:none; }
-    .baca-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
-    .baca-card {
-      background:rgba(16,24,42,0.55); border:1px solid rgba(255,193,7,0.12);
-      border-radius:14px; overflow:hidden; cursor:pointer; border:none; color:inherit; text-align:left; padding:0;
+    .baca-tabs button.active {
+      background:linear-gradient(90deg,#FFC107,#FF8F00); color:#0a0e18; border:none;
     }
-    .baca-card img { width:100%; height:130px; object-fit:cover; display:block; background:#10182a; }
+    .search-row { display:flex; gap:8px; margin-bottom:12px; }
+    .search-row input {
+      flex:1; border-radius:12px; border:1px solid rgba(255,255,255,0.1);
+      background:#0d1220; color:#fff; padding:12px; font-size:14px;
+    }
+    .search-row button {
+      border:none; border-radius:12px; background:#FFC107; color:#0a0e18;
+      font-weight:800; padding:0 16px; cursor:pointer;
+    }
+    .baca-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    @media(min-width:520px){ .baca-grid { grid-template-columns:repeat(3,1fr); } }
+    .baca-card {
+      background:rgba(16,24,42,0.75); border:1px solid rgba(255,193,7,0.12);
+      border-radius:14px; overflow:hidden; cursor:pointer; color:inherit; text-align:left; padding:0;
+    }
+    .baca-card .thumb {
+      width:100%; aspect-ratio:3/4; background:#10182a; position:relative; overflow:hidden;
+    }
+    .baca-card img { width:100%; height:100%; object-fit:cover; display:block; }
     .baca-card .info { padding:10px; }
-    .baca-card h4 { margin:0 0 4px; font-size:13px; color:#fff; }
+    .baca-card h4 {
+      margin:0 0 4px; font-size:13px; color:#fff; line-height:1.3;
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+    }
     .baca-card p { margin:0; font-size:11px; color:#8aa0b8; }
     .reader {
       display:none; position:fixed; inset:0; z-index:120; background:#0a0e18;
@@ -38,116 +58,194 @@
       border-radius:10px; padding:8px 12px; font-weight:700; cursor:pointer;
     }
     .reader-bar b { flex:1; color:#fff; font-size:13px; }
-    .reader-body { flex:1; overflow:auto; padding:12px; -webkit-overflow-scrolling:touch; }
-    .reader-body img.page {
-      width:100%; max-width:520px; display:block; margin:0 auto 8px;
-      border-radius:6px; background:#111;
-    }
-    .reader-body .vid {
-      position:relative; width:100%; padding-top:56.25%; background:#000; border-radius:12px; overflow:hidden;
-    }
+    .reader-body { flex:1; overflow:auto; padding:14px; }
+    .reader-body .cover { width:140px; border-radius:10px; float:left; margin:0 14px 10px 0; }
+    .reader-body .vid { position:relative; width:100%; aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden; }
     .reader-body .vid iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
-    .part-list { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
-    .part-item {
-      padding:12px; background:rgba(16,24,42,0.7); border-radius:12px; border:1px solid rgba(255,193,7,0.12);
-      color:#fff; font-size:13px; font-weight:700; cursor:pointer; text-align:left;
-    }
+    .status { text-align:center; color:#8aa0b8; padding:24px; font-size:13px; }
   </style>
 </head>
 <body>
   <header class="header header-logo-only">
-    <div class="brand brand-centered"><div class="logo-text-wrap">
-      <img src="nailong-digital-logo.png" alt="ND" class="logo-full">
-    </div></div>
-  </header>
-  <div class="page-content">
-    <div class="badge">BACA & NONTON</div>
-    <h2 class="page-title"><i class="fa-solid fa-book-open"></i> Langsung di sini</h2>
-    <p class="page-desc">Komik & tontonan dibuka di dalam website (bukan lempar ke situs luar).</p>
-    <div class="baca-tabs">
-      <button type="button" class="active" data-tab="komik">Komik</button>
-      <button type="button" data-tab="nonton">Tontonan</button>
-      <button type="button" data-tab="yt">YouTube</button>
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nd-logo-gold.jpg" alt="ND" class="logo-full">
+        <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
+      </div>
     </div>
-    <div class="baca-grid" id="grid"></div>
+  </header>
+
+  <div class="page-content">
+    <p style="margin:0 0 10px;"><a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Kembali</a></p>
+    <h2 class="page-title"><i class="fa-solid fa-book-open"></i> Baca & Nonton</h2>
+    <p class="page-desc">Komik & anime: cover resmi katalog. Tonton trailer/embed YouTube. Chapter full di sumber resmi.</p>
+
+    <div class="baca-tabs" id="tabs">
+      <button type="button" class="active" data-tab="komik">Komik</button>
+      <button type="button" data-tab="tontonan">Tontonan</button>
+    </div>
+
+    <div class="search-row">
+      <input type="search" id="q" placeholder="Cari judul…" autocomplete="off">
+      <button type="button" id="btnSearch"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+
+    <div class="baca-grid" id="grid">
+      <div class="status"><i class="fa-solid fa-spinner fa-spin"></i> Memuat…</div>
+    </div>
   </div>
 
   <div class="reader" id="reader">
     <div class="reader-bar">
-      <button type="button" id="rdClose">← Tutup</button>
-      <b id="rdTitle">Reader</b>
+      <button type="button" id="rdClose"><i class="fa-solid fa-arrow-left"></i></button>
+      <b id="rdTitle">—</b>
     </div>
     <div class="reader-body" id="rdBody"></div>
   </div>
 
   <nav class="bottom-nav nav-5">
-    <a href="baca.html" class="nav-item active"><span class="nav-icon-wrap"><i class="fa-solid fa-book"></i></span><span>Baca</span></a>
-    <a href="youtube.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-brands fa-youtube"></i></span><span>YT</span></a>
-    <a href="index.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
-    <a href="music.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-music"></i></span><span>Music</span></a>
-    <a href="akun.html" class="nav-item"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="tools.html" class="nav-item" data-nav="tools"><span class="nav-icon-wrap"><i class="fa-solid fa-screwdriver-wrench"></i></span><span>Tools</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
     <div class="nav-indicator" id="navIndicator"></div>
   </nav>
+
   <script src="header-bar.js"></script>
   <script src="nav.js"></script>
   <script src="ui-enhance.js"></script>
   <script>
-  (function(){
-    // Konten contoh di-host di sini (placeholder panel + part). Bisa diganti admin nanti.
-    var KOMIK = [
-      { id:'k1', title:'Petualangan Nailong', desc:'Komik pendek 5 halaman', cover:'nailong-digital-logo.png',
-        pages:['nailong-digital-logo.png','logo-nd-gold.png','nailong-digital-logo.png','logo-nd-gold.png','nailong-digital-logo.png'] },
-      { id:'k2', title:'Strip Santai', desc:'Episode 1', cover:'logo-nd-gold.png',
-        pages:['logo-nd-gold.png','nailong-digital-logo.png','logo-nd-gold.png'] }
-    ];
-    var NONTON = [
-      { id:'v1', title:'Cuplikan Anime (embed)', desc:'Part 1', type:'yt', vid:'jNQXAC9IVRw' },
-      { id:'v2', title:'Sample Video', desc:'Part 2', type:'yt', vid:'dQw4w9WgXcQ' }
-    ];
+  (function () {
     var tab = 'komik';
     var grid = document.getElementById('grid');
-    var reader = document.getElementById('reader');
-    var rdBody = document.getElementById('rdBody');
-    var rdTitle = document.getElementById('rdTitle');
+    var items = [];
 
-    function render(){
-      if(tab==='yt'){ location.href='youtube.html'; return; }
-      var list = tab==='komik' ? KOMIK : NONTON;
-      grid.innerHTML = list.map(function(item){
-        var img = item.cover || ('https://i.ytimg.com/vi/'+(item.vid||'')+'/hqdefault.jpg');
-        return '<button type="button" class="baca-card" data-id="'+item.id+'">'+
-          '<img src="'+img+'" alt="">'+
-          '<div class="info"><h4>'+item.title+'</h4><p>'+item.desc+'</p></div></button>';
+    function apiBase() {
+      return (window.NAILONG_API || '').replace(/\/$/, '');
+    }
+
+    async function jikanClient(path) {
+      var r = await fetch('https://api.jikan.moe/v4' + path);
+      if (!r.ok) throw new Error('Jikan ' + r.status);
+      return r.json();
+    }
+
+    function mapManga(m) {
+      return {
+        id: m.malId || m.mal_id,
+        title: m.title,
+        cover: m.cover || (m.images && m.images.jpg && (m.images.jpg.large_image_url || m.images.jpg.image_url)) || '',
+        score: m.score,
+        type: m.type || 'Manga',
+        synopsis: m.synopsis || '',
+        url: m.url,
+        kind: 'komik'
+      };
+    }
+    function mapAnime(a) {
+      var trailerId = a.trailerId || (a.trailer && a.trailer.youtube_id) || '';
+      return {
+        id: a.malId || a.mal_id,
+        title: a.title,
+        cover: a.cover || (a.images && a.images.jpg && (a.images.jpg.large_image_url || a.images.jpg.image_url)) || '',
+        score: a.score,
+        type: a.type || 'TV',
+        synopsis: a.synopsis || '',
+        url: a.url,
+        trailerId: trailerId,
+        trailerEmbed: a.trailerEmbed || (trailerId ? 'https://www.youtube-nocookie.com/embed/' + trailerId : ''),
+        kind: 'tontonan'
+      };
+    }
+
+    async function loadList(q) {
+      grid.innerHTML = '<div class="status"><i class="fa-solid fa-spinner fa-spin"></i> Memuat katalog…</div>';
+      var base = apiBase();
+      try {
+        var list = [];
+        if (tab === 'komik') {
+          if (base) {
+            var path = '/api/comics/db' + (q ? ('?q=' + encodeURIComponent(q)) : '?seed=1');
+            var j = await (await fetch(base + path)).json();
+            list = (j.results || []).map(mapManga);
+          } else {
+            var j2 = await jikanClient(q ? '/manga?q=' + encodeURIComponent(q) + '&limit=24' : '/top/manga?limit=24');
+            list = (j2.data || []).map(mapManga);
+          }
+        } else {
+          if (base) {
+            var path2 = q ? '/api/tontonan/search?q=' + encodeURIComponent(q) : '/api/tontonan/top';
+            var j3 = await (await fetch(base + path2)).json();
+            list = (j3.results || []).map(mapAnime);
+          } else {
+            var j4 = await jikanClient(q ? '/anime?q=' + encodeURIComponent(q) + '&limit=24' : '/top/anime?limit=24');
+            list = (j4.data || []).map(mapAnime);
+          }
+        }
+        items = list;
+        render();
+      } catch (e) {
+        grid.innerHTML = '<div class="status" style="color:#f87171;">Gagal muat: ' + (e.message || e) + '<br>Coba lagi nanti / set NAILONG_API di VPS.</div>';
+      }
+    }
+
+    function render() {
+      if (!items.length) {
+        grid.innerHTML = '<div class="status">Tidak ada hasil.</div>';
+        return;
+      }
+      grid.innerHTML = items.map(function (it, i) {
+        var cover = it.cover || 'https://placehold.co/300x400/1a1a2e/FFC107/png?text=Cover';
+        return '<button type="button" class="baca-card" data-i="' + i + '">' +
+          '<div class="thumb"><img src="' + cover + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.src=\'https://placehold.co/300x400/1a1a2e/FFC107/png?text=Cover\'"></div>' +
+          '<div class="info"><h4>' + (it.title || '') + '</h4>' +
+          '<p>' + (it.type || '') + (it.score ? ' · ★ ' + it.score : '') + '</p></div></button>';
       }).join('');
-      grid.querySelectorAll('.baca-card').forEach(function(b){
-        b.onclick = function(){ open(b.getAttribute('data-id')); };
+      grid.querySelectorAll('.baca-card').forEach(function (el) {
+        el.onclick = function () { openItem(items[+el.getAttribute('data-i')]); };
       });
     }
-    function open(id){
-      var item = KOMIK.concat(NONTON).find(function(x){ return x.id===id; });
-      if(!item) return;
-      rdTitle.textContent = item.title;
-      if(item.pages){
-        rdBody.innerHTML = item.pages.map(function(src,i){
-          return '<img class="page" src="'+src+'" alt="Hal '+(i+1)+'">';
-        }).join('') + '<div class="part-list"><div class="part-item">Selesai · '+item.pages.length+' halaman</div></div>';
-      } else if(item.vid){
-        rdBody.innerHTML = '<div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/'+item.vid+'?rel=0" allowfullscreen allow="autoplay; encrypted-media"></iframe></div>'+
-          '<div class="part-list"><div class="part-item">Part 1 · diputar di dalam website</div></div>';
+
+    function openItem(it) {
+      if (!it) return;
+      document.getElementById('rdTitle').textContent = it.title || '';
+      var body = document.getElementById('rdBody');
+      var html = '';
+      if (it.cover) html += '<img class="cover" src="' + it.cover + '" alt="">';
+      html += '<p style="color:#8aa0b8;font-size:12px;margin:0 0 8px;">' + (it.type || '') + (it.score ? ' · ★ ' + it.score : '') + '</p>';
+      html += '<p style="color:#cfd8dc;font-size:13px;line-height:1.5;white-space:pre-wrap;">' + (it.synopsis || 'Tidak ada sinopsis.') + '</p>';
+      if (it.trailerEmbed) {
+        html += '<div class="vid" style="margin-top:14px;clear:both;"><iframe src="' + it.trailerEmbed + '?rel=0" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe></div>';
       }
-      reader.classList.add('show');
+      if (it.url) {
+        html += '<p style="margin-top:14px;clear:both;"><a href="' + it.url + '" target="_blank" rel="noopener" style="color:#FFC107;font-weight:700;">Info lengkap / sumber resmi</a></p>';
+      }
+      html += '<p style="margin-top:10px;font-size:11px;color:#6b7a90;clear:both;">Cover & data katalog resmi. Episode/chapter full di platform berizin.</p>';
+      body.innerHTML = html;
+      document.getElementById('reader').classList.add('show');
     }
-    document.getElementById('rdClose').onclick = function(){
-      reader.classList.remove('show');
-      rdBody.innerHTML = '';
+
+    document.getElementById('rdClose').onclick = function () {
+      document.getElementById('reader').classList.remove('show');
+      document.getElementById('rdBody').innerHTML = '';
     };
-    document.querySelectorAll('.baca-tabs button').forEach(function(b){
-      b.onclick = function(){
-        document.querySelectorAll('.baca-tabs button').forEach(function(x){ x.classList.remove('active'); });
-        b.classList.add('active'); tab = b.getAttribute('data-tab'); render();
+    document.getElementById('tabs').querySelectorAll('button').forEach(function (b) {
+      b.onclick = function () {
+        document.getElementById('tabs').querySelectorAll('button').forEach(function (x) { x.classList.remove('active'); });
+        b.classList.add('active');
+        tab = b.getAttribute('data-tab');
+        loadList(document.getElementById('q').value.trim());
       };
     });
-    render();
+    document.getElementById('btnSearch').onclick = function () {
+      loadList(document.getElementById('q').value.trim());
+    };
+    document.getElementById('q').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') loadList(document.getElementById('q').value.trim());
+    });
+
+    loadList('');
   })();
   </script>
 </body>

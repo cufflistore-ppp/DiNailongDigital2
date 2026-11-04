@@ -22,15 +22,26 @@
   <link rel="apple-touch-icon" href="nd-logo-gold.jpg">
   <link rel="stylesheet" href="style.css">
   <script src="theme.js"></script>
+<script src="dev-config.js"></script>
 </head>
 <body>
 
   <header class="header header-logo-only">
     <div class="brand brand-centered">
-      <div class="logo-text-wrap">
-        <img src="nd-logo-gold.jpg" alt="Nailong Digital" class="logo-full"></div>
+    <div class="logo-text-wrap">
+      <img src="nd-logo-gold.jpg" alt="ND" class="logo-full">
+      <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
     </div>
+  </div>
   </header>
+
+  
+  <div class="neo-top-actions">
+    <button type="button" class="theme-toggle-btn" data-theme-toggle><i class="fa-solid fa-sun"></i><span>Terang</span></button>
+  </div>
+  <img src="nailong.png" alt="" class="float-sticker" style="right:8px;top:120px;" onerror="this.style.display='none'">
+  <img src="nailong2.png" alt="" class="float-sticker s2" style="left:6px;top:280px;" onerror="this.style.display='none'">
+  <img src="nailong3.png" alt="" class="float-sticker s3" style="right:16px;bottom:120px;" onerror="this.style.display='none'">
 
   <div class="banner">
     <img src="banner.jpg" alt="Selamat Datang di Nailong Digital" class="banner-full">
@@ -38,14 +49,28 @@
   <div class="top-notif" id="topNotif" style="display:none;"></div>
 
   <div id="homeProfileCard"></div>
+  <div class="syam-profile" id="syamProfileFallback">
+    <div class="row">
+      <img class="av" src="nailong.png" alt="" onerror="this.src='nd-logo-gold.jpg'">
+      <div>
+        <div class="hello">Ahlan Wa Sahlan,</div>
+        <div class="name">NAILONG <span style="color:#FFC107">★</span></div>
+        <span class="syam-badge">⚡ MEMBER</span>
+      </div>
+    </div>
+  </div>
+  <div class="syam-stats">
+    <div class="syam-stat">Online Users<b id="statOnline">—</b></div>
+    <div class="syam-stat">Bayar order<b>QRIS</b></div>
+  </div>
 
   <!-- Saldo & Top Up -->
-  <div class="saldo-card" id="saldoCard">
+  <div class="saldo-card" id="saldoCard" style="display:none!important">
     <div class="saldo-left">
       <span class="saldo-label">Saldo Anda</span>
       <span class="saldo-amount" id="saldoAmount">Rp 0</span>
     </div>
-    <a href="topup.html" class="btn-topup"><i class="fa-solid fa-plus"></i> Top Up</a>
+    <a href="riwayat.html" class="btn-topup"><i class="fa-solid fa-receipt"></i> Riwayat</a>
   </div>
 
   <!-- Menu utama -->
@@ -59,9 +84,9 @@
   </div>
 
   <div class="menu-grid menu-grid-4 menu-grid-clean">
-    <a href="badak-wa.html" class="menu-item">
-      <i class="fa-brands fa-whatsapp"></i>
-      <span>Badak WA</span>
+    <a href="nailong-ai.html" class="menu-item">
+      <i class="fa-solid fa-comments"></i>
+      <span>Chat AI</span>
     </a>
     <a href="botwa.html" class="menu-item">
       <i class="fa-brands fa-whatsapp"></i>
@@ -79,9 +104,9 @@
       <i class="fa-solid fa-globe"></i>
       <span>JasWeb</span>
     </a>
-    <a href="buka-toko.html" class="menu-item">
-      <i class="fa-solid fa-store"></i>
-      <span>Toko</span>
+    <a href="ai-chat.html" class="menu-item">
+      <i class="fa-solid fa-robot"></i>
+      <span>AI Pro</span>
     </a>
     <a href="youtube.html" class="menu-item">
       <i class="fa-brands fa-youtube"></i>
@@ -107,7 +132,7 @@
       <i class="fa-solid fa-comments"></i>
       <span>Channel</span>
     </a>
-    <a href="topup.html" class="menu-item">
+    <a href="riwayat.html" title="Tanpa topup" class="menu-item">
       <i class="fa-solid fa-wallet"></i>
       <span>Top Up</span>
     </a>
@@ -117,7 +142,7 @@
   
   <section class="produk-section" id="tokoMarketSection">
     <h3>PRODUK TOKO</h3>
-    <p class="subtitle">Dari toko member · <a href="buka-toko.html" class="theme-link">Buka toko</a> · <a href="keranjang.html" class="theme-link">Keranjang (<span id="cartBadgeTop">0</span>)</a></p>
+    <p class="subtitle">Dari toko member · <a href="index.html" title="Toko nonaktif" class="theme-link">Buka toko</a> · <a href="keranjang.html" class="theme-link">Keranjang (<span id="cartBadgeTop">0</span>)</a></p>
     <div class="filter-chips" id="homeFilterChips">
       <button type="button" class="chip active" data-f="all">Semua</button>
       <button type="button" class="chip" data-f="apk">apk</button>
@@ -201,7 +226,7 @@
         return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
       }
       if (!list.length) {
-        grid.innerHTML = '<p style="grid-column:1/-1;color:var(--text-muted,#8aa0b8);font-size:13px;padding:8px;">Belum ada produk toko. <a href="buka-toko.html" class="theme-link">Buka toko &amp; pasang produk</a> biar muncul di sini.</p>';
+        grid.innerHTML = '<p style="grid-column:1/-1;color:var(--text-muted,#8aa0b8);font-size:13px;padding:8px;">Belum ada produk toko. <a href="index.html" title="Toko nonaktif" class="theme-link">Buka toko &amp; pasang produk</a> biar muncul di sini.</p>';
         return;
       }
       grid.innerHTML = list.map(function (p) {
@@ -234,5 +259,15 @@
   </script>
   <script src="home-profile.js"></script>
   <script src="protect.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var a=document.getElementById('globalOnlineCount');
+  var b=document.getElementById('statOnline');
+  if(a&&b){ b.textContent=a.textContent; setInterval(function(){ b.textContent=a.textContent; },2000); }
+  // hide fallback if homeProfileCard filled
+  var hp=document.getElementById('homeProfileCard');
+  if(hp && hp.children.length){ var f=document.getElementById('syamProfileFallback'); if(f) f.style.display='none'; }
+});
+</script>
 </body>
 </html>

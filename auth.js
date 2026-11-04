@@ -1,3 +1,4 @@
+/* dev: raffliraffli649@gmail.com */
 /**
  * Nailong Auth - Google via Firebase Auth
  * getRedirectResult hanya dipanggil SEKALI (shared promise) agar sesi tidak hilang.

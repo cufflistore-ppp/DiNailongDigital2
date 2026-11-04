@@ -1,42 +1,95 @@
 /**
- * Tema tetap gelap + aksen emas Nailong (tidak diganti-ganti mode terang).
+ * Mode gelap / terang + aksen Nailong.
+ * Light: bg putih, ikon/teks gelap.
+ * Dark: bg hitam, ikon/teks terang.
  */
 (function () {
+  var KEY = 'nd_ui_mode'; // 'dark' | 'light'
   var accent = '#FFC107';
-  var accent2 = '#FF8F00';
-  function apply() {
+  var accent2 = '#E6A800';
+
+  function mode() {
+    try {
+      var m = localStorage.getItem(KEY);
+      if (m === 'light' || m === 'dark') return m;
+    } catch (e) {}
+    return 'dark';
+  }
+
+  function apply(m) {
+    m = m || mode();
     var r = document.documentElement;
+    var dark = m !== 'light';
+    r.setAttribute('data-theme', dark ? 'dark' : 'light');
     r.style.setProperty('--nd-accent', accent);
     r.style.setProperty('--nd-accent-2', accent2);
-    r.style.setProperty('--nd-accent-soft', 'rgba(255,193,7,0.14)');
-    r.style.setProperty('--nd-bg', '#0a0e18');
-    r.style.setProperty('--nd-bg-top', '#0a0e18');
-    r.style.setProperty('--nd-bg-bottom', '#070a12');
-    r.style.setProperty('--nd-card', '#121a2e');
-    r.style.setProperty('--nd-text', '#e8eaed');
-    r.style.setProperty('--nd-muted', '#8aa0b8');
-    r.style.setProperty('--accent', accent);
-    r.style.setProperty('--accent-2', accent2);
-    if (document.body) {
-      document.body.style.backgroundColor = '#0a0e18';
-      document.body.style.color = '#e8eaed';
-      document.body.classList.add('nd-dark');
-      document.body.classList.remove('nd-light');
+    r.style.setProperty('--nd-accent-soft', dark ? 'rgba(255,193,7,0.16)' : 'rgba(212,160,23,0.18)');
+    if (dark) {
+      r.style.setProperty('--nd-bg', '#0c0c0e');
+      r.style.setProperty('--nd-bg-2', '#141418');
+      r.style.setProperty('--nd-card', '#1a1a1f');
+      r.style.setProperty('--nd-card-2', '#222228');
+      r.style.setProperty('--nd-text', '#f4f4f5');
+      r.style.setProperty('--nd-muted', '#a1a1aa');
+      r.style.setProperty('--nd-border', '#0a0a0a');
+      r.style.setProperty('--nd-icon', '#f4f4f5');
+      r.style.setProperty('--nd-shadow', 'rgba(0,0,0,0.65)');
+      r.style.setProperty('--nd-raised', '#24242c');
+      r.style.setProperty('--nd-inset', '#121216');
+    } else {
+      r.style.setProperty('--nd-bg', '#f3f3f5');
+      r.style.setProperty('--nd-bg-2', '#ffffff');
+      r.style.setProperty('--nd-card', '#ffffff');
+      r.style.setProperty('--nd-card-2', '#f0f0f3');
+      r.style.setProperty('--nd-text', '#121214');
+      r.style.setProperty('--nd-muted', '#52525b');
+      r.style.setProperty('--nd-border', '#0a0a0a');
+      r.style.setProperty('--nd-icon', '#121214');
+      r.style.setProperty('--nd-shadow', 'rgba(0,0,0,0.28)');
+      r.style.setProperty('--nd-raised', '#ffffff');
+      r.style.setProperty('--nd-inset', '#e8e8ec');
     }
+    r.style.setProperty('--accent', accent);
+    r.style.setProperty('--text-muted', r.style.getPropertyValue('--nd-muted'));
+    if (document.body) {
+      document.body.classList.toggle('nd-dark', dark);
+      document.body.classList.toggle('nd-light', !dark);
+      document.body.style.color = r.style.getPropertyValue('--nd-text');
+    }
+    try { localStorage.setItem(KEY, m); } catch (e) {}
+    // update toggle buttons
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+      btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      btn.innerHTML = dark
+        ? '<i class="fa-solid fa-sun"></i><span>Terang</span>'
+        : '<i class="fa-solid fa-moon"></i><span>Gelap</span>';
+    });
   }
-  apply();
-  document.addEventListener('DOMContentLoaded', apply);
+
+  function toggle() {
+    apply(mode() === 'dark' ? 'light' : 'dark');
+  }
+
+  apply(mode());
+  document.addEventListener('DOMContentLoaded', function () {
+    apply(mode());
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        toggle();
+      });
+    });
+  });
+
   window.NailongTheme = {
-    PALETTES: { gold: { name: 'Nailong Gold', accent: accent } },
-    load: function(){ return { mode:'dark', palette:'gold' }; },
-    save: function(){},
+    mode: mode,
     apply: apply,
-    setTheme: apply,
-    setPreset: apply,
-    setColors: apply,
-    setCustom: apply,
-    setMedia: function(){ return Promise.resolve(); },
-    clearMedia: function(){ return Promise.resolve(); },
-    resolve: function(){ return { mode:'dark', accent:accent, bg:'#0a0e18', text:'#e8eaed' }; }
+    toggle: toggle,
+    setTheme: function (m) { apply(m === 'light' ? 'light' : 'dark'); },
+    load: function () { return { mode: mode(), palette: 'gold' }; },
+    save: function () {},
+    resolve: function () {
+      return { mode: mode(), accent: accent, bg: getComputedStyle(document.documentElement).getPropertyValue('--nd-bg'), text: getComputedStyle(document.documentElement).getPropertyValue('--nd-text') };
+    }
   };
 })();

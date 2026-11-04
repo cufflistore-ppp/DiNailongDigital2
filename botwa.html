@@ -8,87 +8,161 @@
   <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
   <link rel="stylesheet" href="style.css">
   <script src="theme.js"></script>
+  <style>
+    .page-content { padding: 12px 14px 110px; max-width: 520px; margin: 0 auto; }
+    .btn-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,193,7,0.22);
+      color: #FFC107; padding: 8px 14px; border-radius: 999px;
+      font-size: 13px; font-weight: 700; text-decoration: none;
+    }
+    .pkg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+    .pkg-card {
+      background: rgba(16,24,42,0.85); border: 1.5px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 14px 12px; cursor: pointer; text-align: center;
+    }
+    .pkg-card.active {
+      border-color: #FFC107;
+      background: linear-gradient(160deg, rgba(255,193,7,0.12), rgba(16,24,42,0.9));
+    }
+    .pkg-card .dur { font-size: 13px; font-weight: 800; color: #fff; }
+    .pkg-card .price { font-size: 16px; font-weight: 900; color: #FFC107; margin-top: 4px; }
+    .type-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+    .type-row button {
+      flex: 1; min-width: 90px; border: 1.5px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04); color: #cfd8dc; border-radius: 12px;
+      padding: 12px 8px; font-weight: 700; font-size: 12px; cursor: pointer;
+    }
+    .type-row button.active { border-color: #FFC107; color: #FFC107; background: rgba(255,193,7,0.1); }
+    .type-row button i { display: block; font-size: 18px; margin-bottom: 4px; }
+    .hint { font-size: 12px; color: #8aa0b8; line-height: 1.45; margin: 8px 0; }
+    .num-list input {
+      width: 100%; margin: 6px 0; padding: 12px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1); background: #0d1220; color: #fff; box-sizing: border-box;
+    }
+    .total-bar {
+      position: sticky; bottom: 78px; z-index: 12;
+      background: rgba(10,14,24,0.95); border: 1px solid rgba(255,193,7,0.25);
+      border-radius: 16px; padding: 12px 14px; margin-top: 14px;
+      backdrop-filter: blur(10px);
+    }
+    .total-bar .row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .total-bar .sum { font-size: 20px; font-weight: 900; color: #FFC107; }
+    .total-bar .btn-pay {
+      width: 100%; border: none; border-radius: 12px; padding: 14px;
+      background: linear-gradient(90deg,#FFC107,#FF8F00); color: #0a0e18;
+      font-weight: 900; font-size: 14px; cursor: pointer;
+    }
+    .total-bar .btn-pay:disabled { opacity: 0.5; }
+    .pair-card {
+      display: none; margin-top: 14px; padding: 16px;
+      background: rgba(16,42,28,0.35); border: 1px solid rgba(105,240,174,0.3);
+      border-radius: 16px;
+    }
+    .pair-card.show { display: block; }
+    .push-link {
+      display: block; text-align: center; margin-top: 14px; padding: 12px;
+      border-radius: 12px; border: 1px dashed rgba(255,193,7,0.35);
+      color: #FFC107; text-decoration: none; font-weight: 700; font-size: 13px;
+    }
+    .slot-line {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 10px; margin: 4px 0; border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+    }
+  </style>
 </head>
 <body>
   <header class="header header-logo-only">
     <div class="brand brand-centered">
       <div class="logo-text-wrap">
-        <img src="nd-logo-gold.jpg" alt="Nailong Digital" class="logo-full"></div>
+        <img src="nd-logo-gold.jpg" alt="ND" class="logo-full">
+        <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
+      </div>
     </div>
   </header>
 
   <div class="page-content">
-    <div class="badge">SEWA BOT</div>
-    <h2 class="page-title"><i class="fa-brands fa-whatsapp"></i> Sewa Bot WhatsApp</h2>
-    <p class="page-desc">Satu halaman: pilih tipe bot, ikut tutorial, pantau status, dan kelola bot berjalan.</p>
+    <p style="margin:0 0 10px;"><a href="index.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Kembali</a></p>
+    <div class="badge">SEWA BOT WA</div>
+    <h2 class="page-title"><i class="fa-brands fa-whatsapp"></i> Sewa Bot</h2>
+    <p class="page-desc">Bayar dulu → pairing per nomor. Tambah nomor +Rp 1.000 tanpa menghentikan bot yang sudah ONLINE.</p>
 
-    <!-- Pilih tipe -->
     <div class="api-form-card">
-      <label>Pilih tipe bot</label>
-      <div class="topup-packages" id="botTypePick">
-        <button type="button" class="topup-pkg active" data-type="jpm">Bot JPM</button>
-        <button type="button" class="topup-pkg" data-type="jb">Bot JB</button>
-        <button type="button" class="topup-pkg" data-type="jaga">Bot Jaga Grup</button>
-        <button type="button" class="topup-pkg" data-type="push">Push Kontak</button>
+      <h3 style="margin:0 0 8px;font-size:14px;color:#FFC107;">1. Jenis bot</h3>
+      <div class="type-row" id="typeRow">
+        <button type="button" class="active" data-type="full"><i class="fa-solid fa-robot"></i>Bot Full</button>
+        <button type="button" data-type="jpm"><i class="fa-solid fa-bullhorn"></i>JPM saja</button>
+        <button type="button" data-type="jb"><i class="fa-solid fa-cart-shopping"></i>JB saja</button>
       </div>
-      <p id="botTypeDesc" style="font-size:12px;color:#8aa0b8;margin-top:8px;">Bot JPM — mode JPM otomatis (broadcast/promosi).</p>
-      <p style="font-size:11px;color:#6b7a90;margin-top:6px;">Pilih JPM → otomatis mode JPM. Pilih JB → otomatis mode JB. Push Kontak membuka form khusus.</p>
+      <p class="hint" id="typeDesc">Bot Full — JPM + JB + jaga grup dalam satu bot.</p>
     </div>
 
-    <!-- Tutorial -->
     <div class="api-form-card">
-      <h3 style="font-size:15px;margin:0 0 10px;color:#FFC107;"><i class="fa-solid fa-book"></i> Cara pakai</h3>
-      <ol style="margin:0;padding-left:18px;font-size:13px;color:#cfd8dc;line-height:1.7;">
-        <li>Pilih tipe bot di atas.</li>
-        <li>Isi data (nomor / link grup bila diminta).</li>
-        <li>Bayar via WijayaPay atau saldo.</li>
-        <li>Salin <b>kode pairing</b> yang muncul, buka WhatsApp → Perangkat tertaut → Tautkan dengan nomor telepon.</li>
-        <li>Tempel kode pairing, tunggu bot online di monitor.</li>
+      <h3 style="margin:0 0 8px;font-size:14px;color:#FFC107;">2. Pilih paket sewa</h3>
+      <div class="pkg-grid" id="pkgGrid"></div>
+    </div>
+
+    <div class="api-form-card">
+      <h3 style="margin:0 0 8px;font-size:14px;color:#FFC107;">3. Nomor WhatsApp bot (utama)</h3>
+      <p class="hint">Satu nomor dulu. Setelah online, tambah nomor lain satu per satu (+Rp 1.000) — bot lama tetap jalan.</p>
+      <div class="num-list">
+        <input type="tel" id="mainNum" class="num-input" placeholder="Nomor utama 08… / 628…" inputmode="numeric">
+      </div>
+    </div>
+
+    <div class="api-form-card">
+      <h3 style="margin:0 0 8px;font-size:14px;color:#FFC107;">Cara kerja</h3>
+      <ol class="hint" style="padding-left:18px;margin:0;">
+        <li>Pilih jenis & paket, isi nomor utama, bayar.</li>
+        <li>Salin pairing No.1 → WhatsApp → Perangkat tertaut.</li>
+        <li>Mau tambah nomor: isi → konfirmasi (+Rp 1.000) → pairing No.2 langsung, tanpa restart bot No.1.</li>
       </ol>
     </div>
 
-    <!-- Form order singkat -->
-    <div class="api-form-card">
-      <label>Nomor WhatsApp (untuk pairing)</label>
-      <input type="tel" id="botWa" class="form-input" placeholder="628xxxxxxxxxx" inputmode="numeric">
-      <label style="margin-top:10px;">Catatan / link grup (opsional)</label>
-      <textarea id="botNote" class="form-input" rows="2" placeholder="Link grup / catatan"></textarea>
-      <button type="button" class="btn-pesan" id="btnOrderBot" style="width:100%;margin-top:12px;">
-        <i class="fa-solid fa-bolt"></i> Order & dapatkan pairing
-      </button>
+    <div class="pair-card" id="pairCard">
+      <h3 style="margin:0 0 8px;color:#69f0ae;font-size:14px;"><i class="fa-solid fa-link"></i> Pairing per nomor</h3>
+      <div id="pairList"></div>
+
+      <div class="api-form-card" id="addNumBox" style="margin-top:12px;display:none;">
+        <h3 style="margin:0 0 6px;font-size:13px;color:#FFC107;">Tambah nomor bot (+Rp 1.000)</h3>
+        <p class="hint" style="margin-top:0;">Bot yang sudah ONLINE <b>tidak di-restart</b>. Setelah konfirmasi, pairing nomor baru langsung muncul.</p>
+        <input type="tel" id="addNumInput" placeholder="Nomor baru 08… / 628…" inputmode="numeric"
+          style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:#0d1220;color:#fff;box-sizing:border-box;">
+        <button type="button" class="btn-pesan" id="btnAddNum" style="width:100%;margin-top:8px;">
+          <i class="fa-solid fa-plus"></i> Konfirmasi tambah nomor
+        </button>
+      </div>
+
+      <div style="margin-top:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <b style="color:#FFC107;font-size:13px;"><i class="fa-solid fa-desktop"></i> Monitor bot</b>
+          <span id="serverPill" style="font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;background:#7f1d1d;color:#fecaca;">SERVER BOT WA OFFLINE</span>
+        </div>
+        <div id="botSlots"></div>
+        <div id="botMonitor" style="margin-top:10px;max-height:160px;overflow:auto;background:#0a0e18;border-radius:10px;padding:10px;font-size:11px;color:#8aa0b8;"></div>
+      </div>
     </div>
 
-    <!-- Pairing box -->
-    <div class="api-form-card" id="pairingBox" style="display:none;">
-      <h3 style="font-size:15px;margin:0 0 8px;color:#69f0ae;"><i class="fa-solid fa-link"></i> Kode pairing</h3>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <code id="pairingCode" style="flex:1;background:#0a0e18;padding:12px;border-radius:10px;font-size:18px;letter-spacing:2px;color:#FFC107;text-align:center;">------</code>
-        <button type="button" class="btn-topup" id="btnCopyPair" style="flex-shrink:0;"><i class="fa-solid fa-copy"></i></button>
+    <div class="total-bar">
+      <div class="row">
+        <div>
+          <div class="hint" style="margin:0;">Total paket</div>
+          <div class="sum" id="totalText">Rp 3.000</div>
+        </div>
+        <div class="hint" id="saldoHint" style="margin:0;">Bayar: QRIS</div>
       </div>
-      <p style="font-size:11px;color:#8aa0b8;margin-top:8px;">Langsung tempel di WhatsApp → Perangkat tertaut. Tidak perlu ribet.</p>
+      <button type="button" class="btn-pay" id="btnPay"><i class="fa-solid fa-shield-halved"></i> Bayar QRIS & mulai bot</button>
     </div>
 
-    <!-- Monitor -->
-    <div class="api-form-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <h3 style="font-size:15px;margin:0;color:#FFC107;"><i class="fa-solid fa-desktop"></i> Monitor bot</h3>
-        <span class="nd-loading" id="botLoading" style="display:none;"><span></span><span></span></span>
-      </div>
-      <div class="bot-monitor" id="botMonitor">
-        <div class="log-line">[sistem] Siap. Order bot untuk mulai monitor.</div>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:10px;">
-        <button type="button" class="btn-topup" id="btnStartBot" style="flex:1;"><i class="fa-solid fa-play"></i> Start</button>
-        <button type="button" class="btn-topup" id="btnStopBot" style="flex:1;background:rgba(229,57,53,0.2);color:#ff8a80;"><i class="fa-solid fa-stop"></i> Stop</button>
-      </div>
-    </div>
+    <a class="push-link" href="push-kontak.html"><i class="fa-solid fa-address-book"></i> Push Kontak (halaman terpisah)</a>
   </div>
 
   <nav class="bottom-nav nav-5">
     <a href="botwa.html" class="nav-item active" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
-    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki Kontak</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki</span></a>
     <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
-    <a href="jasweb.html" class="nav-item" data-nav="jasweb"><span class="nav-icon-wrap"><i class="fa-solid fa-globe"></i></span><span>JasWeb</span></a>
+    <a href="tools.html" class="nav-item" data-nav="tools"><span class="nav-icon-wrap"><i class="fa-solid fa-screwdriver-wrench"></i></span><span>Tools</span></a>
     <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
     <div class="nav-indicator" id="navIndicator"></div>
   </nav>
@@ -97,91 +171,12 @@
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
   <script src="global-orders.js"></script>
-  <script src="script.js"></script>
   <script src="auth.js"></script>
-  <script src="auth-guard.js"></script>
   <script src="header-bar.js"></script>
   <script src="nav.js"></script>
-  <script>
-    var botType = 'jpm';
-    var descs = {
-      jpm: 'Bot JPM — otomatis mode JPM (broadcast/promosi).',
-      jb: 'Bot JB — otomatis mode JB (jual beli / format JB).',
-      jaga: 'Bot Jaga Grup — pantau & jaga grup otomatis.',
-      push: 'Push Kontak — buka halaman push kontak otomatis.'
-    };
-    document.querySelectorAll('#botTypePick .topup-pkg').forEach(function(btn) {
-      btn.onclick = function() {
-        document.querySelectorAll('#botTypePick .topup-pkg').forEach(function(b){ b.classList.remove('active'); });
-        btn.classList.add('active');
-        botType = btn.getAttribute('data-type');
-        document.getElementById('botTypeDesc').textContent = descs[botType] || '';
-        if (botType === 'push') { location.href = 'push-kontak.html'; return; }
-        try {
-          var st = JSON.parse(localStorage.getItem('nailong_bot_stats') || '{}');
-          st[botType] = (st[botType] || 0) + 1;
-          localStorage.setItem('nailong_bot_stats', JSON.stringify(st));
-        } catch(e) {}
-      };
-    });
-
-    function logMon(msg) {
-      var el = document.getElementById('botMonitor');
-      var t = new Date().toLocaleTimeString('id-ID');
-      el.innerHTML += '<div class="log-line">[' + t + '] ' + msg + '</div>';
-      el.scrollTop = el.scrollHeight;
-    }
-
-    function makePairing() {
-      var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-      var s = '';
-      for (var i = 0; i < 8; i++) s += chars[Math.floor(Math.random() * chars.length)];
-      return s.slice(0,4) + '-' + s.slice(4);
-    }
-
-    document.getElementById('btnOrderBot').onclick = function() {
-      var wa = (document.getElementById('botWa').value || '').replace(/\D/g, '');
-      if (wa.length < 10) { alert('Nomor WhatsApp minimal 10 digit'); return; }
-      var code = makePairing();
-      document.getElementById('pairingBox').style.display = 'block';
-      document.getElementById('pairingCode').textContent = code;
-      logMon('Order bot ' + botType + ' untuk ' + wa);
-      logMon('Pairing: ' + code + ' — salin & tempel di WA');
-      try {
-        var st = JSON.parse(localStorage.getItem('nailong_bot_stats') || '{}');
-        st['run_' + botType] = (st['run_' + botType] || 0) + 1;
-        localStorage.setItem('nailong_bot_stats', JSON.stringify(st));
-        localStorage.setItem('nailong_last_pairing', code);
-      } catch(e) {}
-      // arahkan bayar
-      var paket = 'Sewa Bot ' + botType.toUpperCase();
-      location.href = 'pembayaran.html?paket=' + encodeURIComponent(paket) + '&total=15000&bot=' + botType;
-    };
-
-    document.getElementById('btnCopyPair').onclick = function() {
-      var t = document.getElementById('pairingCode').textContent;
-      if (navigator.clipboard) navigator.clipboard.writeText(t);
-      else {
-        var i = document.createElement('input'); i.value = t; document.body.appendChild(i); i.select(); document.execCommand('copy'); i.remove();
-      }
-      alert('Pairing disalin: ' + t);
-    };
-
-    document.getElementById('btnStartBot').onclick = function() {
-      document.getElementById('botLoading').style.display = 'inline-flex';
-      logMon('Start bot ' + botType + '…');
-      setTimeout(function() {
-        logMon('Bot online · menunggu perintah');
-        document.getElementById('botLoading').style.display = 'none';
-      }, 1200);
-    };
-    document.getElementById('btnStopBot').onclick = function() {
-      logMon('Bot dihentikan.');
-      document.getElementById('botLoading').style.display = 'none';
-    };
-  </script>
-  <script src="nailong-anim.js"></script>
-  <script src="protect.js"></script>
   <script src="ui-enhance.js"></script>
+  <script src="wijayapay.js"></script>
+  <script src="pay-qris.js"></script>
+  <script src="botwa-app.js"></script>
 </body>
 </html>
