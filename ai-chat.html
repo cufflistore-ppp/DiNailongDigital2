@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AI Chat - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" href="nd-logo-gold.jpg" type="image/jpeg">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <style>
+    .page-content { padding: 12px 14px 100px; max-width: 640px; margin: 0 auto; }
+    .plan-bar {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 14px; margin-bottom: 12px;
+      background: rgba(255,193,7,0.1); border: 1px solid rgba(255,193,7,0.28);
+      font-size: 12px;
+    }
+    .plan-bar b { color: #FFC107; }
+    .plan-bar button {
+      border: none; border-radius: 999px; padding: 8px 12px; font-weight: 800;
+      background: linear-gradient(90deg,#FFC107,#FF8F00); color: #0a0e18; cursor: pointer; font-size: 11px;
+    }
+    .chat {
+      height: min(52vh, 420px); overflow-y: auto; border-radius: 16px; padding: 12px;
+      background: rgba(10,14,24,0.92); border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 10px;
+    }
+    .msg { display: flex; gap: 8px; margin: 10px 0; max-width: 92%; }
+    .msg.user { margin-left: auto; flex-direction: row-reverse; }
+    .msg .av {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      background: #FFC107; color: #0a0e18; display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 900;
+    }
+    .msg.user .av { background: #334155; color: #fff; }
+    .msg .bubble {
+      padding: 10px 12px; border-radius: 14px; font-size: 13px; line-height: 1.45;
+      background: rgba(255,193,7,0.1); border: 1px solid rgba(255,193,7,0.2); color: #f5e6b8;
+    }
+    .msg.user .bubble {
+      background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); color: #e8eef7;
+    }
+    .msg .bubble img {
+      max-width: 100%; max-height: 200px; border-radius: 10px; display: block; margin-bottom: 6px;
+    }
+    .msg .meta { font-size: 10px; color: #6b7a90; margin-top: 4px; }
+    .compose {
+      display: flex; flex-direction: column; gap: 8px;
+      background: rgba(12,16,28,0.95); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 10px;
+    }
+    .compose .row { display: flex; gap: 8px; align-items: flex-end; }
+    .compose textarea {
+      flex: 1; min-height: 44px; max-height: 120px; resize: none; border: none;
+      background: transparent; color: #fff; font-size: 14px; outline: none;
+    }
+    .compose .icon-btn {
+      width: 42px; height: 42px; border: none; border-radius: 12px; cursor: pointer;
+      background: rgba(255,255,255,0.08); color: #FFC107; font-size: 16px;
+    }
+    .compose .send {
+      background: linear-gradient(135deg,#FFC107,#FF8F00); color: #0a0e18;
+    }
+    .preview-img {
+      display: none; position: relative; width: 72px; height: 72px; border-radius: 10px; overflow: hidden;
+    }
+    .preview-img.show { display: block; }
+    .preview-img img { width: 100%; height: 100%; object-fit: cover; }
+    .preview-img button {
+      position: absolute; top: 2px; right: 2px; border: none; background: rgba(0,0,0,.7);
+      color: #fff; width: 22px; height: 22px; border-radius: 50%; font-size: 10px; cursor: pointer;
+    }
+    .modal {
+      display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,.65);
+      align-items: flex-end; justify-content: center;
+    }
+    .modal.show { display: flex; }
+    .modal-card {
+      width: 100%; max-width: 520px; max-height: 88vh; overflow: auto;
+      background: #10182a; border-radius: 20px 20px 0 0; padding: 18px 16px 28px;
+      border: 1px solid rgba(255,193,7,0.2);
+    }
+    .plan-card {
+      border: 1.5px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 14px;
+      margin: 10px 0; background: rgba(255,255,255,0.03);
+    }
+    .plan-card h4 { margin: 0 0 6px; color: #FFC107; font-size: 15px; }
+    .plan-card .price { font-size: 13px; color: #cfd8dc; margin: 4px 0; }
+    .plan-card .feat { font-size: 12px; color: #8aa0b8; margin: 6px 0 10px; line-height: 1.4; }
+    .plan-card .btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .plan-card button {
+      flex: 1; min-width: 120px; border: none; border-radius: 10px; padding: 10px;
+      font-weight: 800; font-size: 12px; cursor: pointer;
+      background: linear-gradient(90deg,#FFC107,#FF8F00); color: #0a0e18;
+    }
+    .plan-card button.ghost {
+      background: transparent; border: 1px solid rgba(255,193,7,0.35); color: #FFC107;
+    }
+    .typing { font-size: 12px; color: #8aa0b8; padding: 4px 8px; display: none; }
+    .typing.show { display: block; }
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered">
+      <div class="logo-text-wrap">
+        <img src="nd-logo-gold.jpg" alt="ND" class="logo-full">
+        <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-content">
+    <p style="margin:0 0 10px;"><a href="tools.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Kembali</a></p>
+    <h2 class="page-title"><i class="fa-solid fa-robot"></i> AI Chat</h2>
+    <p class="page-desc">Chat AI biasa — teks & gambar. Upgrade paket biar kuota & fitur lebih besar.</p>
+
+    <div class="plan-bar">
+      <div>
+        Paket: <b id="planName">Gratis</b>
+        <span id="planExp" style="color:#8aa0b8"></span><br>
+        Sisa chat hari ini: <b id="quotaLeft">—</b>
+      </div>
+      <button type="button" id="btnUpgrade"><i class="fa-solid fa-crown"></i> Upgrade</button>
+    </div>
+
+    <div class="chat" id="chat"></div>
+    <div class="typing" id="typing"><i class="fa-solid fa-spinner fa-spin"></i> AI sedang membalas…</div>
+
+    <div class="compose">
+      <div class="preview-img" id="prevWrap">
+        <img id="prevImg" alt="">
+        <button type="button" id="prevClear" aria-label="Hapus">×</button>
+      </div>
+      <div class="row">
+        <button type="button" class="icon-btn" id="btnImg" title="Gambar"><i class="fa-solid fa-image"></i></button>
+        <input type="file" id="fileImg" accept="image/*" hidden>
+        <textarea id="inp" placeholder="Tulis pesan… bisa lampirkan gambar" rows="1"></textarea>
+        <button type="button" class="icon-btn send" id="btnSend"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h3 style="margin:0;color:#FFC107;">Upgrade AI</h3>
+        <button type="button" id="modalClose" style="border:none;background:transparent;color:#fff;font-size:20px;cursor:pointer;">×</button>
+      </div>
+      <p style="font-size:12px;color:#8aa0b8;">Bayar pakai saldo Nailong Digital. Langganan aktif otomatis setelah bayar.</p>
+      <div id="plans"></div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav nav-5">
+    <a href="botwa.html" class="nav-item" data-nav="botwa"><span class="nav-icon-wrap"><i class="fa-brands fa-whatsapp"></i></span><span>Botwa</span></a>
+    <a href="joki.html" class="nav-item" data-nav="joki"><span class="nav-icon-wrap"><i class="fa-solid fa-shield-halved"></i></span><span>Joki</span></a>
+    <a href="index.html" class="nav-item" data-nav="home"><span class="nav-icon-wrap"><i class="fa-solid fa-house"></i></span><span>Home</span></a>
+    <a href="tools.html" class="nav-item active" data-nav="tools"><span class="nav-icon-wrap"><i class="fa-solid fa-screwdriver-wrench"></i></span><span>Tools</span></a>
+    <a href="akun.html" class="nav-item" data-nav="akun"><span class="nav-icon-wrap"><i class="fa-solid fa-user"></i></span><span>Akun</span></a>
+    <div class="nav-indicator" id="navIndicator"></div>
+  </nav>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="header-bar.js"></script>
+  <script src="nav.js"></script>
+  <script src="wijayapay.js"></script>
+  <script src="pay-qris.js"></script>
+  <script src="ai-chat-app.js"></script>
+</body>
+</html>

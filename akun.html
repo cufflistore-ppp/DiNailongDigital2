@@ -184,6 +184,11 @@
     }
 
     .menu-list {
+      background: rgba(16,24,42,0.75);
+      border: 1px solid rgba(255,193,7,0.12);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 14px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -362,13 +367,16 @@
     }
     .login-menu-links a i { display:block; color:#FFC107; margin-bottom:4px; font-size:16px; }
     </style>
+<script src="dev-config.js"></script>
 </head>
 <body>
   <header class="header header-logo-only">
     <div class="brand brand-centered">
-      <div class="logo-text-wrap">
-        <img src="nd-logo-gold.jpg" alt="Nailong Digital" class="logo-full"></div>
+    <div class="logo-text-wrap">
+      <img src="nd-logo-gold.jpg" alt="ND" class="logo-full">
+      <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
     </div>
+  </div>
   </header>
 
   <div class="top-notif" id="topNotif" style="display:none;"></div>
@@ -467,18 +475,36 @@
     });
     </script>
     
-    <div class="menu-section-title">Menu Akun</div>
+    <div class="menu-section-title">Pesanan &amp; Dompet</div>
       <div class="menu-list">
+        <a class="menu-item" href="riwayat.html">
+          <span class="mi-icon"><i class="fa-solid fa-receipt"></i></span>
+          <span class="mi-text">Riwayat pesanan</span>
+          <span class="mi-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </a>
         <a class="menu-item" href="antrian.html">
           <span class="mi-icon"><i class="fa-solid fa-clock"></i></span>
           <span class="mi-text">Antrian saya</span>
           <span class="mi-arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </a>
-        <a class="menu-item" href="laporan.html">
-          <span class="mi-icon"><i class="fa-solid fa-flag"></i></span>
-          <span class="mi-text">Laporan transaksi</span>
+        </div>
+
+    <div class="menu-section-title">Toko &amp; Layanan</div>
+      <div class="menu-list">
+        <a class="menu-item" href="donasi.html">
+          <span class="mi-icon"><i class="fa-solid fa-hand-holding-heart"></i></span>
+          <span class="mi-text">Donasi</span>
           <span class="mi-arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </a>
+        <a class="menu-item" href="channel.html">
+          <span class="mi-icon"><i class="fa-solid fa-comments"></i></span>
+          <span class="mi-text">Channel testimoni</span>
+          <span class="mi-arrow"><i class="fa-solid fa-chevron-right"></i></span>
+        </a>
+      </div>
+
+    <div class="menu-section-title">Bantuan</div>
+      <div class="menu-list">
         <a class="menu-item" href="tentang.html">
           <span class="mi-icon"><i class="fa-solid fa-circle-info"></i></span>
           <span class="mi-text">Tentang Nailong Digital</span>
@@ -489,7 +515,6 @@
           <span class="mi-text">Hubungi Admin</span>
           <span class="mi-arrow"><i class="fa-solid fa-chevron-right"></i></span>
         </a>
-        <!-- Admin only -->
         <a class="menu-item admin" id="menuAdmin" href="admin.html" style="display:none;">
           <span class="mi-icon"><i class="fa-solid fa-user-shield"></i></span>
           <span class="mi-text">Panel Admin</span>

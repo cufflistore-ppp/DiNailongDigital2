@@ -278,14 +278,19 @@
     }
     .toast-admin.show { transform: translateX(-50%) translateY(0); }
   </style>
+<style id="HIDE_REMOVED_FEATURES">
+#panel-tokoverify, #panel-saldo, [data-tab="tokoverify"], [data-tab="saldo"] { display: none !important; }
+</style>
+<script src="dev-config.js"></script>
 </head>
 <body>
   <header class="header header-logo-only">
     <div class="brand brand-centered">
-      <div class="logo-text-wrap">
-        <img src="nd-logo-gold.jpg" alt="Nailong Digital" class="logo-full">
-      </div>
+    <div class="logo-text-wrap">
+      <img src="nd-logo-gold.jpg" alt="ND" class="logo-full">
+      <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
     </div>
+  </div>
   </header>
   <div class="admin-header" style="position:relative;">
     
@@ -305,11 +310,7 @@
         <i class="fa-solid fa-gamepad"></i> Akun Jual
       </button>
       <button class="admin-tab" data-tab="withdraw" onclick="switchTab('withdraw')"><i class="fa-solid fa-money-bill-transfer"></i> Tarik DANA</button>
-      <button class="admin-tab" data-tab="tokoverify" onclick="switchTab('tokoverify')"><i class="fa-solid fa-store"></i> Verifikasi Toko</button>
-      <button class="admin-tab" data-tab="saldo" onclick="switchTab('saldo')">
-        <i class="fa-solid fa-wallet"></i> Saldo User
-      </button>
-                        <button class="admin-tab" data-tab="sw" onclick="switchTab('sw')">
+      <button class="admin-tab" data-tab="sw" onclick="switchTab('sw')">
         <i class="fa-brands fa-whatsapp"></i> No SW
       </button>
       <button class="admin-tab" data-tab="toko" onclick="switchTab('toko')">
