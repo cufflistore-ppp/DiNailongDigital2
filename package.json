@@ -1,7 +1,7 @@
 {
-  "name": "nailong-media-api",
+  "name": "voxyy-orders-api",
   "version": "1.0.0",
-  "description": "API musik, komik, tontonan, YouTube untuk Nailong Digital",
+  "description": "Voxyy Joki - Server antrian global (gratis)",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.0",
-    "node-fetch": "^2.7.0"
+    "express": "^4.21.0"
   }
 }

@@ -115,6 +115,13 @@
 (function () {
   // --- Video background ---
   function injectVideoBg() {
+    // Neo-brutalism uses solid yellow-orange gradient — skip video bg
+    if (document.documentElement.getAttribute('data-neo') === '1' ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('nd-neo') ||
+        document.body.classList.contains('nd-light')) {
+      return;
+    }
     if (document.getElementById('bgVideoWrap')) return;
     var wrap = document.createElement('div');
     wrap.id = 'bgVideoWrap';

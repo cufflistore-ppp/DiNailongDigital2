@@ -3862,3 +3862,692 @@ html[data-theme="light"] .logo-text-wrap {
   gap: 8px;
   padding: 8px 12px 0;
 }
+
+/* ============================================================
+   NAILONG DIGITAL — 2D NEO-BRUTALISM OVERRIDE
+   Background kuning→oranye · Card putih · Outline hitam · Hard shadow
+   Icons Font Awesome hitam · Premium Android-app feel
+   ============================================================ */
+
+html[data-neo="1"],
+html[data-theme="light"],
+body.nd-neo,
+body.nd-light {
+  --nd-yellow: #FFD600;
+  --nd-orange: #FF8C00;
+  --nd-hard: #111111;
+  --nd-card: #FFFFFF;
+  --nd-text: #111111;
+  --nd-muted: #555555;
+  --nd-border: #111111;
+  --nd-icon: #111111;
+  --nd-shadow: #111111;
+  --nd-accent: #FFD600;
+  --nd-accent-2: #FF8C00;
+}
+
+html,
+body,
+html[data-theme="light"] body,
+body.nd-light,
+body.nd-neo {
+  background: #FFD600 !important;
+  background-image:
+    linear-gradient(160deg, #FFD600 0%, #FFC107 35%, #FFA000 70%, #FF8C00 100%) !important;
+  background-attachment: fixed !important;
+  color: #111111 !important;
+  min-height: 100vh;
+}
+
+body.nd-neo .bg-video-wrap,
+body.nd-light .bg-video-wrap,
+html[data-neo="1"] .bg-video-wrap {
+  display: none !important;
+}
+
+.neo-card,
+.produk-card,
+.menu-item,
+.paket-card,
+.saldo-card,
+.info-box,
+.auth-card,
+.akun-card,
+.admin-card,
+.syam-profile,
+.syam-stat,
+.warning-box,
+.antrian-item,
+.baca-card,
+.api-form-card,
+.top-notif,
+.modal,
+.akun-modal,
+.drawer,
+.side-drawer,
+.card,
+.box,
+.panel {
+  background: #FFFFFF !important;
+  border: 2.5px solid #111111 !important;
+  border-radius: 14px !important;
+  box-shadow: 6px 6px 0 0 #111111 !important;
+  color: #111111 !important;
+}
+
+.menu-item:active,
+.produk-card:active,
+.btn:active,
+button:active,
+.nav-item:active,
+a.btn:active,
+.paket-card:active {
+  transform: translate(4px, 4px) !important;
+  box-shadow: 2px 2px 0 0 #111111 !important;
+}
+
+@media (hover: hover) {
+  .menu-item:hover,
+  .produk-card:hover,
+  .paket-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 0 #111111 !important;
+  }
+  .btn:hover,
+  button.btn:hover,
+  a.btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 0 #111111 !important;
+  }
+}
+
+.header,
+header.header {
+  background: #FFFFFF !important;
+  border-bottom: 2.5px solid #111111 !important;
+  box-shadow: 0 5px 0 0 #111111 !important;
+  color: #111111 !important;
+}
+.header .nd-brand-text,
+.logo-text-wrap,
+.brand h1 {
+  color: #111111 !important;
+  font-weight: 900 !important;
+}
+.nd-brand-text span {
+  color: #FF8C00 !important;
+}
+.logo-full,
+.logo {
+  border: 2px solid #111111 !important;
+  border-radius: 10px !important;
+  box-shadow: 3px 3px 0 0 #111111 !important;
+}
+
+.banner {
+  margin: 12px !important;
+  border: 2.5px solid #111111 !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  box-shadow: 6px 6px 0 0 #111111 !important;
+  background: #FFFFFF !important;
+}
+.banner img,
+.banner-full {
+  display: block;
+  width: 100%;
+  border-radius: 0 !important;
+}
+
+.syam-profile,
+#homeProfileCard > * {
+  background: #FFFFFF !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 6px 6px 0 0 #111111 !important;
+  color: #111111 !important;
+  border-radius: 16px !important;
+}
+.syam-badge,
+.badge,
+.badge-hot,
+.badge-laris {
+  background: #FFD600 !important;
+  color: #111111 !important;
+  border: 2px solid #111111 !important;
+  box-shadow: 3px 3px 0 0 #111111 !important;
+  font-weight: 800 !important;
+  border-radius: 8px !important;
+}
+.syam-stats {
+  display: flex;
+  gap: 10px;
+  margin: 12px;
+}
+.syam-stat {
+  flex: 1;
+  background: #FFFFFF !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 5px 5px 0 0 #111111 !important;
+  color: #111111 !important;
+  border-radius: 14px !important;
+  font-weight: 700;
+}
+.syam-stat b {
+  color: #FF8C00 !important;
+}
+
+.menu-grid {
+  display: grid;
+  gap: 12px;
+  padding: 0 12px 16px;
+}
+.menu-item {
+  background: #FFFFFF !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 6px 6px 0 0 #111111 !important;
+  border-radius: 16px !important;
+  color: #111111 !important;
+  text-decoration: none !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 10px;
+  font-weight: 800;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.menu-item i,
+.menu-item .fa-solid,
+.menu-item .fa-brands,
+.menu-item .fa-regular {
+  color: #111111 !important;
+  font-size: 22px !important;
+}
+.menu-item span {
+  color: #111111 !important;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.produk-grid {
+  display: grid;
+  gap: 12px;
+  padding: 0 12px 20px;
+}
+.produk-card,
+.produk-card-uniform {
+  background: #FFFFFF !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 6px 6px 0 0 #111111 !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  color: #111111 !important;
+  text-decoration: none !important;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.produk-card img,
+.produk-thumb-wrap img {
+  width: 100%;
+  object-fit: cover;
+  border-bottom: 2px solid #111111;
+}
+.produk-info {
+  padding: 10px 12px 12px;
+  color: #111111 !important;
+}
+.produk-info h4,
+.produk-name {
+  color: #111111 !important;
+  font-weight: 800 !important;
+  font-size: 13px;
+}
+.produk-info .harga,
+.produk-price {
+  color: #FF8C00 !important;
+  font-weight: 900 !important;
+  font-size: 15px;
+}
+.produk-badge-store {
+  background: #FFD600 !important;
+  color: #111111 !important;
+  border: 1.5px solid #111111 !important;
+  font-weight: 700;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  margin: 6px 10px 0;
+}
+
+.btn,
+button.btn,
+a.btn,
+.btn-topup,
+.btn-primary,
+.btn-buy,
+.btn-detail,
+button[type="submit"],
+.auth-btn,
+.login-btn {
+  background: #FFFFFF !important;
+  color: #111111 !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 5px 5px 0 0 #111111 !important;
+  border-radius: 12px !important;
+  font-weight: 800 !important;
+  padding: 10px 16px !important;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn i,
+button i,
+a.btn i {
+  color: #111111 !important;
+}
+.btn-primary,
+.btn-buy,
+.btn-accent {
+  background: #FFD600 !important;
+  color: #111111 !important;
+}
+.btn-danger,
+.btn-red {
+  background: #ff5252 !important;
+  color: #fff !important;
+  border-color: #111111 !important;
+}
+
+input,
+textarea,
+select,
+.form-input,
+.input,
+.auth-input {
+  background: #FFFFFF !important;
+  color: #111111 !important;
+  border: 2.5px solid #111111 !important;
+  border-radius: 12px !important;
+  box-shadow: 3px 3px 0 0 #111111 !important;
+  padding: 12px 14px !important;
+  font-weight: 600;
+  outline: none;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  box-shadow: 4px 4px 0 0 #111111 !important;
+  border-color: #111111 !important;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #888 !important;
+}
+
+.bottom-nav {
+  position: fixed !important;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #FFFFFF !important;
+  border-top: 2.5px solid #111111 !important;
+  box-shadow: 0 -6px 0 0 #111111 !important;
+  padding: 8px 4px calc(10px + env(safe-area-inset-bottom)) !important;
+  display: flex !important;
+  justify-content: space-around;
+  align-items: center;
+}
+.bottom-nav .nav-item {
+  color: #555555 !important;
+  font-weight: 800 !important;
+  font-size: 10px !important;
+  text-decoration: none !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  border-radius: 12px;
+  transition: all 0.15s ease;
+}
+.bottom-nav .nav-item i {
+  color: #111111 !important;
+  font-size: 18px !important;
+}
+.bottom-nav .nav-item.active {
+  color: #111111 !important;
+}
+.bottom-nav .nav-item.active .nav-icon-wrap {
+  background: #FFD600 !important;
+  border: 2.5px solid #111111 !important;
+  border-radius: 14px !important;
+  box-shadow: 3px 3px 0 0 #111111 !important;
+  padding: 8px 12px !important;
+  color: #111111 !important;
+}
+.bottom-nav .nav-item.active i {
+  color: #111111 !important;
+}
+.nav-indicator {
+  display: none !important;
+}
+
+.fa-solid,
+.fa-brands,
+.fa-regular,
+i[class*="fa-"] {
+  color: #111111 !important;
+}
+.nav-item.active i,
+.btn i,
+.menu-item i,
+.badge i {
+  color: #111111 !important;
+}
+
+.online-badge {
+  background: #FFFFFF !important;
+  border: 2px solid #111111 !important;
+  box-shadow: 3px 3px 0 0 #111111 !important;
+  color: #111111 !important;
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+}
+.chip,
+.filter-chip {
+  background: #FFFFFF !important;
+  border: 2px solid #111111 !important;
+  box-shadow: 3px 3px 0 0 #111111 !important;
+  color: #111111 !important;
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  padding: 6px 12px !important;
+}
+.chip.active,
+.filter-chip.active {
+  background: #FFD600 !important;
+  box-shadow: 2px 2px 0 0 #111111 !important;
+}
+
+.modal,
+.akun-modal,
+.side-drawer,
+#sideDrawer,
+.drawer-content {
+  background: #FFFFFF !important;
+  border: 3px solid #111111 !important;
+  box-shadow: 8px 8px 0 0 #111111 !important;
+  color: #111111 !important;
+  border-radius: 16px !important;
+}
+.modal-overlay,
+.akun-modal-overlay,
+#sideOverlay,
+.side-overlay {
+  background: rgba(0, 0, 0, 0.45) !important;
+}
+
+.page-title,
+.page-content h1,
+.page-content h2 {
+  color: #111111 !important;
+  font-weight: 900 !important;
+}
+.page-desc,
+.hint,
+.subtitle {
+  color: #555555 !important;
+}
+
+.saldo-card {
+  background: #FFFFFF !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 6px 6px 0 0 #111111 !important;
+  border-radius: 16px !important;
+  color: #111111 !important;
+  margin: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.saldo-amount {
+  color: #FF8C00 !important;
+  font-weight: 900 !important;
+  font-size: 20px;
+}
+.saldo-label {
+  color: #555555 !important;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.auth-page,
+.auth-card {
+  background: #FFFFFF !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 8px 8px 0 0 #111111 !important;
+  color: #111111 !important;
+  border-radius: 18px !important;
+}
+.auth-tabs button,
+.auth-tabs a {
+  border: 2px solid #111111 !important;
+  background: #FFFFFF !important;
+  color: #111111 !important;
+  font-weight: 800;
+}
+.auth-tabs .active {
+  background: #FFD600 !important;
+  box-shadow: 3px 3px 0 0 #111111 !important;
+}
+
+.admin-card,
+.admin-header {
+  background: #FFFFFF !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 6px 6px 0 0 #111111 !important;
+  color: #111111 !important;
+}
+
+.theme-toggle-btn,
+[data-theme-toggle] {
+  background: #FFFFFF !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 4px 4px 0 0 #111111 !important;
+  color: #111111 !important;
+  border-radius: 12px !important;
+  font-weight: 800 !important;
+  padding: 8px 12px !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.theme-toggle-btn i {
+  color: #111111 !important;
+}
+
+.btn-hamburger-left,
+.btn-bell,
+.header button {
+  background: #FFFFFF !important;
+  border: 2px solid #111111 !important;
+  box-shadow: 3px 3px 0 0 #111111 !important;
+  border-radius: 10px !important;
+  color: #111111 !important;
+}
+.btn-hamburger-left span {
+  background: #111111 !important;
+}
+
+.info-box {
+  background: #FFFFFF !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 5px 5px 0 0 #111111 !important;
+  color: #111111 !important;
+}
+.warning-box {
+  background: #FFF3C4 !important;
+  border: 2.5px solid #111111 !important;
+  box-shadow: 5px 5px 0 0 #111111 !important;
+  color: #111111 !important;
+}
+.warning-box.red {
+  background: #ffebee !important;
+}
+
+.antrian-item,
+.list-item {
+  background: #FFFFFF !important;
+  border: 2px solid #111111 !important;
+  box-shadow: 4px 4px 0 0 #111111 !important;
+  border-radius: 12px !important;
+  color: #111111 !important;
+  margin-bottom: 10px;
+}
+
+.top-notif {
+  background: #FFFFFF !important;
+  border: 2px solid #111111 !important;
+  box-shadow: 4px 4px 0 0 #111111 !important;
+  color: #111111 !important;
+}
+.notif-text b {
+  color: #FF8C00 !important;
+}
+
+.float-sticker {
+  filter: drop-shadow(3px 4px 0 #111111) !important;
+  opacity: 0.9;
+}
+
+.produk-section h3,
+.section-title {
+  color: #111111 !important;
+  font-weight: 900 !important;
+  font-size: 16px;
+}
+.subtitle {
+  color: #555555 !important;
+}
+
+a {
+  color: #111111;
+}
+a.theme-link,
+a[href] {
+  font-weight: 700;
+}
+a:hover {
+  color: #FF8C00;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FFD600;
+}
+::-webkit-scrollbar-thumb {
+  background: #111111;
+  border-radius: 4px;
+  border: 2px solid #FFD600;
+}
+
+@media (max-width: 480px) {
+  .menu-grid-4 {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .produk-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .menu-item {
+    padding: 12px 6px;
+  }
+  .menu-item i {
+    font-size: 18px !important;
+  }
+}
+@media (min-width: 768px) {
+  .menu-grid-4 {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+  .produk-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  body {
+    max-width: 480px;
+    margin: 0 auto;
+    box-shadow: 0 0 0 2.5px #111111, 12px 0 0 0 #111111, -12px 0 0 0 #111111;
+  }
+}
+
+.loading,
+.spinner {
+  border: 3px solid #111111 !important;
+  border-top-color: #FFD600 !important;
+}
+* {
+  transition-property: transform, box-shadow, background-color, color;
+  transition-duration: 0.12s;
+  transition-timing-function: ease;
+}
+
+.menu-item i,
+.produk-card i,
+.btn i,
+.nav-item i,
+.badge i,
+.online-badge i,
+.chip i,
+.header i,
+.auth-card i,
+.saldo-card i {
+  color: #111111 !important;
+}
+
+body.nd-neo .page-content,
+body.nd-light .page-content {
+  color: #111111;
+}
+
+html[data-theme="dark"] body {
+  background: #1a1408 !important;
+  background-image:
+    linear-gradient(160deg, #2a1e08 0%, #1a1408 50%, #0f0c06 100%) !important;
+  color: #fff8e7 !important;
+}
+html[data-theme="dark"] .produk-card,
+html[data-theme="dark"] .menu-item,
+html[data-theme="dark"] .neo-card,
+html[data-theme="dark"] .saldo-card,
+html[data-theme="dark"] .auth-card {
+  background: #2a2210 !important;
+  color: #fff8e7 !important;
+  border-color: #111111 !important;
+  box-shadow: 6px 6px 0 0 #111111 !important;
+}
+html[data-theme="dark"] .bottom-nav {
+  background: #2a2210 !important;
+}
+html[data-theme="dark"] .fa-solid,
+html[data-theme="dark"] .fa-brands,
+html[data-theme="dark"] .fa-regular {
+  color: #FFD600 !important;
+}
+html[data-theme="dark"] .bottom-nav .nav-item.active .nav-icon-wrap {
+  background: #FFD600 !important;
+}
+html[data-theme="dark"] .bottom-nav .nav-item.active i {
+  color: #111111 !important;
+}
+
+/* End neo-brutalism override */

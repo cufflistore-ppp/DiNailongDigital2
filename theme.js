@@ -1,76 +1,89 @@
 /**
- * Mode gelap / terang + aksen Nailong.
- * Light: bg putih, ikon/teks gelap.
- * Dark: bg hitam, ikon/teks terang.
+ * NAILONG DIGITAL — 2D Neo-Brutalism theme
+ * Background gradient kuning → oranye, card putih, outline + hard shadow hitam.
+ * Icons Font Awesome tetap hitam.
  */
 (function () {
-  var KEY = 'nd_ui_mode'; // 'dark' | 'light'
-  var accent = '#FFC107';
-  var accent2 = '#E6A800';
+  var KEY = 'nd_ui_mode';
+  var accent = '#FFD600';
+  var accent2 = '#FF8C00';
 
   function mode() {
     try {
       var m = localStorage.getItem(KEY);
-      if (m === 'light' || m === 'dark') return m;
+      if (m === 'dark') return 'dark';
     } catch (e) {}
-    return 'dark';
+    return 'light';
   }
 
   function apply(m) {
     m = m || mode();
     var r = document.documentElement;
-    var dark = m !== 'light';
+    var dark = m === 'dark';
     r.setAttribute('data-theme', dark ? 'dark' : 'light');
+    r.setAttribute('data-neo', '1');
+
     r.style.setProperty('--nd-accent', accent);
     r.style.setProperty('--nd-accent-2', accent2);
-    r.style.setProperty('--nd-accent-soft', dark ? 'rgba(255,193,7,0.16)' : 'rgba(212,160,23,0.18)');
-    if (dark) {
-      r.style.setProperty('--nd-bg', '#0c0c0e');
-      r.style.setProperty('--nd-bg-2', '#141418');
-      r.style.setProperty('--nd-card', '#1a1a1f');
-      r.style.setProperty('--nd-card-2', '#222228');
-      r.style.setProperty('--nd-text', '#f4f4f5');
-      r.style.setProperty('--nd-muted', '#a1a1aa');
-      r.style.setProperty('--nd-border', '#0a0a0a');
-      r.style.setProperty('--nd-icon', '#f4f4f5');
-      r.style.setProperty('--nd-shadow', 'rgba(0,0,0,0.65)');
-      r.style.setProperty('--nd-raised', '#24242c');
-      r.style.setProperty('--nd-inset', '#121216');
-    } else {
-      r.style.setProperty('--nd-bg', '#f3f3f5');
-      r.style.setProperty('--nd-bg-2', '#ffffff');
-      r.style.setProperty('--nd-card', '#ffffff');
-      r.style.setProperty('--nd-card-2', '#f0f0f3');
-      r.style.setProperty('--nd-text', '#121214');
-      r.style.setProperty('--nd-muted', '#52525b');
-      r.style.setProperty('--nd-border', '#0a0a0a');
-      r.style.setProperty('--nd-icon', '#121214');
-      r.style.setProperty('--nd-shadow', 'rgba(0,0,0,0.28)');
-      r.style.setProperty('--nd-raised', '#ffffff');
-      r.style.setProperty('--nd-inset', '#e8e8ec');
-    }
+    r.style.setProperty('--nd-accent-soft', 'rgba(255,214,0,0.22)');
     r.style.setProperty('--accent', accent);
+    r.style.setProperty('--nd-yellow', '#FFD600');
+    r.style.setProperty('--nd-orange', '#FF8C00');
+    r.style.setProperty('--nd-hard', '#111111');
+
+    if (dark) {
+      r.style.setProperty('--nd-bg', '#1a1408');
+      r.style.setProperty('--nd-bg-2', '#241c0c');
+      r.style.setProperty('--nd-card', '#2a2210');
+      r.style.setProperty('--nd-card-2', '#322814');
+      r.style.setProperty('--nd-text', '#fff8e7');
+      r.style.setProperty('--nd-muted', '#c4b48a');
+      r.style.setProperty('--nd-border', '#111111');
+      r.style.setProperty('--nd-icon', '#111111');
+      r.style.setProperty('--nd-shadow', '#111111');
+      r.style.setProperty('--nd-raised', '#3a2e14');
+      r.style.setProperty('--nd-inset', '#1a1408');
+    } else {
+      r.style.setProperty('--nd-bg', '#FFD600');
+      r.style.setProperty('--nd-bg-2', '#FFB300');
+      r.style.setProperty('--nd-card', '#FFFFFF');
+      r.style.setProperty('--nd-card-2', '#FFF8E7');
+      r.style.setProperty('--nd-text', '#111111');
+      r.style.setProperty('--nd-muted', '#555555');
+      r.style.setProperty('--nd-border', '#111111');
+      r.style.setProperty('--nd-icon', '#111111');
+      r.style.setProperty('--nd-shadow', '#111111');
+      r.style.setProperty('--nd-raised', '#FFFFFF');
+      r.style.setProperty('--nd-inset', '#FFF3C4');
+    }
+
     r.style.setProperty('--text-muted', r.style.getPropertyValue('--nd-muted'));
+
     if (document.body) {
       document.body.classList.toggle('nd-dark', dark);
       document.body.classList.toggle('nd-light', !dark);
+      document.body.classList.add('nd-neo');
       document.body.style.color = r.style.getPropertyValue('--nd-text');
     }
+
     try { localStorage.setItem(KEY, m); } catch (e) {}
-    // update toggle buttons
+
     document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
       btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
-      btn.innerHTML = dark
-        ? '<i class="fa-solid fa-sun"></i><span>Terang</span>'
-        : '<i class="fa-solid fa-moon"></i><span>Gelap</span>';
+      var icon = btn.querySelector('i');
+      var span = btn.querySelector('span');
+      if (icon) icon.className = dark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+      if (span) span.textContent = dark ? 'Gelap' : 'Terang';
     });
   }
 
   function toggle() {
-    apply(mode() === 'dark' ? 'light' : 'dark');
+    var next = mode() === 'dark' ? 'light' : 'dark';
+    apply(next);
   }
 
   apply(mode());
+
   document.addEventListener('DOMContentLoaded', function () {
     apply(mode());
     document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
@@ -81,15 +94,18 @@
     });
   });
 
-  window.NailongTheme = {
+  window.NDTheme = {
     mode: mode,
     apply: apply,
     toggle: toggle,
-    setTheme: function (m) { apply(m === 'light' ? 'light' : 'dark'); },
-    load: function () { return { mode: mode(), palette: 'gold' }; },
-    save: function () {},
+    set: function () {},
     resolve: function () {
-      return { mode: mode(), accent: accent, bg: getComputedStyle(document.documentElement).getPropertyValue('--nd-bg'), text: getComputedStyle(document.documentElement).getPropertyValue('--nd-text') };
+      return {
+        mode: mode(),
+        accent: accent,
+        bg: getComputedStyle(document.documentElement).getPropertyValue('--nd-bg'),
+        text: getComputedStyle(document.documentElement).getPropertyValue('--nd-text')
+      };
     }
   };
 })();

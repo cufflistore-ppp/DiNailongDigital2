@@ -1,32 +1,31 @@
 /**
- * Bottom nav tetap — 5 item konsisten di semua halaman utama.
+ * Bottom navigation — Neo-Brutalism
+ * Botwa · Joki · Home · JasWeb · Akun
  */
 (function () {
   var STANDARD = [
     { href: 'botwa.html', icon: 'fa-brands fa-whatsapp', label: 'Botwa', key: 'botwa' },
     { href: 'joki.html', icon: 'fa-solid fa-shield-halved', label: 'Joki', key: 'joki' },
     { href: 'index.html', icon: 'fa-solid fa-house', label: 'Home', key: 'home' },
-    { href: 'tools.html', icon: 'fa-solid fa-screwdriver-wrench', label: 'Tools', key: 'tools' },
+    { href: 'jasweb.html', icon: 'fa-solid fa-globe', label: 'JasWeb', key: 'jasweb' },
     { href: 'akun.html', icon: 'fa-solid fa-user', label: 'Akun', key: 'akun' }
   ];
 
   function currentKey() {
     var p = (location.pathname || '').split('/').pop() || 'index.html';
-    if (/botwa|pairing/.test(p)) return 'botwa';
+    if (/botwa|pairing|dual|fun|jpm/.test(p)) return 'botwa';
     if (/joki|push-kontak/.test(p)) return 'joki';
     if (/index|home|^$/.test(p)) return 'home';
-    if (/tools|tool/.test(p)) return 'tools';
-    if (/akun|login|register|topup|riwayat/.test(p)) return 'akun';
+    if (/jasweb|web/.test(p)) return 'jasweb';
+    if (/akun|login|register|topup|riwayat|pembayaran/.test(p)) return 'akun';
     return '';
   }
 
   function ensureNav() {
     var nav = document.querySelector('.bottom-nav');
     if (!nav) return;
-    // jangan ubah nav admin
     if (/admin/i.test(location.pathname || '')) return;
     var key = currentKey();
-    // rebuild only if structure messy (bukan 5 item standar)
     var items = nav.querySelectorAll(':scope > .nav-item');
     var need = items.length !== 5;
     if (need) {
