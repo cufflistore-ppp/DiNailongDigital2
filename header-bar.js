@@ -67,7 +67,7 @@
 
         '<div class="side-section">LAYANAN BOT</div>' +
         '<a href="botwa.html"><i class="fa-brands fa-whatsapp"></i><span>Sewa Bot (JPM / Jaga)</span></a>' +
-        '<a href="badak-wa.html"><i class="fa-solid fa-bolt"></i><span>Badak WA</span></a>' +
+        
         '<a href="push-kontak.html"><i class="fa-solid fa-paper-plane"></i><span>Push Kontak Otomatis</span></a>' +
         '<a href="joki.html"><i class="fa-solid fa-shield-halved"></i><span>Joki Kontak</span></a>' +
 
@@ -76,12 +76,12 @@
         '<a href="keranjang.html"><i class="fa-solid fa-cart-shopping"></i><span>Keranjang</span></a>' +
         '<div class="side-section">PRODUK & JASA</div>' +
         '<a href="digital.html"><i class="fa-solid fa-box"></i><span>Produk Digital</span></a>' +
-        '<a href="jasweb.html"><i class="fa-solid fa-globe"></i><span>JasWeb</span></a>' +
+        '<a href="riwayat.html"><i class="fa-solid fa-clock-rotate-left"></i><span>Riwayat</span></a>' +
         '<a href="akun-jual.html"><i class="fa-solid fa-gamepad"></i><span>Akun Game</span></a>' +
         '<a href="pesan.html?type=jaspost"><i class="fa-solid fa-pen"></i><span>Jasa Post</span></a>' +
 
-        '<div class="side-section">SALDO & BANTUAN</div>' +
-        '<a href="topup.html"><i class="fa-solid fa-wallet"></i><span>Top Up / Tarik Saldo</span></a>' +
+        '<div class="side-section">PARTNER</div>' +'<a href="daftar-partner.html"><i class="fa-solid fa-handshake"></i><span>Daftar Partner</span></a>' +'<a href="daftar-paid-promote.html"><i class="fa-solid fa-bullhorn"></i><span>Daftar Paid Promote</span></a>' +'<a href="blacklist.html"><i class="fa-solid fa-ban"></i><span>Blacklist</span></a>' +'<a href="buyer-manen.html"><i class="fa-solid fa-book"></i><span>Buyer Manen</span></a>' +'<a href="ajukan-fitur.html"><i class="fa-solid fa-lightbulb"></i><span>Ajukan Fitur</span></a>' +'<div class="side-section">BANTUAN</div>' +
+        
         '<a href="donasi.html"><i class="fa-solid fa-hand-holding-heart"></i><span>Donasi</span></a>' +
         '<a href="riwayat.html"><i class="fa-solid fa-clock-rotate-left"></i><span>Riwayat Order</span></a>' +
         '<a href="antrian.html"><i class="fa-solid fa-list-check"></i><span>Cek Antrian</span></a>' +

@@ -30,6 +30,7 @@
     return '~';
   }
   async function render() {
+    return; // dimatikan per request user — sembunyikan kotak member
     var host = document.getElementById('homeProfileCard');
     if (!host) return;
     var name = 'Tamu';

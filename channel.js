@@ -90,7 +90,8 @@
           id: 'join_' + id + '_' + Date.now(),
           type: 'join',
           uid: id,
-          name: maskName(user.displayName || user.email || 'User'),
+          name: user.displayName || user.email || 'User',
+          photo: user.photoURL || '',
           text: 'bergabung di Channel Testimoni 👋',
           at: Date.now(),
           role: 'member'
@@ -103,23 +104,51 @@
   /** Panggil saat order dibuat / sukses */
   function postOrderTestimoni(order, user) {
     if (!order) return;
-    var name = maskName((user && (user.displayName || user.email)) || order.nama || 'Customer');
-    var paket = order.paket || order.nama || 'Order';
-    var total = order.total || order.finalAmount || '';
+    var name = (user && (user.displayName || user.email)) || order.nama || order.storeName || 'Customer';
+    var photo = (user && user.photoURL) || order.photo || '';
+    var paket = order.paket || order.product || order.nama || 'Order';
+    var total = order.total || order.finalAmount || order.amount || '';
     if (typeof total === 'number') total = 'Rp ' + total.toLocaleString('id-ID');
+    var role = order.sellerRole || order.role || '';
+    var storeName = order.storeName || '';
+    var tfPhoto = order.tfPhoto || order.bukti || '';
+    var trxCount = order.trxCount || 0;
     var feed = loadFeed();
     feed.unshift({
-      id: 'ord_' + (order.kode || Date.now()),
-      type: 'order',
-      uid: user ? uidFromUser(user) : null,
+      id: 'ord_' + (order.kode || order.id || Date.now()),
+      type: storeName || role === 'partner' || role === 'paid_promote' ? 'partner_trx' : 'order',
+      uid: user ? uidFromUser(user) : (order.uid || null),
       name: name,
-      text: 'Order berhasil · ' + paket + (total ? ' · ' + total : ''),
-      orderTag: order.kode || '',
-      at: Date.now(),
-      role: 'member'
+      photo: photo,
+      storeName: storeName,
+      role: role || 'member',
+      product: paket,
+      amount: total,
+      tfPhoto: tfPhoto,
+      trxCount: trxCount,
+      text: (storeName ? storeName + ' · ' : '') + 'Order berhasil · ' + paket + (total ? ' · ' + total : ''),
+      orderTag: order.kode || order.id || '',
+      at: Date.now()
     });
     saveFeed(feed);
     if (user) markVerified(user);
+    // Firebase testimoni for partner/PP auto
+    try {
+      if (window.NDRoles && (role === 'partner' || role === 'paid_promote' || storeName)) {
+        NDRoles.postPartnerTestimoni({
+          uid: user ? uidFromUser(user) : order.uid,
+          name: name,
+          photo: photo,
+          storeName: storeName,
+          role: role,
+          product: paket,
+          amount: total,
+          tfPhoto: tfPhoto,
+          trxCount: trxCount,
+          source: 'auto_success'
+        });
+      }
+    } catch (e) {}
   }
 
   function canChat(user) {
@@ -135,11 +164,22 @@
     }
     var admin = isAdminUser(user);
     var feed = loadFeed();
+    var dispName = user.displayName || user.email || 'User';
+    var dispPhoto = user.photoURL || '';
+    try {
+      var cache = JSON.parse(localStorage.getItem('nd_profile_cache') || '{}');
+      var uid = uidFromUser(user);
+      if (uid && cache[uid]) {
+        if (cache[uid].name) dispName = cache[uid].name;
+        if (cache[uid].photo) dispPhoto = cache[uid].photo;
+      }
+    } catch (e) {}
     feed.unshift({
       id: 'msg_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
       type: 'chat',
       uid: uidFromUser(user),
-      name: admin ? (user.displayName || 'Admin') : maskName(user.displayName || user.email || 'User'),
+      name: dispName,
+      photo: dispPhoto,
       text: text,
       at: Date.now(),
       role: admin ? 'admin' : 'verified'
@@ -164,6 +204,37 @@
   function renderFeed(container) {
     if (!container) return;
     ensureSeed();
+    // merge Firebase partner testimoni
+    try {
+      if (window.NDRoles && NDRoles.listTestimoni) {
+        NDRoles.listTestimoni(30).then(function(rows){
+          var feed = loadFeed();
+          var ids = {};
+          feed.forEach(function(p){ ids[p.id] = 1; });
+          var changed = false;
+          (rows||[]).forEach(function(r){
+            if (ids[r.id]) return;
+            feed.push({
+              id: r.id, type: 'partner_trx', uid: r.uid, name: r.name || r.storeName || 'Partner',
+              photo: r.photo || '', storeName: r.storeName || '', role: r.role || '',
+              product: r.product || '', amount: r.amount || '', tfPhoto: r.tfPhoto || '',
+              trxCount: r.trxCount || 0,
+              text: (r.storeName ? r.storeName + ' · ' : '') + (r.product || 'TRX') + (r.amount ? ' · ' + r.amount : ''),
+              at: r.at || Date.now()
+            });
+            changed = true;
+          });
+          if (changed) {
+            feed.sort(function(a,b){ return (b.at||0)-(a.at||0); });
+            saveFeed(feed.slice(0, 200));
+            // re-render once
+            var c = container;
+            setTimeout(function(){ renderFeed(c); }, 50);
+          }
+        });
+      }
+    } catch (e) {}
+
     var feed = loadFeed();
     if (!feed.length) {
       container.innerHTML = '<p style="color:#8aa0b8;font-size:13px;text-align:center;">Belum ada postingan.</p>';
@@ -172,6 +243,9 @@
     container.innerHTML = feed.map(function (p) {
       var isAdm = p.role === 'admin';
       var initial = (p.name || 'U').charAt(0).toUpperCase();
+      var avHtml = p.photo
+        ? '<img class="ch-avatar-img" src="' + String(p.photo).replace(/"/g, '') + '" alt="" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">' + '<div class="ch-avatar" style="display:none">' + initial + '</div>'
+        : '<div class="ch-avatar">' + initial + '</div>';
       var time = '';
       try {
         time = new Date(p.at).toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -183,11 +257,19 @@
       return (
         '<div class="ch-card' + (isAdm ? ' admin' : '') + '">' +
           '<div class="ch-meta">' +
-            '<div class="ch-avatar">' + initial + '</div>' +
+            avHtml +
             '<div><div class="ch-name">' + escapeHtml(p.name) + ' ' + badge + '</div>' +
             '<div>' + time + '</div></div>' +
           '</div>' +
-          '<div class="ch-body">' + escapeHtml(p.text) + '</div>' + tag +
+          '<div class="ch-body">' + escapeHtml(p.text) + '</div>' +
+          (p.storeName || p.product || p.tfPhoto ? ('<div class="ch-partner-extra">' +
+            (p.storeName ? '<div><b>Toko:</b> ' + escapeHtml(p.storeName) + '</div>' : '') +
+            (p.role && (p.role==='partner'||p.role==='paid_promote') ? '<div><b>Role:</b> ' + escapeHtml(p.role) + '</div>' : '') +
+            (p.trxCount ? '<div><b>TRX:</b> ' + p.trxCount + '</div>' : '') +
+            (p.product ? '<div><b>Produk:</b> ' + escapeHtml(String(p.product)) + '</div>' : '') +
+            (p.amount ? '<div><b>Nominal:</b> ' + escapeHtml(String(p.amount)) + '</div>' : '') +
+            (p.tfPhoto ? '<img class="ch-tf" src="' + String(p.tfPhoto).replace(/"/g,'') + '" alt="Bukti TF" loading="lazy">' : '') +
+          '</div>') : '') + tag +
         '</div>'
       );
     }).join('');

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Ruangan Kerja Founder - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <style>
+    .f-page{padding:14px;max-width:520px;margin:0 auto 110px}
+    .f-card{background:#FFF5E0;border:2.5px solid #111;box-shadow:6px 6px 0 #111;border-radius:16px;padding:14px;margin-bottom:12px}
+    .f-card h2,.f-card h3{margin:0 0 10px;font-weight:900;color:#111;font-size:16px}
+    .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .stat{background:#FFD600;border:2px solid #111;box-shadow:3px 3px 0 #111;border-radius:12px;padding:10px;font-weight:800;font-size:12px;color:#111}
+    .stat b{display:block;font-size:16px;margin-top:4px}
+    .f-btn{display:block;width:100%;text-align:left;padding:12px;margin:6px 0;background:#fff;border:2.5px solid #111;box-shadow:4px 4px 0 #111;border-radius:12px;font-weight:800;color:#111;text-decoration:none}
+    .f-btn i{width:22px}
+    input,textarea{width:100%;padding:10px;border:2.5px solid #111;border-radius:10px;box-shadow:3px 3px 0 #111;box-sizing:border-box;font-weight:600;margin:4px 0 8px}
+    .lock{text-align:center;padding:40px 16px}
+    .row-app{border:2px solid #111;border-radius:12px;padding:10px;margin:8px 0;background:#fff}
+    .row-app button{margin:4px 4px 0 0;padding:8px 12px;border:2px solid #111;border-radius:10px;font-weight:800;box-shadow:2px 2px 0 #111;background:#FFD600}
+    .row-app button.rej{background:#ffcdd2}
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nd-logo-gold.jpg" class="logo-full" alt="ND">
+      <div class="nd-brand-text">RUANGAN KERJA <span>FOUNDER</span></div>
+    </div></div>
+  </header>
+  <div class="f-page" id="app">
+    <div class="lock" id="lock"><i class="fa-solid fa-lock" style="font-size:40px"></i><p style="font-weight:800">Hanya Role Founder</p></div>
+    <div id="panel" style="display:none">
+      <div class="f-card">
+        <h2><i class="fa-solid fa-chart-line"></i> Keuangan otomatis</h2>
+        <div class="stat-grid">
+          <div class="stat">Ke tangan (masuk)<b id="sIn">Rp 0</b></div>
+          <div class="stat">Keperluan website + real life<b id="sOps">Rp 0</b></div>
+          <div class="stat">Tabungan umroh<b id="sUmroh">Rp 0</b></div>
+          <div class="stat">Beli barang kesukaan<b id="sWish">Rp 0</b></div>
+        </div>
+        <p style="font-size:11px;color:#555;margin-top:8px;font-weight:700">Edit alokasi (%):</p>
+        <label style="font-size:11px;font-weight:800">Ops %</label><input id="pctOps" type="number" value="40">
+        <label style="font-size:11px;font-weight:800">Umroh %</label><input id="pctUmroh" type="number" value="30">
+        <label style="font-size:11px;font-weight:800">Wishlist %</label><input id="pctWish" type="number" value="30">
+        <button class="f-btn" id="btnSavePct" type="button" style="text-align:center;background:#FFD600">Simpan alokasi</button>
+      </div>
+      <div class="f-card">
+        <h3>Menu kerja</h3>
+        <a class="f-btn" href="#verPartner"><i class="fa-solid fa-handshake"></i> Verifikasi daftar Partner</a>
+        <a class="f-btn" href="#verPaid"><i class="fa-solid fa-bullhorn"></i> Verifikasi daftar Paid Promote</a>
+        <a class="f-btn" href="#blManage"><i class="fa-solid fa-ban"></i> Kelola Blacklist (nipu/clone)</a>
+        <a class="f-btn" href="blacklist.html"><i class="fa-solid fa-eye"></i> Lihat halaman Blacklist publik</a>
+        <a class="f-btn" href="admin.html"><i class="fa-solid fa-list"></i> Panel order lama</a>
+        <a class="f-btn" href="buyer-manen.html"><i class="fa-solid fa-pen"></i> Buyer Manen (edit teks)</a>
+        <a class="f-btn" href="kontak-partner.html"><i class="fa-solid fa-address-book"></i> Nomor kontak Partner/PP</a>
+      </div>
+      <div class="f-card" id="verPartner">
+        <h3>Antrian Partner (pending)</h3>
+        <div id="listPartner">Memuat...</div>
+      </div>
+      <div class="f-card" id="verPaid">
+        <h3>Antrian Paid Promote (pending)</h3>
+        <div id="listPaid">Memuat...</div>
+      </div>
+      <div class="f-card" id="blManage">
+        <h3>Blacklist user</h3>
+        <label style="font-size:12px;font-weight:800">UID user</label>
+        <input id="blUid" placeholder="uid firebase">
+        <label style="font-size:12px;font-weight:800">Penyebab</label>
+        <textarea id="blReason" rows="3" placeholder="Nipu / clone / dll"></textarea>
+        <label style="font-size:12px;font-weight:800">Sebar ident di halaman blacklist?</label>
+        <select id="blSpread"><option value="yes">Ya, sebar ident</option><option value="no">Jangan sebar foto ident</option></select>
+        <button class="f-btn" type="button" id="btnBl" style="background:#ffcdd2;text-align:center">Konfirmasi Blacklist</button>
+        <p id="blMsg" style="font-weight:800;font-size:12px"></p>
+      </div>
+    </div>
+  </div>
+  <nav class="bottom-nav nav-5"></nav>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="roles.js"></script>
+  <script src="nav.js"></script>
+  <script>
+  function rupiah(n){return 'Rp '+Number(n||0).toLocaleString('id-ID')}
+  function renderApps(el, rows, type){
+    if(!rows.length){el.innerHTML='<p style="font-weight:700;font-size:12px">Kosong</p>';return}
+    el.innerHTML=rows.map(function(a){
+      return '<div class="row-app" data-id="'+a.id+'">'+
+        '<b>'+(a.nama||a.email||a.uid)+'</b><br><span style="font-size:11px">'+(a.noPribadi||'')+' · '+(a.ageType||'')+'</span>'+
+        '<div><button type="button" data-ok="'+a.id+'">Terima</button>'+
+        '<button type="button" class="rej" data-no="'+a.id+'">Tolak</button></div></div>';
+    }).join('');
+    el.querySelectorAll('[data-ok]').forEach(function(b){
+      b.onclick=async function(){
+        var user=firebase.auth().currentUser;
+        await NDRoles.approveApplication(b.getAttribute('data-ok'), user&&user.uid);
+        alert('Disetujui. Role & toko aktif. (Integrasi grup WA: set link di kontak-partner)');
+        boot();
+      };
+    });
+    el.querySelectorAll('[data-no]').forEach(function(b){
+      b.onclick=async function(){
+        var reason=prompt('Alasan tolak?')||'';
+        await NDRoles.rejectApplication(b.getAttribute('data-no'), reason);
+        boot();
+      };
+    });
+  }
+  async function calcFinance(){
+    // hitung dari orders global jika ada
+    var total=0;
+    try{
+      if(window.VoxyyOrders&&VoxyyOrders.getAllOrders){
+        var orders=await VoxyyOrders.getAllOrders();
+        (orders||[]).forEach(function(o){
+          if(o.status==='paid'||o.status==='done'||o.status==='success') total+=Number(o.amount||o.harga||o.total||0);
+        });
+      }
+    }catch(e){}
+    try{
+      var snap=await firebase.database().ref('nd_finance').once('value');
+      var fin=snap.val()||{};
+      if(fin.manualIn) total=Number(fin.manualIn)||total;
+      document.getElementById('pctOps').value=fin.pctOps!=null?fin.pctOps:40;
+      document.getElementById('pctUmroh').value=fin.pctUmroh!=null?fin.pctUmroh:30;
+      document.getElementById('pctWish').value=fin.pctWish!=null?fin.pctWish:30;
+    }catch(e){}
+    var ops=Number(document.getElementById('pctOps').value)||0;
+    var um=Number(document.getElementById('pctUmroh').value)||0;
+    var wi=Number(document.getElementById('pctWish').value)||0;
+    document.getElementById('sIn').textContent=rupiah(total);
+    document.getElementById('sOps').textContent=rupiah(total*ops/100);
+    document.getElementById('sUmroh').textContent=rupiah(total*um/100);
+    document.getElementById('sWish').textContent=rupiah(total*wi/100);
+  }
+  async function boot(){
+    var user=null;
+    try{user=firebase.auth().currentUser}catch(e){}
+    if(!user&&window.VoxyyAuth) user=VoxyyAuth.currentUser&&VoxyyAuth.currentUser();
+    if(!user){
+      firebase.auth().onAuthStateChanged(function(u){ if(u) boot(); });
+      return;
+    }
+    var prof=await NDRoles.ensureUserProfile(user);
+    if(!NDRoles.isFounder(user) && (!prof||prof.role!=='founder')){
+      document.getElementById('lock').style.display='block';
+      document.getElementById('panel').style.display='none';
+      return;
+    }
+    document.getElementById('lock').style.display='none';
+    document.getElementById('panel').style.display='block';
+    var partners=await NDRoles.listApplications('partner','pending');
+    var paids=await NDRoles.listApplications('paid_promote','pending');
+    renderApps(document.getElementById('listPartner'), partners, 'partner');
+    renderApps(document.getElementById('listPaid'), paids, 'paid_promote');
+    await calcFinance();
+  }
+  document.getElementById('btnSavePct').onclick=async function(){
+    await firebase.database().ref('nd_finance').update({
+      pctOps:Number(document.getElementById('pctOps').value)||0,
+      pctUmroh:Number(document.getElementById('pctUmroh').value)||0,
+      pctWish:Number(document.getElementById('pctWish').value)||0
+    });
+    await calcFinance();
+    alert('Alokasi disimpan');
+  };
+  document.getElementById('btnBl').onclick=async function(){
+    var uid=document.getElementById('blUid').value.trim();
+    var reason=document.getElementById('blReason').value.trim();
+    if(!uid||!reason){document.getElementById('blMsg').textContent='UID & penyebab wajib';return}
+    if(!confirm('Yakin blacklist? Toko ditutup, role jadi pengunjung, produk disembunyikan.'+
+      (document.getElementById('blSpread').value==='yes'?' Ident akan tampil di halaman blacklist.':''))) return;
+    var user=firebase.auth().currentUser;
+    await NDRoles.blacklistUser(uid, reason, '', user&&user.uid);
+    document.getElementById('blMsg').textContent='Berhasil di-blacklist.';
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(boot,400);
+  });
+  </script>
+</body>
+</html>

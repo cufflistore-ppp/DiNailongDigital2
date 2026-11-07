@@ -280,6 +280,7 @@
 
   // --- Halo banner ---
   function injectHalo() {
+    return; // dimatikan per request user
     if (document.getElementById('haloBanner')) return;
     var el = document.createElement('div');
     el.id = 'haloBanner';
@@ -379,7 +380,7 @@
     injectVideoBg();
     try { ensureTheme(); try{ensureUploadUi();}catch(e){} try{ensureLocale();}catch(e){} try{ensureIntro();}catch(e){} try{injectFlutterLogo();}catch(e){} ensureMusicPlayer(); } catch(e) {}
     injectFabChat();
-    injectHalo();
+    /* injectHalo(); disabled */
     /* nailong run dihapus */
     injectPageLoader();
     /* splash dihapus — login langsung di akun */
@@ -405,6 +406,7 @@
     if (document.querySelector('[data-theme-toggle]')) return;
     var bar = document.createElement('div');
     bar.className = 'neo-top-actions';
+    return; // no theme toggle
     bar.innerHTML = '<button type="button" class="theme-toggle-btn" data-theme-toggle><i class="fa-solid fa-sun"></i><span>Terang</span></button>';
     var header = document.querySelector('header.header') || document.querySelector('header');
     if (header && header.parentNode) header.parentNode.insertBefore(bar, header.nextSibling);

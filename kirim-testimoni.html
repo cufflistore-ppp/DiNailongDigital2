@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Kirim Testimoni TRX - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <style>
+    .p{padding:14px;max-width:480px;margin:0 auto 110px}
+    .c{background:#FFF5E0;border:2.5px solid #111;box-shadow:6px 6px 0 #111;border-radius:16px;padding:14px}
+    h2{font-size:17px;font-weight:900;color:#111;margin:0 0 8px}
+    label{display:block;font-size:12px;font-weight:800;margin:10px 0 4px;color:#111}
+    input,textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:2.5px solid #111;border-radius:12px;box-shadow:3px 3px 0 #111;font-weight:700}
+    button{width:100%;margin-top:14px;padding:14px;background:#FFD600;border:2.5px solid #111;box-shadow:5px 5px 0 #111;border-radius:14px;font-weight:900;color:#111}
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nd-logo-gold.jpg" class="logo-full" alt="ND">
+      <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
+    </div></div>
+  </header>
+  <div class="p"><div class="c">
+    <h2><i class="fa-solid fa-camera"></i> Kirim Testimoni TRX (WA)</h2>
+    <p style="font-size:12px;font-weight:700;color:#555;margin:0 0 8px">Khusus Partner / Paid Promote. Isi nominal, produk, dan foto bukti TF — masuk ke Channel Testimoni.</p>
+    <label>Nama toko</label><input id="storeName">
+    <label>Produk yang dibeli</label><input id="product" required>
+    <label>Nominal (Rp)</label><input id="amount" type="number" required placeholder="50000">
+    <label>URL foto bukti TF</label><input id="tfPhoto" required placeholder="https://...">
+    <label>Catatan (opsional)</label><textarea id="note" rows="2"></textarea>
+    <button type="button" id="send">Kirim ke Testimoni</button>
+    <p id="msg" style="font-weight:800;margin-top:10px;color:#111"></p>
+  </div></div>
+  <nav class="bottom-nav nav-5"></nav>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="roles.js"></script>
+  <script src="channel.js"></script>
+  <script src="nav.js"></script>
+  <script src="header-bar.js"></script>
+  <script>
+  document.getElementById('send').onclick = async function () {
+    var msg = document.getElementById('msg');
+    msg.textContent = 'Mengirim...';
+    try {
+      var user = firebase.auth().currentUser;
+      if (!user) { msg.textContent = 'Login dulu'; return; }
+      var prof = await NDRoles.ensureUserProfile(user);
+      if (prof.role !== 'partner' && prof.role !== 'paid_promote' && prof.role !== 'founder') {
+        msg.textContent = 'Hanya Partner / Paid Promote'; return;
+      }
+      var amount = Number(document.getElementById('amount').value) || 0;
+      var amountStr = 'Rp ' + amount.toLocaleString('id-ID');
+      var payload = {
+        uid: user.uid,
+        name: prof.name || user.displayName || '',
+        photo: prof.photo || user.photoURL || '',
+        storeName: document.getElementById('storeName').value || prof.storeName || '',
+        role: prof.role,
+        product: document.getElementById('product').value,
+        amount: amountStr,
+        tfPhoto: document.getElementById('tfPhoto').value,
+        trxCount: Number(prof.trxCount || 0) + 1,
+        note: document.getElementById('note').value,
+        source: 'wa_manual'
+      };
+      await NDRoles.postPartnerTestimoni(payload);
+      if (window.NailongChannel && NailongChannel.postOrderTestimoni) {
+        NailongChannel.postOrderTestimoni({
+          paket: payload.product,
+          total: amount,
+          storeName: payload.storeName,
+          sellerRole: payload.role,
+          tfPhoto: payload.tfPhoto,
+          photo: payload.photo,
+          trxCount: payload.trxCount,
+          uid: user.uid
+        }, user);
+      }
+      msg.textContent = 'Berhasil masuk Channel Testimoni!';
+      setTimeout(function () { location.href = 'channel.html'; }, 700);
+    } catch (e) {
+      msg.textContent = e.message || String(e);
+    }
+  };
+  </script>
+</body>
+</html>

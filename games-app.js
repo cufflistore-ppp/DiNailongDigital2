@@ -685,49 +685,80 @@
     document.getElementById('rst').onclick=breakout;
   }
 
-  /* ===== FLAPPY ===== */
+  /* ===== FLAPPY — lurus horizontal, kontrol naik/turun seperti remote ===== */
   function flappy() {
-    show(how('Tap / klik agar burung naik. Hindari pipa. Skor tiap pipa yang dilewati.')+
+    show(how('Burung jalan lurus ke depan. Pakai tombol ▲ naik / ▼ turun (seperti remote). Hindari pipa.')+
       '<div class="g-hud"><span>Skor: <b id="sc">0</b></span><button class="g-btn sec" id="rst">Restart</button></div>'+
-      '<canvas class="game-cv" id="cv" width="320" height="220"></canvas>');
+      '<canvas class="game-cv" id="cv" width="320" height="240" style="width:100%;max-width:420px;height:auto;touch-action:none;"></canvas>'+
+      '<div class="bird-remote">'+
+        '<button type="button" class="bird-pad" id="birdUp" aria-label="Naik"><i class="fa-solid fa-chevron-up"></i><span>Naik</span></button>'+
+        '<button type="button" class="bird-pad" id="birdDown" aria-label="Turun"><i class="fa-solid fa-chevron-down"></i><span>Turun</span></button>'+
+      '</div>');
     var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
-    var y=100, vy=0, pipes=[], frame=0, score=0, alive=true;
+    // y tetap kecuali user tekan naik/turun — tidak ada gravity
+    var y=120, moveDir=0, pipes=[], frame=0, score=0, alive=true;
+    var speedY=3.2;
     function loop(){
       if(!alive) return;
-      frame++; vy+=0.35; y+=vy;
-      if(frame%90===0) pipes.push({x:320, gap:40+Math.random()*80});
-      pipes.forEach(function(p){ p.x-=2; });
-      pipes=pipes.filter(function(p){ if(p.x<-40){ score++; return false;} return true; });
-      // sky
-      ctx.fillStyle='#70c5ce'; ctx.fillRect(0,0,320,220);
-      // ground
-      ctx.fillStyle='#ded895'; ctx.fillRect(0,200,320,20);
-      ctx.fillStyle='#5e8c31'; ctx.fillRect(0,196,320,6);
+      frame++;
+      // horizontal path only: world moves, bird Y only from remote
+      if(moveDir===-1) y-=speedY;
+      if(moveDir===1) y+=speedY;
+      if(y<12) y=12;
+      if(y>188) y=188;
+      if(frame%95===0) pipes.push({x:330, gap:30+Math.random()*90});
+      pipes.forEach(function(p){ p.x-=2.4; });
+      pipes=pipes.filter(function(p){ if(p.x<-44){ score++; return false;} return true; });
+      ctx.fillStyle='#70c5ce'; ctx.fillRect(0,0,320,240);
+      // clouds
+      ctx.fillStyle='rgba(255,255,255,0.45)';
+      ctx.beginPath(); ctx.arc((frame*0.3)%360-20,40,18,0,Math.PI*2); ctx.arc((frame*0.3)%360,36,22,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#ded895'; ctx.fillRect(0,210,320,30);
+      ctx.fillStyle='#5e8c31'; ctx.fillRect(0,206,320,6);
       pipes.forEach(function(p){
         ctx.fillStyle='#5e8c31';
         ctx.fillRect(p.x,0,40,p.gap);
-        ctx.fillRect(p.x,p.gap+66,40,220);
+        ctx.fillRect(p.x,p.gap+70,40,240);
         ctx.fillStyle='#73bf2e';
         ctx.fillRect(p.x-3,p.gap-12,46,12);
-        ctx.fillRect(p.x-3,p.gap+66,46,12);
-        if(10< p.x+40 && 36>p.x && (y<p.gap || y>p.gap+66)) alive=false;
+        ctx.fillRect(p.x-3,p.gap+70,46,12);
+        if(10<p.x+40 && 40>p.x && (y-8<p.gap || y+8>p.gap+70)) alive=false;
       });
-      // bird body
+      // bird level flight
       ctx.fillStyle='#f4d03f';
-      ctx.beginPath(); ctx.ellipse(28,y,12,10,0,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(28,y,13,10,0,0,Math.PI*2); ctx.fill();
       ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(34,y-2,3.5,0,Math.PI*2); ctx.fill();
       ctx.fillStyle='#000'; ctx.beginPath(); ctx.arc(35,y-2,1.5,0,Math.PI*2); ctx.fill();
       ctx.fillStyle='#e67e22';
-      ctx.beginPath(); ctx.moveTo(38,y); ctx.lineTo(48,y+2); ctx.lineTo(38,y+5); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(40,y); ctx.lineTo(50,y+2); ctx.lineTo(40,y+5); ctx.fill();
       ctx.fillStyle='#f5d76e';
       ctx.beginPath(); ctx.ellipse(22,y+2,6,5,0,0,Math.PI*2); ctx.fill();
-      if(y>220||y<0) alive=false;
       document.getElementById('sc').textContent=score;
-      if(!alive){ ctx.fillStyle='rgba(0,0,0,.5)'; ctx.fillRect(0,0,320,220); ctx.fillStyle='#fff'; ctx.font='bold 16px sans-serif'; ctx.textAlign='center'; ctx.fillText('GAME OVER · '+score,160,110); }
+      if(!alive){
+        ctx.fillStyle='rgba(0,0,0,.55)'; ctx.fillRect(0,0,320,240);
+        ctx.fillStyle='#fff'; ctx.font='bold 16px sans-serif'; ctx.textAlign='center';
+        ctx.fillText('GAME OVER · '+score,160,120);
+        moveDir=0;
+      }
     }
     timers.push(setInterval(loop,20));
-    function flap(){ if(alive) vy=-5.5; else flappy(); }
-    cv.onclick=flap; cv.ontouchstart=function(e){ e.preventDefault(); flap(); };
+    function hold(dir){
+      return {
+        start: function(e){ if(e) e.preventDefault(); if(alive) moveDir=dir; },
+        end: function(e){ if(e) e.preventDefault(); if(moveDir===dir) moveDir=0; }
+      };
+    }
+    var up=hold(-1), down=hold(1);
+    var bu=document.getElementById('birdUp'), bd=document.getElementById('birdDown');
+    ['mousedown','touchstart'].forEach(function(ev){ bu.addEventListener(ev, up.start, {passive:false}); bd.addEventListener(ev, down.start, {passive:false}); });
+    ['mouseup','mouseleave','touchend','touchcancel'].forEach(function(ev){ bu.addEventListener(ev, up.end); bd.addEventListener(ev, down.end); });
+    document.onkeydown=function(e){
+      if(e.key==='ArrowUp'||e.key==='w'||e.key==='W'){ moveDir=-1; e.preventDefault(); }
+      if(e.key==='ArrowDown'||e.key==='s'||e.key==='S'){ moveDir=1; e.preventDefault(); }
+    };
+    document.onkeyup=function(e){
+      if(e.key==='ArrowUp'||e.key==='w'||e.key==='W'||e.key==='ArrowDown'||e.key==='s'||e.key==='S') moveDir=0;
+    };
     document.getElementById('rst').onclick=flappy;
   }
 

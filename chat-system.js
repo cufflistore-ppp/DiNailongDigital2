@@ -20,7 +20,18 @@
   function getUserMeta() {
     try {
       var u = firebase.auth().currentUser;
-      if (u) return { uid: u.uid, name: u.displayName || u.email || 'User', photo: u.photoURL || '' };
+      if (u) {
+        var name = u.displayName || u.email || 'User';
+        var photo = u.photoURL || '';
+        try {
+          var cache = JSON.parse(localStorage.getItem('nd_profile_cache') || '{}');
+          if (cache[u.uid]) {
+            if (cache[u.uid].name) name = cache[u.uid].name;
+            if (cache[u.uid].photo) photo = cache[u.uid].photo;
+          }
+        } catch (e2) {}
+        return { uid: u.uid, name: name, photo: photo };
+      }
     } catch (e) {}
     return { uid: getUid(), name: 'Pengunjung', photo: '' };
   }

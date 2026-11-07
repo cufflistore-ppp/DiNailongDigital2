@@ -96,3 +96,53 @@
     rupiah: rupiah
   };
 })();
+
+/* Auto testimoni on mark paid */
+(function(){
+  function hook(){
+    document.addEventListener('click', function(e){
+      var t = e.target;
+      if(!t) return;
+      var id = t.id || '';
+      var txt = (t.textContent || '').toLowerCase();
+      if(id === 'ndQrisDone' || /sudah bayar|konfirmasi bayar|status sukses|tandai.*sukses|sudah transfer/.test(txt)){
+        try {
+          var last = JSON.parse(localStorage.getItem('nailong_last_qris_order') || 'null');
+          var user = null;
+          try { user = firebase.auth().currentUser; } catch(e){}
+          var meta = (last && last.meta) || {};
+          var order = {
+            kode: last && last.ref_id,
+            total: last && last.nominal,
+            paket: meta.product || meta.paket || last && last.desc || 'Order',
+            storeName: meta.storeName || '',
+            sellerRole: meta.role || meta.sellerRole || '',
+            tfPhoto: meta.tfPhoto || '',
+            photo: meta.photo || (user && user.photoURL) || '',
+            uid: (user && user.uid) || meta.uid || '',
+            trxCount: meta.trxCount || 0
+          };
+          if (window.NailongChannel && NailongChannel.postOrderTestimoni) {
+            NailongChannel.postOrderTestimoni(order, user);
+          }
+          if (window.NDRoles && (order.sellerRole === 'partner' || order.sellerRole === 'paid_promote' || order.storeName)) {
+            NDRoles.postPartnerTestimoni({
+              uid: order.uid,
+              name: (user && user.displayName) || meta.name || '',
+              photo: order.photo,
+              storeName: order.storeName,
+              role: order.sellerRole,
+              product: order.paket,
+              amount: typeof order.total === 'number' ? ('Rp ' + order.total.toLocaleString('id-ID')) : order.total,
+              tfPhoto: order.tfPhoto,
+              trxCount: order.trxCount,
+              source: 'pay_confirm'
+            });
+          }
+        } catch (err) { console.warn('testimoni hook', err); }
+      }
+    }, true);
+  }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hook);
+  else hook();
+})();

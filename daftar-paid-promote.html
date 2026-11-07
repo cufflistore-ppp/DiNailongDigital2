@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Daftar Paid Promote - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <style>
+    .app-page{padding:14px 14px 110px;max-width:480px;margin:0 auto}
+    .app-card{background:#FFF5E0;border:2.5px solid #111;border-radius:18px;box-shadow:6px 6px 0 #111;padding:16px;margin-bottom:14px}
+    .app-card h2{font-size:18px;font-weight:900;margin:0 0 6px;color:#111}
+    .app-card p{font-size:13px;color:#555;margin:0 0 12px}
+    .price-tag{display:inline-block;background:#FFD600;border:2px solid #111;box-shadow:3px 3px 0 #111;padding:6px 12px;border-radius:10px;font-weight:900;color:#111;margin-bottom:12px}
+    label{display:block;font-size:12px;font-weight:800;color:#111;margin:10px 0 4px}
+    input,select,textarea{width:100%;padding:10px 12px;border:2.5px solid #111;border-radius:12px;box-shadow:3px 3px 0 #111;background:#fff;font-weight:600;color:#111;box-sizing:border-box}
+    .warn{background:#ffebee;border:2.5px solid #111;box-shadow:4px 4px 0 #111;border-radius:14px;padding:12px;font-size:12px;font-weight:700;color:#111;margin:14px 0}
+    .age-tabs{display:flex;gap:8px;margin-bottom:12px}
+    .age-tabs button{flex:1;padding:10px;border:2.5px solid #111;border-radius:12px;background:#fff;font-weight:800;box-shadow:3px 3px 0 #111}
+    .age-tabs button.on{background:#FFD600}
+    .hid{display:none}
+    .btn-submit{width:100%;margin-top:14px;padding:14px;background:#FFD600;border:2.5px solid #111;box-shadow:5px 5px 0 #111;border-radius:14px;font-weight:900;font-size:15px;color:#111}
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nd-logo-gold.jpg" alt="ND" class="logo-full">
+      <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
+    </div></div>
+  </header>
+  <div class="app-page">
+    <div class="app-card">
+      <h2><i class="fa-solid fa-bullhorn"></i> Daftar Paid Promote</h2>
+      <p>Jadi Paid Promote Nailong Digital. Bisa buka toko sendiri, QRIS sendiri, dan gabung grup paid promote.</p>
+      <div class="price-tag">Biaya daftar Rp 90.000</div>
+      <div class="age-tabs">
+        <button type="button" class="on" id="tabAdult">Dewasa (17+)</button>
+        <button type="button" id="tabMinor">Di bawah umur</button>
+      </div>
+      <form id="formPartner">
+        <input type="hidden" id="ageType" value="adult">
+        <label>Nama lengkap</label>
+        <input id="nama" required>
+        <label>Nama panggilan</label>
+        <input id="panggilan" required>
+        <label>Tempat lahir</label>
+        <input id="tempatLahir" required>
+        <label>Tanggal lahir</label>
+        <input id="tglLahir" type="date" required>
+        <label>Jenis kelamin</label>
+        <select id="kelamin" required><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select>
+        <label>Alamat domisili</label>
+        <textarea id="alamat" rows="2" required></textarea>
+        <label>Nomor pribadi (WhatsApp)</label>
+        <input id="noPribadi" type="tel" required placeholder="08...">
+
+        <div id="adultFields">
+          <label>Link / URL foto KTP</label>
+          <input id="ktpUrl" placeholder="https://...">
+          <label>Link foto muka + KTP</label>
+          <input id="faceKtpUrl" placeholder="https://...">
+          <label>Link foto Kartu Keluarga</label>
+          <input id="kkUrl" placeholder="https://...">
+        </div>
+        <div id="minorFields" class="hid">
+          <label>Link foto KIA</label>
+          <input id="kiaUrl" placeholder="https://...">
+          <label>Link foto KIA + muka</label>
+          <input id="kiaFaceUrl" placeholder="https://...">
+          <label>Link foto Kartu Keluarga</label>
+          <input id="kkUrl2" placeholder="https://...">
+          <label>Link foto bersama</label>
+          <input id="fotoSama" placeholder="https://...">
+          <label>Nama lengkap ortu/wali</label>
+          <input id="namaOrtu">
+          <label>Kontak ortu/wali</label>
+          <input id="kontakOrtu" type="tel">
+          <label>Nomor asli ortu/wali</label>
+          <input id="noOrtu" type="tel">
+        </div>
+
+        <div class="warn">
+          <b>PERINGATAN WAJIB DIBACA & DISETUJUI</b><br><br>
+          Jika Anda ketahuan <b>nipu / clone orang lain</b>, ident Anda bakal disebar di website (halaman Blacklist), Partner/Paid Promote di-blacklist dari semua yang tergantung Nailong Digital, toko ditutup permanen, dan <b>duit tidak dikembalikan</b>.
+        </div>
+        <label style="display:flex;gap:8px;align-items:flex-start;font-weight:700">
+          <input type="checkbox" id="agree" required style="width:auto;box-shadow:none;margin-top:3px">
+          Saya setuju dengan ketentuan di atas
+        </label>
+        <p style="font-size:12px;color:#555;margin-top:10px">Setelah submit, bayar QRIS Rp 90.000 lalu tunggu verifikasi Founder. Jika disetujui, role jadi Partner & otomatis bisa buka toko + masuk grup paid promote.</p>
+        <button type="submit" class="btn-submit">Kirim Pendaftaran Paid Promote</button>
+      </form>
+      <p id="msg" style="margin-top:10px;font-weight:800;color:#111"></p>
+    </div>
+  </div>
+  <nav class="bottom-nav nav-5"></nav>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="roles.js"></script>
+  <script src="nav.js"></script>
+  <script src="header-bar.js"></script>
+  <script>
+  document.getElementById('tabAdult').onclick=function(){
+    this.classList.add('on');document.getElementById('tabMinor').classList.remove('on');
+    document.getElementById('ageType').value='adult';
+    document.getElementById('adultFields').classList.remove('hid');
+    document.getElementById('minorFields').classList.add('hid');
+  };
+  document.getElementById('tabMinor').onclick=function(){
+    this.classList.add('on');document.getElementById('tabAdult').classList.remove('on');
+    document.getElementById('ageType').value='minor';
+    document.getElementById('adultFields').classList.add('hid');
+    document.getElementById('minorFields').classList.remove('hid');
+  };
+  document.getElementById('formPartner').onsubmit=async function(e){
+    e.preventDefault();
+    var msg=document.getElementById('msg');
+    msg.textContent='Mengirim...';
+    try{
+      var user=null;
+      if(window.VoxyyAuth&&VoxyyAuth.currentUser) user=VoxyyAuth.currentUser();
+      if(!user&&firebase.auth) user=firebase.auth().currentUser;
+      if(!user){msg.textContent='Login dulu sebelum daftar.';return}
+      await NDRoles.ensureUserProfile(user);
+      var age=document.getElementById('ageType').value;
+      var payload={
+        uid:user.uid,email:user.email||'',photo:user.photoURL||'',
+        nama:document.getElementById('nama').value,
+        panggilan:document.getElementById('panggilan').value,
+        tempatLahir:document.getElementById('tempatLahir').value,
+        tglLahir:document.getElementById('tglLahir').value,
+        kelamin:document.getElementById('kelamin').value,
+        alamat:document.getElementById('alamat').value,
+        noPribadi:document.getElementById('noPribadi').value,
+        ageType:age,
+        price:90000,
+        agreed:true
+      };
+      if(age==='adult'){
+        payload.ktpUrl=document.getElementById('ktpUrl').value;
+        payload.faceKtpUrl=document.getElementById('faceKtpUrl').value;
+        payload.kkUrl=document.getElementById('kkUrl').value;
+      }else{
+        payload.kiaUrl=document.getElementById('kiaUrl').value;
+        payload.kiaFaceUrl=document.getElementById('kiaFaceUrl').value;
+        payload.kkUrl=document.getElementById('kkUrl2').value;
+        payload.fotoSama=document.getElementById('fotoSama').value;
+        payload.namaOrtu=document.getElementById('namaOrtu').value;
+        payload.kontakOrtu=document.getElementById('kontakOrtu').value;
+        payload.noOrtu=document.getElementById('noOrtu').value;
+      }
+      // simpan ident ke profil
+      await firebase.database().ref('nd_users/'+user.uid).update({
+        idents:payload, ktpUrl:payload.ktpUrl||'', faceKtpUrl:payload.faceKtpUrl||''
+      });
+      var id=await NDRoles.submitApplication('paid_promote',payload);
+      msg.textContent='Terikirim! ID: '+id+'. Bayar Rp 90.000 lalu tunggu verifikasi Founder.';
+      setTimeout(function(){location.href='pembayaran.html?type=paid_promote&app='+encodeURIComponent(id)+'&amount=90000'},800);
+    }catch(err){msg.textContent='Gagal: '+(err.message||err)}
+  };
+  </script>
+</body>
+</html>

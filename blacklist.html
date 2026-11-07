@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Blacklist Partner / Paid Promote - Nailong Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+  <style>
+    .bl-page{padding:14px;max-width:480px;margin:0 auto 110px}
+    .bl-card{background:#FFF5E0;border:2.5px solid #111;box-shadow:6px 6px 0 #111;border-radius:16px;padding:14px;margin-bottom:12px}
+    .bl-card img{width:100%;max-height:180px;object-fit:cover;border:2px solid #111;border-radius:12px;margin-bottom:8px}
+    .bl-card h3{margin:0 0 4px;font-size:15px;font-weight:900;color:#111}
+    .bl-meta{font-size:12px;color:#555;font-weight:700}
+    .bl-reason{margin-top:8px;padding:8px;background:#ffebee;border:2px solid #111;border-radius:10px;font-size:12px;font-weight:700}
+    .warn-top{background:#111;color:#FFD600;padding:12px;border-radius:14px;font-weight:800;font-size:13px;margin-bottom:14px;border:2.5px solid #111;box-shadow:5px 5px 0 #FFD600}
+  </style>
+</head>
+<body>
+  <header class="header header-logo-only">
+    <div class="brand brand-centered"><div class="logo-text-wrap">
+      <img src="nd-logo-gold.jpg" class="logo-full" alt="ND">
+      <div class="nd-brand-text">NAILONG<span>DIGITAL</span></div>
+    </div></div>
+  </header>
+  <div class="bl-page">
+    <div class="warn-top"><i class="fa-solid fa-ban"></i> BLACKLIST PARTNER / PAID PROMOTE<br><span style="font-weight:600;font-size:11px;color:#fff">Identitas dipublikasikan karena nipu / clone / pelanggaran berat.</span></div>
+    <div id="list"><p style="font-weight:700;color:#111">Memuat...</p></div>
+  </div>
+  <nav class="bottom-nav nav-5"></nav>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="roles.js"></script>
+  <script src="nav.js"></script>
+  <script src="header-bar.js"></script>
+  <script>
+  async function load(){
+    var list=document.getElementById('list');
+    try{
+      var rows=await NDRoles.listBlacklist();
+      if(!rows.length){list.innerHTML='<div class="bl-card"><p style="font-weight:700;margin:0">Belum ada data blacklist.</p></div>';return}
+      list.innerHTML=rows.map(function(r){
+        var img=r.faceKtpUrl||r.ktpUrl||r.photo||'nd-logo-gold.jpg';
+        return '<div class="bl-card">'+
+          '<img src="'+img+'" alt="" onerror="this.src=\'nd-logo-gold.jpg\'">'+
+          '<h3>'+(r.name||'Tanpa nama')+'</h3>'+
+          '<div class="bl-meta">Toko: '+(r.storeName||'-')+' · Role sebelumnya: '+(r.roleBefore||'-')+'</div>'+
+          '<div class="bl-meta">ID: '+(r.uid||'').slice(0,10)+'…</div>'+
+          '<div class="bl-reason"><b>Penyebab:</b> '+(r.reason||'-')+'</div>'+
+          '<details style="margin-top:8px;font-size:12px;font-weight:700"><summary>Lihat detail ident</summary>'+
+          '<pre style="white-space:pre-wrap;font-size:11px;margin-top:6px">'+(r.idents?JSON.stringify(r.idents,null,2):(r.evidence||'-'))+'</pre></details>'+
+        '</div>';
+      }).join('');
+    }catch(e){list.innerHTML='<p>Gagal muat: '+e.message+'</p>'}
+  }
+  document.addEventListener('DOMContentLoaded',load);
+  </script>
+</body>
+</html>
