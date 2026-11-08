@@ -56,7 +56,7 @@
       margin-top: 10px;
     }
   </style>
-</head>
+<style>#addonSection{display:none!important}</style></head>
 <body>
   <header class="header header-logo-only">
     <div class="brand brand-centered">
@@ -115,7 +115,7 @@ Wa.me/628…
 *#NAMBAH VIEW SW + KONTAK + SELLER + BUYYER + DLL 👾🐥*</textarea>
       </div>
 
-      <div class="form-section" id="addonSection" style="display:none;">
+      <div class="form-section" id="addonSection" style="display:none!important;">
         <h4><span class="step">2</span> Tambahan / Prioritas</h4>
         <div class="addon" onclick="toggleAddon(this, 500)">
           <span>+ 15 jam</span>
@@ -355,7 +355,7 @@ Wa.me/628…
           const fn = document.getElementById("fieldNamaWa");
           if (fn) fn.style.display = "none";
           const addon = document.getElementById("addonSection");
-          if (addon) addon.style.display = "block";
+          if (addon) addon.style.display = "none";
 
           // Durasi di teks sesuai paket
           const durasiMap = {

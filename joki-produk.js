@@ -1,19 +1,7 @@
 const JOKI_CATALOG_VER = "7";
 
 const paketJoki = [
-  {
-    id: 1,
-    label: "15 JAM",
-    badge: "Paling Laris",
-    judul: "Joki 15 Jam",
-    deskripsi: "500p · 15 jam + SW + share all GB",
-    harga: 500,
-    fitur: [
-      "15 jam + SW + share all GB",
-      "Order langsung di web",
-      "Status dapat dipantau"
-    ]
-  },
+  
   {
     id: 2,
     label: "1 HARI",

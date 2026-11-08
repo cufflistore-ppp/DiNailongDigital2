@@ -154,7 +154,7 @@
       <!-- Wijaya Pay Gateway (tanpa foto QRIS statis) -->
       <div class="qris-box-big" id="qrisContainer" style="background:linear-gradient(160deg,#10182a,#0d1220);border:1px solid rgba(255,193,7,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:180px;padding:20px;">
         <i class="fa-solid fa-qrcode" style="font-size:42px;color:#FFC107;margin-bottom:10px;"></i>
-        <div id="wijayaStatus" style="color:#fff;font-size:13px;font-weight:600;text-align:center;line-height:1.5;">
+        <div id="wijayaStatus" style="color:#111111;font-size:13px;font-weight:600;text-align:center;line-height:1.5;">
           Menyiapkan pembayaran Wijaya Pay…
         </div>
         <a id="wijayaPayLink" href="#" target="_blank" rel="noopener" style="display:none;margin-top:14px;background:linear-gradient(90deg,#FFC107,#FF8F00);color:#0a0e18;padding:12px 20px;border-radius:12px;font-weight:800;text-decoration:none;font-size:14px;">
@@ -181,7 +181,7 @@
         ✅ Konfirmasi terkirim.<br>
         <b>Pembayaran via WijayaPay</b> — status dipantau otomatis. Hubungi admin bila perlu.<br>
         <a href="https://wa.me/6285124697215?text=Halo%20admin%20Nailong%2C%20saya%20sudah%20TF%20order" target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;background:#25d366;color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px;">
+           style="display:inline-flex;align-items:center;gap:8px;margin-top:12px;background:#25d366;color:#111111;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px;">
           <i class="fa-brands fa-whatsapp"></i> Hubungi Admin WhatsApp
         </a>
       </div>
@@ -488,7 +488,7 @@
         if (!payUrl && !qrisImg) {
           if (statusEl) {
             statusEl.innerHTML = 'Order siap · Ref <b style="color:#FFC107">' + (result.ref_id || '-') + '</b><br>' +
-              '<small style="color:#8aa0b8">Isi <b>merchantCode</b> & <b>apiKey</b> di <code>wijayapay.js</code> atau set <code>proxyUrl</code> agar QRIS dinamis muncul otomatis.</small>';
+              '<small style="color:#555555">Isi <b>merchantCode</b> & <b>apiKey</b> di <code>wijayapay.js</code> atau set <code>proxyUrl</code> agar QRIS dinamis muncul otomatis.</small>';
           }
         }
         // Simpan ref gateway ke order (opsional)
