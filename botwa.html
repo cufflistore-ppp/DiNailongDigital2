@@ -25,20 +25,20 @@
       border-color: #FFC107;
       background: linear-gradient(160deg, rgba(255,193,7,0.12), rgba(16,24,42,0.9));
     }
-    .pkg-card .dur { font-size: 13px; font-weight: 800; color: #fff; }
+    .pkg-card .dur { font-size: 13px; font-weight: 800; color:#111111; }
     .pkg-card .price { font-size: 16px; font-weight: 900; color: #FFC107; margin-top: 4px; }
     .type-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
     .type-row button {
       flex: 1; min-width: 90px; border: 1.5px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.04); color: #cfd8dc; border-radius: 12px;
+      background: rgba(255,255,255,0.04); color:#555555; border-radius: 12px;
       padding: 12px 8px; font-weight: 700; font-size: 12px; cursor: pointer;
     }
     .type-row button.active { border-color: #FFC107; color: #FFC107; background: rgba(255,193,7,0.1); }
     .type-row button i { display: block; font-size: 18px; margin-bottom: 4px; }
-    .hint { font-size: 12px; color: #8aa0b8; line-height: 1.45; margin: 8px 0; }
+    .hint { font-size: 12px; color:#555555; line-height: 1.45; margin: 8px 0; }
     .num-list input {
       width: 100%; margin: 6px 0; padding: 12px; border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.1); background: #0d1220; color: #fff; box-sizing: border-box;
+      border: 1px solid rgba(255,255,255,0.1); background: #0d1220; color:#111111; box-sizing: border-box;
     }
     .total-bar {
       position: sticky; bottom: 78px; z-index: 12;
@@ -128,7 +128,7 @@
         <h3 style="margin:0 0 6px;font-size:13px;color:#FFC107;">Tambah nomor bot (+Rp 1.000)</h3>
         <p class="hint" style="margin-top:0;">Bot yang sudah ONLINE <b>tidak di-restart</b>. Setelah konfirmasi, pairing nomor baru langsung muncul.</p>
         <input type="tel" id="addNumInput" placeholder="Nomor baru 08… / 628…" inputmode="numeric"
-          style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:#0d1220;color:#fff;box-sizing:border-box;">
+          style="width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:#0d1220;color:#111111;box-sizing:border-box;">
         <button type="button" class="btn-pesan" id="btnAddNum" style="width:100%;margin-top:8px;">
           <i class="fa-solid fa-plus"></i> Konfirmasi tambah nomor
         </button>
@@ -140,7 +140,7 @@
           <span id="serverPill" style="font-size:11px;font-weight:800;padding:4px 10px;border-radius:999px;background:#7f1d1d;color:#fecaca;">SERVER BOT WA OFFLINE</span>
         </div>
         <div id="botSlots"></div>
-        <div id="botMonitor" style="margin-top:10px;max-height:160px;overflow:auto;background:#0a0e18;border-radius:10px;padding:10px;font-size:11px;color:#8aa0b8;"></div>
+        <div id="botMonitor" style="margin-top:10px;max-height:160px;overflow:auto;background:#0a0e18;border-radius:10px;padding:10px;font-size:11px;color:#555555;"></div>
       </div>
     </div>
 

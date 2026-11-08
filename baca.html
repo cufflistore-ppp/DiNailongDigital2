@@ -14,7 +14,7 @@
     .baca-tabs { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
     .baca-tabs button {
       border:1px solid rgba(255,193,7,0.25); background:rgba(16,24,42,0.6);
-      color:#cfd8dc; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;
+      color:#555555; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;
     }
     .baca-tabs button.active {
       background:linear-gradient(90deg,#FFC107,#FF8F00); color:#0a0e18; border:none;
@@ -22,7 +22,7 @@
     .search-row { display:flex; gap:8px; margin-bottom:12px; }
     .search-row input {
       flex:1; border-radius:12px; border:1px solid rgba(255,255,255,0.1);
-      background:#0d1220; color:#fff; padding:12px; font-size:14px;
+      background:#0d1220; color:#111111; padding:12px; font-size:14px;
     }
     .search-row button {
       border:none; border-radius:12px; background:#FFC107; color:#0a0e18;
@@ -40,10 +40,10 @@
     .baca-card img { width:100%; height:100%; object-fit:cover; display:block; }
     .baca-card .info { padding:10px; }
     .baca-card h4 {
-      margin:0 0 4px; font-size:13px; color:#fff; line-height:1.3;
+      margin:0 0 4px; font-size:13px; color:#111111; line-height:1.3;
       display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
     }
-    .baca-card p { margin:0; font-size:11px; color:#8aa0b8; }
+    .baca-card p { margin:0; font-size:11px; color:#555555; }
     .reader {
       display:none; position:fixed; inset:0; z-index:120; background:#0a0e18;
       flex-direction:column;
@@ -54,15 +54,15 @@
       background:#121a2b; border-bottom:1px solid rgba(255,255,255,0.08);
     }
     .reader-bar button {
-      border:none; background:rgba(255,255,255,0.08); color:#fff;
+      border:none; background:rgba(255,255,255,0.08); color:#111111;
       border-radius:10px; padding:8px 12px; font-weight:700; cursor:pointer;
     }
-    .reader-bar b { flex:1; color:#fff; font-size:13px; }
+    .reader-bar b { flex:1; color:#111111; font-size:13px; }
     .reader-body { flex:1; overflow:auto; padding:14px; }
     .reader-body .cover { width:140px; border-radius:10px; float:left; margin:0 14px 10px 0; }
     .reader-body .vid { position:relative; width:100%; aspect-ratio:16/9; background:#000; border-radius:12px; overflow:hidden; }
     .reader-body .vid iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
-    .status { text-align:center; color:#8aa0b8; padding:24px; font-size:13px; }
+    .status { text-align:center; color:#555555; padding:24px; font-size:13px; }
   </style>
 </head>
 <body>
@@ -213,8 +213,8 @@
       var body = document.getElementById('rdBody');
       var html = '';
       if (it.cover) html += '<img class="cover" src="' + it.cover + '" alt="">';
-      html += '<p style="color:#8aa0b8;font-size:12px;margin:0 0 8px;">' + (it.type || '') + (it.score ? ' · ★ ' + it.score : '') + '</p>';
-      html += '<p style="color:#cfd8dc;font-size:13px;line-height:1.5;white-space:pre-wrap;">' + (it.synopsis || 'Tidak ada sinopsis.') + '</p>';
+      html += '<p style="color:#555555;font-size:12px;margin:0 0 8px;">' + (it.type || '') + (it.score ? ' · ★ ' + it.score : '') + '</p>';
+      html += '<p style="color:#555555;font-size:13px;line-height:1.5;white-space:pre-wrap;">' + (it.synopsis || 'Tidak ada sinopsis.') + '</p>';
       if (it.trailerEmbed) {
         html += '<div class="vid" style="margin-top:14px;clear:both;"><iframe src="' + it.trailerEmbed + '?rel=0" allowfullscreen allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe></div>';
       }

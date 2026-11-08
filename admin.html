@@ -48,7 +48,7 @@
       color: #aaa;
     }
     .admin-lock i { font-size: 48px; color: #FFC107; margin-bottom: 16px; }
-    .admin-lock h3 { color: #fff; margin-bottom: 8px; }
+    .admin-lock h3 { color:#111111; margin-bottom: 8px; }
     .admin-tabs {
       display: flex;
       gap: 6px;
@@ -85,7 +85,7 @@
       padding: 1px 6px;
       border-radius: 999px;
       background: #e53935;
-      color: #fff;
+      color:#111111;
       font-size: 10px;
       margin-left: 4px;
       vertical-align: middle;
@@ -135,9 +135,9 @@
       transition: transform 0.15s ease;
     }
     .status-btn:active { transform: scale(0.95); }
-    .btn-paid { background: #00aa00; color: white; }
+    .btn-paid { background: #00aa00; color:#111111; }
     .btn-proses { background: #4dd0e1; color: #0a0e18; }
-    .btn-unpaid { background: #aa0000; color: white; }
+    .btn-unpaid { background: #aa0000; color:#111111; }
     .btn-delete { background: #333; color: #ff6666; }
     .btn-copy {
       background: #1a2740;
@@ -259,14 +259,14 @@
       font-weight: 700;
     }
     .meta-line { font-size: 13px; line-height: 1.65; color: #ccc; }
-    .meta-line b { color: #fff; }
+    .meta-line b { color:#111111; }
     .toast-admin {
       position: fixed;
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%) translateY(80px);
       background: #1a2740;
-      color: #fff;
+      color:#111111;
       padding: 12px 20px;
       border-radius: 12px;
       font-size: 13px;
@@ -361,40 +361,40 @@
     
     <div class="admin-panel" id="panel-akunjual">
       <div class="admin-section-title"><i class="fa-solid fa-bolt"></i> Flash Sale (Admin)</div>
-      <p style="color:#8aa0b8;font-size:12px;margin:-4px 0 10px;line-height:1.45;">
+      <p style="color:#555555;font-size:12px;margin:-4px 0 10px;line-height:1.45;">
         Flash sale <b>otomatis 2%</b> aktif tiap <b>Jumat</b>, hari nasional, Natal, Tahun Baru, dll — hilang sendiri habis hari.
         Di bawah ini untuk flash sale <b>manual</b> (bisa beda %).
       </p>
       <div class="admin-card">
-        <label style="font-size:12px;color:#8aa0b8;">Status Flash Sale Manual</label>
+        <label style="font-size:12px;color:#555555;">Status Flash Sale Manual</label>
         <select id="fsAktif" class="form-select" style="margin:6px 0 10px;">
           <option value="0">Nonaktif</option>
           <option value="1">Aktif</option>
         </select>
-        <label style="font-size:12px;color:#8aa0b8;">Label (contoh: FLASH SALE WEEKEND)</label>
+        <label style="font-size:12px;color:#555555;">Label (contoh: FLASH SALE WEEKEND)</label>
         <input type="text" id="fsLabel" class="form-input" placeholder="FLASH SALE" style="margin:6px 0 10px;">
-        <label style="font-size:12px;color:#8aa0b8;">Diskon global (%)</label>
+        <label style="font-size:12px;color:#555555;">Diskon global (%)</label>
         <input type="number" id="fsDiskon" class="form-input" placeholder="10" min="0" max="90" style="margin:6px 0 10px;">
-        <label style="font-size:12px;color:#8aa0b8;">Berlaku sampai (opsional, YYYY-MM-DD)</label>
+        <label style="font-size:12px;color:#555555;">Berlaku sampai (opsional, YYYY-MM-DD)</label>
         <input type="text" id="fsSampai" class="form-input" placeholder="2026-12-31" style="margin:6px 0 12px;">
         <button type="button" class="status-btn btn-paid" onclick="saveFlashSale()">Simpan Flash Sale</button>
       </div>
 
       <div class="admin-section-title" style="margin-top:16px;"><i class="fa-solid fa-gamepad"></i> Daftar Akun Dijual</div>
       <div class="admin-card">
-        <label style="font-size:12px;color:#8aa0b8;">Game</label>
+        <label style="font-size:12px;color:#555555;">Game</label>
         <input type="text" id="akGame" class="form-input" placeholder="Free Fire" style="margin:6px 0 8px;">
-        <label style="font-size:12px;color:#8aa0b8;">Judul</label>
+        <label style="font-size:12px;color:#555555;">Judul</label>
         <input type="text" id="akJudul" class="form-input" placeholder="Akun FF Sultan" style="margin:6px 0 8px;">
-        <label style="font-size:12px;color:#8aa0b8;">Deskripsi</label>
+        <label style="font-size:12px;color:#555555;">Deskripsi</label>
         <input type="text" id="akDesc" class="form-input" placeholder="Skin lengkap..." style="margin:6px 0 8px;">
-        <label style="font-size:12px;color:#8aa0b8;">Harga jual (Rp) — tampil kuning</label>
+        <label style="font-size:12px;color:#555555;">Harga jual (Rp) — tampil kuning</label>
         <input type="number" id="akHarga" class="form-input" placeholder="85000" style="margin:6px 0 8px;">
-        <label style="font-size:12px;color:#8aa0b8;">Harga coret / asli (opsional)</label>
+        <label style="font-size:12px;color:#555555;">Harga coret / asli (opsional)</label>
         <input type="number" id="akHargaAsli" class="form-input" placeholder="120000" style="margin:6px 0 8px;">
-        <label style="font-size:12px;color:#8aa0b8;">Stok</label>
+        <label style="font-size:12px;color:#555555;">Stok</label>
         <input type="number" id="akStok" class="form-input" value="1" min="0" style="margin:6px 0 8px;">
-        <label style="font-size:12px;color:#8aa0b8;">Badge singkat</label>
+        <label style="font-size:12px;color:#555555;">Badge singkat</label>
         <input type="text" id="akBadge" class="form-input" placeholder="FF" style="margin:6px 0 12px;">
         <button type="button" class="status-btn btn-paid" onclick="addAkunJual()">+ Tambah Akun</button>
       </div>
@@ -405,11 +405,11 @@
       <div class="admin-section-title"><i class="fa-solid fa-wallet"></i> Kelola Saldo User</div>
       <p style="color:#888;font-size:12px;margin:-4px 0 12px;">Atur / tambah saldo user lain. UID dari login Google atau guest id.</p>
       <div class="admin-card">
-        <label style="font-size:12px;color:#8aa0b8;">UID / ID User</label>
+        <label style="font-size:12px;color:#555555;">UID / ID User</label>
         <input type="text" id="saldoUid" class="form-input" placeholder="UID Firebase / guest id" style="margin:6px 0 10px;">
-        <label style="font-size:12px;color:#8aa0b8;">Nominal (Rp)</label>
+        <label style="font-size:12px;color:#555555;">Nominal (Rp)</label>
         <input type="number" id="saldoNominal" class="form-input" placeholder="50000" style="margin:6px 0 10px;">
-        <label style="font-size:12px;color:#8aa0b8;">Keterangan</label>
+        <label style="font-size:12px;color:#555555;">Keterangan</label>
         <input type="text" id="saldoReason" class="form-input" placeholder="Top up manual / koreksi" style="margin:6px 0 12px;">
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button type="button" class="status-btn btn-paid" onclick="adminSaldoAdd()">+ Tambah Saldo</button>
@@ -426,7 +426,7 @@
     
     <div class="admin-panel" id="panel-sw">
       <h3 style="color:#FFC107;"><i class="fa-brands fa-whatsapp"></i> Nomor SW khusus (WhatsApp asli, bukan grup)</h3>
-      <p style="font-size:12px;color:#8aa0b8;margin-bottom:12px;">Satu nomor bisa tebar. Pairing otomatis muncul &amp; bisa disalin.</p>
+      <p style="font-size:12px;color:#555555;margin-bottom:12px;">Satu nomor bisa tebar. Pairing otomatis muncul &amp; bisa disalin.</p>
       <label>Tambah nomor SW</label>
       <input type="text" id="swNum" class="form-input" placeholder="628xxxxxxxxxx">
       <label style="margin-top:8px;">Label (opsional)</label>
@@ -439,7 +439,7 @@
           try { list = JSON.parse(localStorage.getItem('nailong_sw_numbers')||'[]'); } catch(e){}
           var el = document.getElementById('swList');
           if (!el) return;
-          if (!list.length) { el.innerHTML = '<p style="color:#8aa0b8;font-size:13px;">Belum ada nomor SW.</p>'; return; }
+          if (!list.length) { el.innerHTML = '<p style="color:#555555;font-size:13px;">Belum ada nomor SW.</p>'; return; }
           el.innerHTML = list.map(function(item, idx){
             var pair = item.pairing || (function(){
               var c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',s='';
@@ -448,7 +448,7 @@
             })();
             item.pairing = pair;
             return '<div class="admin-card" style="margin-bottom:8px;">' +
-              '<b style="color:#fff;">'+(item.label||'SW')+'</b> · <code style="color:#FFC107;">'+item.number+'</code>' +
+              '<b style="color:#111111;">'+(item.label||'SW')+'</b> · <code style="color:#FFC107;">'+item.number+'</code>' +
               '<div style="margin-top:8px;display:flex;gap:8px;align-items:center;">' +
               '<code style="flex:1;background:#0a0e18;padding:8px;border-radius:8px;color:#69f0ae;">'+pair+'</code>' +
               '<button type="button" class="btn-dl" data-copy="'+pair+'">Salin</button>' +
@@ -492,7 +492,7 @@
 
     <div class="admin-panel" id="panel-toko">
       <h3 style="color:#FFC107;"><i class="fa-solid fa-store"></i> Moderasi Toko</h3>
-      <p style="font-size:12px;color:#8aa0b8;line-height:1.5;margin-bottom:12px;">
+      <p style="font-size:12px;color:#555555;line-height:1.5;margin-bottom:12px;">
         1) Laporan dicek dulu. 2) Palsu → pulihkan. 3) ≥8 laporan + rating buruk → review.
         4) Penipuan terbukti → blokir permanen. 5) Banding bisa diajukan. 6) Semua dicatat di log.
       </p>
@@ -511,19 +511,19 @@
             var s = stores[sid];
             var chats = NailongToko.getAllChatsForStore(sid);
             html += '<div class="admin-card" style="margin-bottom:10px;">' +
-              '<b style="color:#fff;">'+ (s.name||sid) +'</b> <code style="color:#FFC107;font-size:11px;">'+sid+'</code>' +
-              '<div style="font-size:11px;color:#8aa0b8;">Status: '+(s.status||'active')+' · Laporan: '+(s.reportCount||0)+' · WA: '+(s.wa||'-')+'</div>';
+              '<b style="color:#111111;">'+ (s.name||sid) +'</b> <code style="color:#FFC107;font-size:11px;">'+sid+'</code>' +
+              '<div style="font-size:11px;color:#555555;">Status: '+(s.status||'active')+' · Laporan: '+(s.reportCount||0)+' · WA: '+(s.wa||'-')+'</div>';
             if (!chats.length) html += '<p style="font-size:12px;color:#6b7a90;margin:6px 0 0;">Belum ada chat buyer.</p>';
             else {
               html += '<div style="max-height:140px;overflow:auto;margin-top:8px;font-size:12px;">';
               chats.slice(0,20).forEach(function(m){
-                html += '<div style="padding:4px 0;border-bottom:1px solid #1a2740;"><span style="color:#8aa0b8;">'+new Date(m.at).toLocaleString('id-ID')+'</span> · <b style="color:'+(m.from==='seller'?'#69f0ae':'#FFC107')+'">'+(m.name||m.from)+'</b>: '+String(m.text||'').replace(/</g,'')+' <span style="color:#6b7a90;">('+m.productId+')</span></div>';
+                html += '<div style="padding:4px 0;border-bottom:1px solid #1a2740;"><span style="color:#555555;">'+new Date(m.at).toLocaleString('id-ID')+'</span> · <b style="color:'+(m.from==='seller'?'#69f0ae':'#FFC107')+'">'+(m.name||m.from)+'</b>: '+String(m.text||'').replace(/</g,'')+' <span style="color:#6b7a90;">('+m.productId+')</span></div>';
               });
               html += '</div>';
             }
             html += '</div>';
           });
-          el.innerHTML = html || '<p style="color:#8aa0b8;">Belum ada data.</p>';
+          el.innerHTML = html || '<p style="color:#555555;">Belum ada data.</p>';
         }
         document.addEventListener('DOMContentLoaded', function(){ setTimeout(loadAdminTokoChat, 1000); });
       </script>
@@ -535,13 +535,13 @@
           var stores = await NailongToko.getAllStores();
           var keys = Object.keys(stores);
           var el = document.getElementById('adminTokoList');
-          if (!keys.length) { el.innerHTML = '<p style="color:#8aa0b8;">Belum ada toko.</p>'; return; }
+          if (!keys.length) { el.innerHTML = '<p style="color:#555555;">Belum ada toko.</p>'; return; }
           el.innerHTML = keys.map(function(k) {
             var s = stores[k];
             var avg = NailongToko.storeAvgRating(s);
             return '<div class="admin-card" style="margin-bottom:10px;">' +
-              '<b style="color:#fff;">' + (s.name||'-') + '</b> <code style="color:#FFC107;font-size:11px;">' + s.storeId + '</code>' +
-              '<div style="font-size:12px;color:#8aa0b8;margin:4px 0;">Rating ' + avg + ' · Laporan ' + (s.reportCount||0) + ' · Status: <b>' + (s.status||'active') + '</b></div>' +
+              '<b style="color:#111111;">' + (s.name||'-') + '</b> <code style="color:#FFC107;font-size:11px;">' + s.storeId + '</code>' +
+              '<div style="font-size:12px;color:#555555;margin:4px 0;">Rating ' + avg + ' · Laporan ' + (s.reportCount||0) + ' · Status: <b>' + (s.status||'active') + '</b></div>' +
               '<div style="display:flex;gap:6px;flex-wrap:wrap;">' +
               '<button type="button" class="btn-dl" data-act="active" data-id="' + s.storeId + '">Pulihkan</button>' +
               '<button type="button" class="btn-dl" data-act="review" data-id="' + s.storeId + '">Review</button>' +
@@ -567,7 +567,7 @@
     <div class="admin-panel" id="panel-deploy">
       <div class="admin-section-title"><i class="fa-solid fa-cloud-arrow-up"></i> Request Deploy (Netlify / Vercel)</div>
       <p style="color:#888;font-size:12px;margin:-4px 0 12px;">User upload ZIP + minta nama domain. Jika token di <code>deploy-config.js</code> terisi, sistem deploy sendiri. Admin bisa unduh ZIP &amp; lihat domain.</p>
-      <div style="background:rgba(255,193,7,0.08);border:1px solid rgba(255,193,7,0.2);border-radius:12px;padding:12px;font-size:11px;color:#cfd8dc;margin-bottom:14px;line-height:1.55;">
+      <div style="background:rgba(255,193,7,0.08);border:1px solid rgba(255,193,7,0.2);border-radius:12px;padding:12px;font-size:11px;color:#555555;margin-bottom:14px;line-height:1.55;">
         <b style="color:#FFC107;">API wajib untuk auto-deploy:</b><br>
         NETLIFY_TOKEN (app.netlify.com → Personal access tokens)<br>
         VERCEL_TOKEN (vercel.com → Settings → Tokens)<br>
@@ -578,8 +578,8 @@
 
     <div class="admin-panel" id="panel-expense">
       <h3 style="color:#FFC107;margin-bottom:12px;"><i class="fa-solid fa-receipt"></i> Pengeluaran akun (cek tarik saldo)</h3>
-      <p style="font-size:12px;color:#8aa0b8;margin-bottom:12px;">Data dari localStorage user + order. Cocokkan sebelum approve tarik saldo.</p>
-      <div id="expenseList" style="font-size:13px;color:#cfd8dc;">Memuat…</div>
+      <p style="font-size:12px;color:#555555;margin-bottom:12px;">Data dari localStorage user + order. Cocokkan sebelum approve tarik saldo.</p>
+      <div id="expenseList" style="font-size:13px;color:#555555;">Memuat…</div>
       <script>
         (function(){
           function renderExp(){
@@ -596,7 +596,7 @@
                 html += '<div style="padding:8px 0;border-bottom:1px solid #1a2740;">' +
                   (e.type||'-') + ' · Rp ' + Number(e.amount||0).toLocaleString('id-ID') +
                   ' · ' + (e.detail||'') +
-                  ' <span style="color:#8aa0b8;font-size:11px;">' + new Date(e.at||0).toLocaleString('id-ID') + '</span></div>';
+                  ' <span style="color:#555555;font-size:11px;">' + new Date(e.at||0).toLocaleString('id-ID') + '</span></div>';
               });
             }
             html += '<h4 style="margin:16px 0 8px;color:#FFC107;">Order (ringkas)</h4>';
@@ -605,7 +605,7 @@
                 (o.kode||'-') + ' · ' + (o.paket||'') + ' · ' + (o.total||o.finalAmount||'') +
                 ' · <b>' + (o.status||'') + '</b></div>';
             });
-            if (!exp.length && !orders.length) html = '<p style="color:#8aa0b8;">Belum ada data di perangkat ini.</p>';
+            if (!exp.length && !orders.length) html = '<p style="color:#555555;">Belum ada data di perangkat ini.</p>';
             el.innerHTML = html;
           }
           document.addEventListener('DOMContentLoaded', renderExp);
@@ -677,12 +677,12 @@ document.addEventListener('DOMContentLoaded', function(){
 
     <div class="admin-panel" id="panel-withdraw" style="display:none;">
       <h3 style="color:#FFC107;">Pengajuan tarik DANA</h3>
-      <p style="font-size:12px;color:#8aa0b8;">Fee 4% · minimal 2.000 · hanya DANA</p>
+      <p style="font-size:12px;color:#555555;">Fee 4% · minimal 2.000 · hanya DANA</p>
       <div id="wdList"><div class="nd-loading"><span></span><span></span></div></div>
     </div>
     <div class="admin-panel" id="panel-tokoverify" style="display:none;">
       <h3 style="color:#FFC107;">Verifikasi toko</h3>
-      <p style="font-size:12px;color:#8aa0b8;">Email · nama toko · foto wajah/KTP/KK</p>
+      <p style="font-size:12px;color:#555555;">Email · nama toko · foto wajah/KTP/KK</p>
       <div id="tvList"><div class="nd-loading"><span></span><span></span></div></div>
     </div>
     <script>
@@ -692,10 +692,10 @@ document.addEventListener('DOMContentLoaded', function(){
         if (!box) return;
         var list = [];
         try { list = JSON.parse(localStorage.getItem('nd_withdraw_requests')||'[]'); } catch(e){}
-        if (!list.length) { box.innerHTML = '<p style="color:#8aa0b8">Belum ada pengajuan (local). Cek juga Firebase withdraw_requests.</p>'; return; }
+        if (!list.length) { box.innerHTML = '<p style="color:#555555">Belum ada pengajuan (local). Cek juga Firebase withdraw_requests.</p>'; return; }
         box.innerHTML = list.map(function(r){
-          return '<div class="api-form-card" style="margin-bottom:10px;"><b style="color:#fff">'+r.id+'</b>'+
-            '<div style="font-size:12px;color:#cfd8dc;margin-top:6px;">UID: '+r.uid+'<br>DANA: <b style="color:#FFC107">'+r.dana+'</b><br>'+
+          return '<div class="api-form-card" style="margin-bottom:10px;"><b style="color:#111111">'+r.id+'</b>'+
+            '<div style="font-size:12px;color:#555555;margin-top:6px;">UID: '+r.uid+'<br>DANA: <b style="color:#FFC107">'+r.dana+'</b><br>'+
             'Jumlah: Rp '+(r.amount||0).toLocaleString('id-ID')+' · Fee: Rp '+(r.fee||0).toLocaleString('id-ID')+' · Net: Rp '+(r.net||0).toLocaleString('id-ID')+
             '<br>Status: '+r.status+'</div>'+
             '<button type="button" class="btn-topup" data-id="'+r.id+'" style="margin-top:8px;">Tandai selesai</button></div>';
@@ -723,14 +723,14 @@ document.addEventListener('DOMContentLoaded', function(){
         } catch(e){}
         var arr = Object.keys(stores).map(function(id){ return stores[id]; }).filter(function(s){ return s && (s.status==='pending_verify' || s.verify); });
         if (!arr.length) {
-          box.innerHTML = '<p style="color:#8aa0b8">Belum ada toko pending di localStorage. Toko Firebase: stores/ dengan status pending_verify.</p>';
+          box.innerHTML = '<p style="color:#555555">Belum ada toko pending di localStorage. Toko Firebase: stores/ dengan status pending_verify.</p>';
           return;
         }
         box.innerHTML = arr.map(function(s){
           var v = s.verify||{};
           return '<div class="api-form-card" style="margin-bottom:12px;">'+
-            '<b style="color:#fff">'+((s.name)||'-')+'</b> <code style="color:#FFC107">'+s.storeId+'</code>'+
-            '<div style="font-size:12px;color:#cfd8dc;margin:6px 0;">Owner: '+(s.ownerName||s.ownerUid||'-')+' · status: '+s.status+'</div>'+
+            '<b style="color:#111111">'+((s.name)||'-')+'</b> <code style="color:#FFC107">'+s.storeId+'</code>'+
+            '<div style="font-size:12px;color:#555555;margin:6px 0;">Owner: '+(s.ownerName||s.ownerUid||'-')+' · status: '+s.status+'</div>'+
             (v.facePhoto?'<img src="'+v.facePhoto+'" style="max-width:100px;border-radius:8px;margin:4px;">':'')+
             (v.ktpPhoto?'<img src="'+v.ktpPhoto+'" style="max-width:140px;border-radius:8px;margin:4px;">':'')+
             (v.kkPhoto?'<img src="'+v.kkPhoto+'" style="max-width:140px;border-radius:8px;margin:4px;">':'')+

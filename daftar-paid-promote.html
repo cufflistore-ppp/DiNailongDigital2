@@ -57,22 +57,22 @@
         <input id="noPribadi" type="tel" required placeholder="08...">
 
         <div id="adultFields">
-          <label>Link / URL foto KTP</label>
-          <input id="ktpUrl" placeholder="https://...">
-          <label>Link foto muka + KTP</label>
-          <input id="faceKtpUrl" placeholder="https://...">
-          <label>Link foto Kartu Keluarga</label>
-          <input id="kkUrl" placeholder="https://...">
+          <label>Upload foto KTP</label>
+          <input id="ktpUrl" type="file" accept="image/*">
+          <label>Upload foto muka + KTP</label>
+          <input id="faceKtpUrl" type="file" accept="image/*">
+          <label>Upload foto Kartu Keluarga</label>
+          <input id="kkUrl" type="file" accept="image/*">
         </div>
         <div id="minorFields" class="hid">
-          <label>Link foto KIA</label>
-          <input id="kiaUrl" placeholder="https://...">
-          <label>Link foto KIA + muka</label>
-          <input id="kiaFaceUrl" placeholder="https://...">
-          <label>Link foto Kartu Keluarga</label>
-          <input id="kkUrl2" placeholder="https://...">
-          <label>Link foto bersama</label>
-          <input id="fotoSama" placeholder="https://...">
+          <label>Upload foto KIA</label>
+          <input id="kiaUrl" type="file" accept="image/*">
+          <label>Upload foto KIA + muka</label>
+          <input id="kiaFaceUrl" type="file" accept="image/*">
+          <label>Upload foto Kartu Keluarga</label>
+          <input id="kkUrl2" type="file" accept="image/*">
+          <label>Upload foto bersama</label>
+          <input id="fotoSama" type="file" accept="image/*">
           <label>Nama lengkap ortu/wali</label>
           <input id="namaOrtu">
           <label>Kontak ortu/wali</label>
@@ -127,6 +127,12 @@
       if(!user&&firebase.auth) user=firebase.auth().currentUser;
       if(!user){msg.textContent='Login dulu sebelum daftar.';return}
       await NDRoles.ensureUserProfile(user);
+      async function readFileAsData(input){
+        if(!input||!input.files||!input.files[0]) return '';
+        var f=input.files[0];
+        if(f.size>1.8e6) throw new Error('Foto max 1.8MB');
+        return await new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result)};r.onerror=rej;r.readAsDataURL(f);});
+      }
       var age=document.getElementById('ageType').value;
       var payload={
         uid:user.uid,email:user.email||'',photo:user.photoURL||'',
@@ -142,14 +148,14 @@
         agreed:true
       };
       if(age==='adult'){
-        payload.ktpUrl=document.getElementById('ktpUrl').value;
-        payload.faceKtpUrl=document.getElementById('faceKtpUrl').value;
-        payload.kkUrl=document.getElementById('kkUrl').value;
+        payload.ktpUrl=await readFileAsData(document.getElementById('ktpUrl'));
+        payload.faceKtpUrl=await readFileAsData(document.getElementById('faceKtpUrl'));
+        payload.kkUrl=await readFileAsData(document.getElementById('kkUrl'));
       }else{
-        payload.kiaUrl=document.getElementById('kiaUrl').value;
-        payload.kiaFaceUrl=document.getElementById('kiaFaceUrl').value;
-        payload.kkUrl=document.getElementById('kkUrl2').value;
-        payload.fotoSama=document.getElementById('fotoSama').value;
+        payload.kiaUrl=await readFileAsData(document.getElementById('kiaUrl'));
+        payload.kiaFaceUrl=await readFileAsData(document.getElementById('kiaFaceUrl'));
+        payload.kkUrl=await readFileAsData(document.getElementById('kkUrl2'));
+        payload.fotoSama=await readFileAsData(document.getElementById('fotoSama'));
         payload.namaOrtu=document.getElementById('namaOrtu').value;
         payload.kontakOrtu=document.getElementById('kontakOrtu').value;
         payload.noOrtu=document.getElementById('noOrtu').value;

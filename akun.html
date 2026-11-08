@@ -31,13 +31,13 @@
     .akun-page-title {
       font-size: 22px;
       font-weight: 800;
-      color: #fff;
+      color:#111111;
       margin: 4px 0 4px;
       letter-spacing: 0.3px;
     }
     .akun-page-sub {
       font-size: 13px;
-      color: #8aa0b8;
+      color:#555555;
       margin-bottom: 16px;
     }
 
@@ -102,7 +102,7 @@
     .profil-name {
       font-size: 17px;
       font-weight: 800;
-      color: #fff;
+      color:#111111;
       margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
@@ -161,7 +161,7 @@
     }
     .stat-label {
       font-size: 11px;
-      color: #8aa0b8;
+      color:#555555;
       margin-top: 4px;
     }
 
@@ -243,6 +243,11 @@
     }
 
     .btn-logout {
+      background:#ffcdd2 !important;
+      color:#111 !important;
+      border:2.5px solid #111 !important;
+      box-shadow:4px 4px 0 #111 !important;
+      font-weight:900 !important;
       width: 100%;
       display: flex;
       align-items: center;
@@ -287,12 +292,12 @@
     .guest-card h3 {
       font-size: 18px;
       font-weight: 800;
-      color: #fff;
+      color:#111111;
       margin-bottom: 6px;
     }
     .guest-card p {
       font-size: 13px;
-      color: #8aa0b8;
+      color:#555555;
       line-height: 1.5;
       margin-bottom: 18px;
     }
@@ -317,7 +322,7 @@
 
     .login-hint {
       font-size: 12px;
-      color: #8aa0b8;
+      color:#555555;
       line-height: 1.5;
       background: #10182a;
       border: 1px solid #1a2740;
@@ -333,7 +338,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    #viewLoggedIn, #viewGuest { display: none; }
+    #viewLoggedIn { display: none; }
+    #viewGuest { display: block; }
   
     .login-menu-ui {
       background: rgba(16,24,42,0.75);
@@ -348,8 +354,8 @@
       margin: 0 auto 12px; display: block;
       box-shadow: 0 8px 24px rgba(255,193,7,0.25);
     }
-    .login-menu-ui h3 { color:#fff; font-size:18px; margin:0 0 6px; }
-    .login-menu-ui p { color:#8aa0b8; font-size:13px; margin:0 0 16px; line-height:1.45; }
+    .login-menu-ui h3 { color:#111111; font-size:18px; margin:0 0 6px; }
+    .login-menu-ui p { color:#555555; font-size:13px; margin:0 0 16px; line-height:1.45; }
     .btn-google {
       display: inline-flex; align-items: center; justify-content: center; gap: 10px;
       width: 100%; padding: 14px 16px;
@@ -363,7 +369,7 @@
     .login-menu-links a {
       background: rgba(255,193,7,0.08); border: 1px solid rgba(255,193,7,0.15);
       border-radius: 12px; padding: 12px 8px; text-decoration: none;
-      color: #cfd8dc; font-size: 12px; font-weight: 600;
+      color:#555555; font-size: 12px; font-weight: 600;
     }
     .login-menu-links a i { display:block; color:#FFC107; margin-bottom:4px; font-size:16px; }
     </style>
@@ -430,10 +436,10 @@
 
       <div class="api-form-card" id="ndLocaleBox" style="margin:14px 0;">
       <h3 style="margin:0 0 8px;font-size:14px;color:var(--nd-accent,#FFC107);"><i class="fa-solid fa-globe"></i> Negara &amp; agama</h3>
-      <label style="font-size:12px;color:#8aa0b8;">Cari negara</label>
+      <label style="font-size:12px;color:#555555;">Cari negara</label>
       <input type="text" id="akunCountrySearch" class="form-input" placeholder="Cari negara…">
       <input type="hidden" id="akunCountryCode" value="ID">
-      <label style="font-size:12px;color:#8aa0b8;margin-top:8px;display:block;">Agama</label>
+      <label style="font-size:12px;color:#555555;margin-top:8px;display:block;">Agama</label>
       <select id="akunReligion" class="form-input">
         <option value="islam">Islam</option>
         <option value="kristen">Kristen</option>
@@ -443,7 +449,7 @@
         <option value="konghucu">Konghucu</option>
         <option value="lain">Lainnya</option>
       </select>
-      <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:#cfd8dc;">
+      <label style="display:flex;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:#555555;">
         <input type="checkbox" id="akunRamadan"> Mode Ramadan (pengingat sahur / berbuka)
       </label>
       <button type="button" class="btn-pesan" id="btnSaveLocale" style="width:100%;margin-top:10px;">Simpan</button>
@@ -579,7 +585,9 @@
     function showGuest() {
       document.getElementById("viewGuest").style.display = "block";
       document.getElementById("viewLoggedIn").style.display = "none";
-      document.getElementById("pageSub").textContent = "Login Google / email — setelah masuk tidak perlu login ulang.";
+      document.getElementById("pageSub").textContent = "Login dulu untuk masuk ke akun. Belum login = belum bisa akses profil.";
+      try { var c = document.getElementById("ndRoleCard"); if (c) c.remove(); } catch(e) {}
+      try { localStorage.removeItem("nailong_logged_in"); } catch(e) {}
     }
 
     function showLoggedIn(user) {
@@ -767,5 +775,31 @@
 <script src="locale.js"></script>
   <script src="roles.js"></script>
   <script src="roles-akun.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  var b = document.getElementById("btnLogout");
+  if (b && !b._ndSafe) {
+    b._ndSafe = 1;
+    b.addEventListener("click", async function(){
+      try { if (firebase.auth) await firebase.auth().signOut(); } catch(e){}
+      try { localStorage.removeItem("nailong_logged_in"); } catch(e){}
+      var g=document.getElementById("viewGuest"), l=document.getElementById("viewLoggedIn");
+      if(g) g.style.display="block"; if(l) l.style.display="none";
+      var c=document.getElementById("ndRoleCard"); if(c) c.remove();
+    });
+  }
+  // jangan anggap localStorage sebagai login tanpa firebase user
+  setTimeout(function(){
+    try {
+      var u = firebase.auth && firebase.auth().currentUser;
+      if (!u) {
+        var g=document.getElementById("viewGuest"), l=document.getElementById("viewLoggedIn");
+        if(g) g.style.display="block"; if(l) l.style.display="none";
+        localStorage.removeItem("nailong_logged_in");
+      }
+    } catch(e){}
+  }, 900);
+});
+</script>
 </body>
 </html>
