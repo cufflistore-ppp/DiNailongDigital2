@@ -1,4 +1,15 @@
-const JOKI_CATALOG_VER = "7";
+const JOKI_CATALOG_VER = "8";
+
+(function(){
+  try {
+    var v = localStorage.getItem("voxyy_paket_ver");
+    if (v !== JOKI_CATALOG_VER) {
+      localStorage.removeItem("voxyy_paket");
+      localStorage.setItem("voxyy_paket_ver", JOKI_CATALOG_VER);
+    }
+  } catch(e) {}
+})();
+
 
 const paketJoki = [
   
@@ -149,7 +160,7 @@ function tambahPaket(data) {
     fitur: data.fitur || ["Order langsung di web", "Status dapat dipantau"]
   });
   renderPaketJoki();
-  localStorage.setItem("voxyy_paket", JSON.stringify(paketJoki));
+  localStorage.setItem("voxyy_paket_ver", JOKI_CATALOG_VER); localStorage.setItem("voxyy_paket", JSON.stringify(paketJoki));
 }
 
 function loadPaketFromStorage() {
