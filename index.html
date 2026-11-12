@@ -37,10 +37,12 @@
 
   
 <!-- theme toggle removed -->
-  <div class="banner banner-video">
-    <video class="banner-full" src="welcome-nailong.mp4" autoplay muted loop playsinline poster="banner.jpg"></video>
+  <div class="banner">
+    <video class="banner-full" autoplay muted loop playsinline poster="banner.jpg">
+      <source src="welcome-nailong.mp4" type="video/mp4">
+      <img src="banner.jpg" alt="Selamat Datang di Nailong Digital">
+    </video>
   </div>
-  <div id="ndBuyTicker" class="nd-buy-ticker" aria-live="polite"><div class="nd-buy-track" id="ndBuyTrack"></div></div>
   <div class="top-notif" id="topNotif" style="display:none;"></div>
 
   <div id="homeProfileCard" style="display:none!important"></div>
@@ -54,7 +56,7 @@
       </div>
     </div>
   </div>
-  <div class="syam-stats">
+  <div class="syam-stats" style="display:none!important">
     <div class="syam-stat">Online Users<b id="statOnline">—</b></div>
     <div class="syam-stat">Bayar order<b>QRIS</b></div>
   </div>
@@ -95,32 +97,20 @@
       <i class="fa-solid fa-clock-rotate-left"></i>
       <span>Riwayat</span>
     </a>
-    <a href="youtube.html" class="menu-item">
-      <i class="fa-brands fa-youtube"></i>
-      <span>YouTube</span>
-    </a>
-    <a href="tools-canvas.html" class="menu-item">
-      <i class="fa-solid fa-image"></i>
-      <span>Canvas Tools</span>
-    </a>
-    <a href="music.html" class="menu-item">
-      <i class="fa-solid fa-music"></i>
-      <span>Music</span>
-    </a>
-    <a href="tools.html" class="menu-item">
-      <i class="fa-solid fa-screwdriver-wrench"></i>
-      <span>Tools</span>
-    </a>
-    <a href="game.html" class="menu-item">
-      <i class="fa-solid fa-gamepad"></i>
-      <span>Game</span>
-    </a>
     <a href="channel.html" class="menu-item">
       <i class="fa-solid fa-comments"></i>
       <span>Channel</span>
     </a>
+    <a href="ajukan-fitur.html" class="menu-item">
+      <i class="fa-solid fa-lightbulb"></i>
+      <span>Ajukan Fitur</span>
+    </a>
+    <a href="keranjang.html" class="menu-item">
+      <i class="fa-solid fa-cart-shopping"></i>
+      <span>Keranjang</span>
+    </a>
   </div>
-  <p style="text-align:center;font-size:11px;color:#555555;margin:4px 12px 12px;">Menu lain (Push, Baca, Tools, Ajukan Fitur, dll) di <b style="color:#111">☰ garis tiga</b> kiri atas. · <a href="ajukan-fitur.html" style="color:#111;font-weight:800;">Ajukan Fitur 🐣</a></p>
+  <p style="text-align:center;font-size:11px;color:#555555;margin:4px 12px 12px;">Menu lain di <b style="color:#111">☰ garis tiga</b> kiri atas. · <a href="ajukan-fitur.html" style="color:#111;font-weight:800;">Ajukan Fitur 🐣</a></p>
 
   
   <section class="produk-section" id="tokoMarketSection">
@@ -242,6 +232,7 @@
   </script>
   <script src="home-profile.js"></script>
   <script src="protect.js"></script>
+  <script src="nav.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded',function(){
   var a=document.getElementById('globalOnlineCount');
@@ -252,36 +243,6 @@ document.addEventListener('DOMContentLoaded',function(){
   if(hp && hp.children.length){ var f=document.getElementById('syamProfileFallback'); if(f) f.style.display='none'; }
 });
 </script>
-
-<script>
-(function ndBuyTickerInit(){
-  var colors = ['#FFD600','#FF8C00','#69f0ae','#82b1ff','#ff80ab','#b388ff','#ffd54f'];
-  async function load(){
-    var box = document.getElementById('ndBuyTicker');
-    var track = document.getElementById('ndBuyTrack');
-    if(!box||!track) return;
-    var orders = [];
-    try {
-      if (window.VoxyyOrders && VoxyyOrders.getAllOrders) orders = await VoxyyOrders.getAllOrders() || [];
-      else orders = JSON.parse(localStorage.getItem('voxyy_orders')||'[]');
-    } catch(e){}
-    var recent = (orders||[]).filter(function(o){
-      var st = String(o.status||'').toLowerCase();
-      return /paid|sukses|success|done|selesai|proses/.test(st);
-    }).slice(0, 12);
-    if (!recent.length) { box.classList.remove('show'); track.innerHTML=''; return; }
-    function item(o, i){
-      var name = (o.nama||o.userName||o.name||'Buyer').toString().slice(0,12);
-      var pak = (o.paket||o.product||o.judul||'Order').toString().slice(0,18);
-      var bg = colors[i % colors.length];
-      return '<span style="background:'+bg+';padding:4px 12px;border-radius:8px;margin-right:10px;border:2px solid #111">🛒 '+name+' beli '+pak+'</span>';
-    }
-    var html = recent.map(item).join('') + recent.map(item).join('');
-    track.innerHTML = html;
-    box.classList.add('show');
-  }
-  document.addEventListener('DOMContentLoaded', function(){ setTimeout(load, 800); setInterval(load, 20000); });
-})();
-</script>
+  <div class="version-footer">v2.0.0</div>
 </body>
 </html>

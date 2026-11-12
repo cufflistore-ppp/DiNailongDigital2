@@ -1,10 +1,10 @@
-const JOKI_CATALOG_VER = "7";
+const JOKI_CATALOG_VER = "8";
 
 const paketJoki = [
-  
   {
     id: 2,
     label: "1 HARI",
+    badge: "Paling Laris",
     judul: "Joki 1 Hari",
     deskripsi: "1.000 · 1 hari + SW + share all GB",
     harga: 1000,

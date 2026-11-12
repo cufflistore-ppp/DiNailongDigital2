@@ -95,7 +95,7 @@ body {
 .logo {
   width: 42px;
   height: 42px;
-  border-radius: 10px;
+  border-radius: 50%;
   object-fit: cover;
   background: #FFC107;
 }
@@ -275,7 +275,7 @@ body {
   border: 1px solid #ff3333;
   color: #ff5555;
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: 50%;
   font-size: 12px;
   margin-bottom: 16px;
   display: flex;
@@ -371,7 +371,7 @@ body {
   color: #0a0e18;
   text-align: center;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 50%;
   font-weight: 700;
   text-decoration: none;
   border: none;
@@ -416,7 +416,7 @@ body {
 .order-logo {
   width: 60px;
   height: 60px;
-  border-radius: 10px;
+  border-radius: 50%;
   background: #FFC107;
   object-fit: cover;
 }
@@ -478,7 +478,7 @@ textarea { resize: vertical; min-height: 120px; }
   justify-content: space-between;
   background: #0a0e18;
   border: 1px solid #1a2740;
-  border-radius: 10px;
+  border-radius: 50%;
   padding: 12px;
   margin-bottom: 8px;
   cursor: pointer;
@@ -505,7 +505,7 @@ textarea { resize: vertical; min-height: 120px; }
 .qris-box {
   background: #0a0e18;
   border: 1px solid #1a2740;
-  border-radius: 10px;
+  border-radius: 50%;
   padding: 14px;
   text-align: center;
 }
@@ -537,7 +537,7 @@ textarea { resize: vertical; min-height: 120px; }
   color: #0a0e18;
   border: none;
   padding: 14px;
-  border-radius: 10px;
+  border-radius: 50%;
   font-weight: 700;
   font-size: 15px;
   margin-top: 14px;
@@ -664,7 +664,7 @@ textarea { resize: vertical; min-height: 120px; }
 .btn-foto, .btn-kirim {
   width: 100%;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 50%;
   border: none;
   margin-top: 10px;
   font-weight: 600;
@@ -865,7 +865,7 @@ textarea { resize: vertical; min-height: 120px; }
   width: 100%;
   padding: 11px;
   border: none;
-  border-radius: 10px;
+  border-radius: 50%;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -1048,7 +1048,7 @@ textarea { resize: vertical; min-height: 120px; }
 .btn-hamburger {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 50%;
   border: 1px solid #1a2740;
   background: #10182a;
   color: #FFC107;
@@ -1242,7 +1242,7 @@ textarea { resize: vertical; min-height: 120px; }
   height: 40px !important;
   object-fit: contain;
   display: block;
-  border-radius: 10px;
+  border-radius: 50%;
   filter: drop-shadow(0 0 10px rgba(255, 193, 7, 0.4));
   flex-shrink: 0;
 }
@@ -1328,7 +1328,7 @@ textarea { resize: vertical; min-height: 120px; }
   background: linear-gradient(90deg, #FF6F00, #FF8F00);
   color: #111111;
   padding: 10px 16px;
-  border-radius: 10px;
+  border-radius: 50%;
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
@@ -1477,7 +1477,7 @@ textarea { resize: vertical; min-height: 120px; }
 .form-select, .form-input {
   width: 100%;
   padding: 12px 14px;
-  border-radius: 10px;
+  border-radius: 50%;
   border: 1px solid #1a2740;
   background: #0a0e18;
   color: #111111;
@@ -1497,7 +1497,7 @@ textarea { resize: vertical; min-height: 120px; }
   background: linear-gradient(90deg, #FF6F00, #FF8F00);
   color: #111111;
   border: none;
-  border-radius: 10px;
+  border-radius: 50%;
   padding: 12px 18px;
   font-size: 14px;
   font-weight: 700;
@@ -1571,7 +1571,7 @@ textarea { resize: vertical; min-height: 120px; }
 .topup-pkg {
   background: #10182a;
   border: 1px solid #1a2740;
-  border-radius: 10px;
+  border-radius: 50%;
   padding: 14px 8px;
   color: #111111;
   font-size: 13px;
@@ -1597,7 +1597,7 @@ textarea { resize: vertical; min-height: 120px; }
   padding: 10px;
   background: #0a0e18;
   border: 1px solid #1a2740;
-  border-radius: 10px;
+  border-radius: 50%;
   text-align: center;
   font-size: 12px;
   cursor: pointer;
@@ -1645,7 +1645,7 @@ textarea { resize: vertical; min-height: 120px; }
 .riwayat-icon {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 50%;
   background: #0a0e18;
   display: flex;
   align-items: center;
@@ -1997,7 +1997,7 @@ body {
 .chat-bubble {
   max-width: 78%;
   padding: 8px 12px;
-  border-radius: 10px;
+  border-radius: 50%;
   margin-bottom: 8px;
   font-size: 14px;
   line-height: 1.4;
@@ -2176,7 +2176,7 @@ body {
   height: 40px;
   border: none;
   background: rgba(255,193,7,0.15);
-  border-radius: 10px;
+  border-radius: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2402,7 +2402,7 @@ body {
 }
 .btn-hamburger-left {
   width: 40px; height: 40px;
-  border: none; border-radius: 10px;
+  border: none; border-radius: 50%;
   background: rgba(255,193,7,0.12);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 5px;
@@ -2414,7 +2414,7 @@ body {
 }
 .btn-bell {
   width: 40px; height: 40px;
-  border: none; border-radius: 10px;
+  border: none; border-radius: 50%;
   background: rgba(255,193,7,0.12);
   color: #FFC107; font-size: 18px;
   display: flex; align-items: center; justify-content: center;
@@ -2446,7 +2446,7 @@ body {
   padding: 0 16px 14px; border-bottom: 1px solid rgba(255,255,255,0.06);
   margin-bottom: 8px;
 }
-.side-logo { height: 36px; border-radius: 8px; }
+.side-logo { height: 36px; border-radius: 50%; }
 .side-close {
   background: none; border: none; color: #8aa0b8;
   font-size: 28px; cursor: pointer; line-height: 1;
@@ -2707,7 +2707,7 @@ body {
 }
 .upload-row input[type=file] { font-size: 12px; color: #8aa0b8; max-width: 100%; }
 .preview-sm {
-  width: 48px; height: 48px; border-radius: 10px; object-fit: cover;
+  width: 48px; height: 48px; border-radius: 50%; object-fit: cover;
   border: 1px solid rgba(255,193,7,0.3); background: #10182a;
 }
 
@@ -4803,7 +4803,7 @@ body {
   width: 140px;
   height: 36px;
   margin: 8px auto 16px;
-  border-radius: 10px;
+  border-radius: 50%;
 }
 .nd-skel-banner {
   width: 100%;
@@ -4964,7 +4964,7 @@ img.ch-tf {
   object-fit: contain;
   margin-top: 8px;
   border: 2px solid #111;
-  border-radius: 10px;
+  border-radius: 50%;
   background: #fff;
 }
 
@@ -5142,158 +5142,451 @@ i[class*="fa-"] {
 }
 /* viewGuest/LoggedIn dikontrol JS auth — jangan paksa di sini */
 
-/* Logo bulat */
-.logo-full,
-.header .logo-full,
-.logo,
-img.logo-full {
+/* ===== v2.0.0 updates: circular logo, video banner, neo bottom nav, footer ===== */
+.logo-full, .side-logo, img.logo, .header .logo-full {
   border-radius: 50% !important;
-  width: 40px !important;
-  height: 40px !important;
   object-fit: cover !important;
-  border: 2.5px solid #111 !important;
-  box-shadow: 3px 3px 0 #111 !important;
 }
 
-/* Tombol kembali: hanya panah */
-.back-link,
-a.back,
-.btn-back,
-#toolBack,
-button.back {
-  font-size: 0 !important;
+.banner video.banner-full {
+  width: 100%;
+  border-radius: 14px;
+  display: block;
+  max-height: 180px;
+  object-fit: cover;
+  border: 3px solid #111;
+  box-shadow: 6px 6px 0 #111;
+  background: #FFC107;
+}
+
+.version-footer {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #111;
+  opacity: 0.55;
+  padding: 18px 12px 90px;
+  letter-spacing: 1px;
+}
+
+/* Neo-brutalism floating bottom nav — no dark glass */
+.bottom-nav,
+.bottom-nav.nav-5,
+.bottom-nav.nav-float-neo {
+  position: fixed !important;
+  bottom: 12px !important;
+  left: 12px !important;
+  right: 12px !important;
+  height: auto !important;
+  min-height: 64px !important;
+  padding: 8px 6px !important;
+  margin: 0 !important;
+  background: #FFD600 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 3px solid #111111 !important;
+  border-radius: 22px !important;
+  display: flex !important;
+  justify-content: space-around !important;
+  align-items: center !important;
+  z-index: 1000 !important;
+  box-shadow: 6px 6px 0 #111111 !important;
+  overflow: visible !important;
+}
+
+.bottom-nav .nav-item,
+.bottom-nav.nav-5 .nav-item,
+.bottom-nav.nav-float-neo .nav-item {
+  color: #111111 !important;
+  font-weight: 800 !important;
+  background: transparent !important;
+}
+
+.bottom-nav .nav-icon-wrap,
+.bottom-nav.nav-5 .nav-icon-wrap {
   width: 42px !important;
   height: 42px !important;
-  min-width: 42px !important;
-  padding: 0 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border-radius: 12px !important;
-  border: 2.5px solid #111 !important;
-  background: #FFF5E0 !important;
-  box-shadow: 4px 4px 0 #111 !important;
-  color: #111 !important;
+  border-radius: 50% !important;
+  border: 2.5px solid transparent !important;
+  background: transparent !important;
+  transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), background 0.2s, box-shadow 0.2s !important;
 }
-.back-link i,
-a.back i,
-.btn-back i,
-#toolBack i,
-button.back i {
-  font-size: 16px !important;
+
+.bottom-nav .nav-item.active .nav-icon-wrap,
+.bottom-nav.nav-5 .nav-item.active .nav-icon-wrap,
+.bottom-nav.nav-float-neo .nav-item.active .nav-icon-wrap {
+  background: #FF8C00 !important;
+  border: 2.5px solid #111111 !important;
+  transform: translateY(-14px) scale(1.12) !important;
+  box-shadow: 4px 4px 0 #111111 !important;
   color: #111 !important;
 }
 
-/* Grid produk / joki: 2 kolom HP */
-.produk-grid,
-.produk-grid-uniform,
-#paketList,
-.menu-grid {
+.bottom-nav .nav-item.active,
+.bottom-nav.nav-5 .nav-item.active {
+  color: #111111 !important;
+}
+
+.bottom-nav .nav-item i {
+  color: inherit !important;
+}
+
+/* Skeleton shimmer theme yellow */
+.nd-skeleton-overlay {
+  background: rgba(255, 214, 0, 0.92) !important;
+}
+.nd-skel-bar, .nd-skel-card, .nd-skel-cell {
+  background: linear-gradient(90deg, #FFE082 25%, #FFECB3 50%, #FFE082 75%) !important;
+  background-size: 200% 100% !important;
+  animation: ndShimmer 1.2s ease-in-out infinite !important;
+  border: 2px solid #111 !important;
+  box-shadow: 3px 3px 0 #111 !important;
+}
+@keyframes ndShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Produk grid 2 col mobile */
+.produk-grid, .produk-grid-uniform {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
   gap: 12px !important;
 }
-.menu-grid-4 {
-  grid-template-columns: repeat(2, 1fr) !important;
-}
 @media (min-width: 768px) {
-  .produk-grid,
-  .produk-grid-uniform,
-  #paketList {
-    grid-template-columns: repeat(4, 1fr) !important;
-  }
-  .menu-grid-4 {
+  .produk-grid, .produk-grid-uniform {
     grid-template-columns: repeat(4, 1fr) !important;
   }
 }
-
-/* Paket joki cards neo */
-#paketList .paket-card,
-.paket-card {
-  background: #FFF5E0 !important;
-  border: 2.5px solid #111 !important;
-  box-shadow: 6px 6px 0 #111 !important;
-  color: #111 !important;
-  border-radius: 16px !important;
-}
-#paketList .paket-card *,
-.paket-card * {
-  color: #111 !important;
-}
-.paket-card .harga,
-.paket-card .badge {
-  color: #FF8C00 !important;
+@media (min-width: 1100px) {
+  .produk-grid, .produk-grid-uniform {
+    grid-template-columns: repeat(5, 1fr) !important;
+  }
 }
 
-/* Bottom nav: jangan gelap/glass — neo floating */
+/* Back button only arrow */
+.btn-back, .back-btn, a.back, .page-back {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2.5px solid #111;
+  background: #FFD600;
+  box-shadow: 3px 3px 0 #111;
+  color: #111;
+  font-size: 18px;
+  text-decoration: none;
+}
+.btn-back span, .back-btn span { display: none !important; }
+
+/* Colorful purchase notif ticker */
+.top-notif {
+  margin: 8px 12px !important;
+  border-radius: 14px !important;
+  background: #FFD600 !important;
+  border: 3px solid #111 !important;
+  box-shadow: 4px 4px 0 #111 !important;
+  padding: 10px 14px !important;
+  overflow: hidden !important;
+}
+.notif-marquee-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.notif-marquee-track {
+  display: inline-block;
+  padding-left: 100%;
+  animation: notifSlide 18s linear infinite;
+  font-weight: 800;
+  color: #111;
+}
+.notif-marquee-track b {
+  color: #E65100 !important;
+  background: #fff;
+  padding: 2px 8px;
+  border-radius: 8px;
+  border: 2px solid #111;
+  margin: 0 4px;
+}
+@keyframes notifSlide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+.top-notif .notif-close {
+  color: #111 !important;
+  font-weight: 900;
+  background: #FF8C00 !important;
+  border: 2px solid #111 !important;
+  border-radius: 50% !important;
+  width: 28px; height: 28px;
+  box-shadow: 2px 2px 0 #111;
+}
+
+/* ========== BOTTOM NAV 2D NEO-BRUTALISM v2 (bulet + lengkungan) ========== */
 .bottom-nav,
 .bottom-nav.nav-5,
 .bottom-nav.nav-float-neo {
-  background: #FFF5E0 !important;
-  border: 2.5px solid #111111 !important;
-  border-radius: 28px !important;
-  box-shadow: 6px 6px 0 0 #111111 !important;
+  position: fixed !important;
+  left: 14px !important;
+  right: 14px !important;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px)) !important;
+  width: auto !important;
+  max-width: 440px !important;
+  margin: 0 auto !important;
+  z-index: 1000 !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: space-around !important;
+  gap: 0 !important;
+  padding: 14px 10px 12px !important;
+  background: #FFD600 !important;
+  border: 3.5px solid #111111 !important;
+  border-radius: 32px !important;
+  box-shadow:
+    7px 7px 0 0 #111111,
+    0 -6px 0 0 #FFE082 !important;
+  overflow: visible !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  opacity: 1 !important;
 }
-.bottom-nav .nav-item,
-.bottom-nav .nav-item span,
-.bottom-nav .nav-item i {
-  color: #111111 !important;
-  opacity: 1 !important;
-}
-.bottom-nav .nav-item.active .nav-icon-wrap {
+
+/* Lengkungan / busur di atas nav (neo arch) */
+.bottom-nav::before,
+.bottom-nav.nav-5::before,
+.bottom-nav.nav-float-neo::before {
+  content: "" !important;
+  position: absolute !important;
+  top: -18px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 72px !important;
+  height: 28px !important;
   background: #FFD600 !important;
-  border: 2.5px solid #111 !important;
+  border: 3.5px solid #111111 !important;
+  border-bottom: none !important;
+  border-radius: 72px 72px 0 0 !important;
+  box-shadow: 4px -3px 0 0 #111111 !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+.bottom-nav .nav-item,
+.bottom-nav.nav-5 .nav-item,
+.bottom-nav.nav-float-neo .nav-item {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 3px !important;
+  text-decoration: none !important;
+  color: #111111 !important;
+  font-weight: 900 !important;
+  font-size: 9px !important;
+  padding: 2px !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  position: relative !important;
+  z-index: 2 !important;
+  min-width: 0 !important;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.bottom-nav .nav-icon-wrap,
+.bottom-nav.nav-5 .nav-icon-wrap,
+.bottom-nav.nav-float-neo .nav-icon-wrap {
+  width: 44px !important;
+  height: 44px !important;
   border-radius: 50% !important;
-  box-shadow: 4px 4px 0 #111 !important;
-  width: 48px !important;
-  height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #FFF5E0 !important;
+  border: 3px solid #111111 !important;
+  box-shadow: 3px 3px 0 0 #111111 !important;
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.2s, box-shadow 0.2s !important;
 }
 
-/* Sembunyikan laporan floating */
-.floating-laporan,
-a[href="laporan.html"],
-a[href="admin.html"] {
-  display: none !important;
+.bottom-nav .nav-item i,
+.bottom-nav.nav-5 .nav-item i {
+  color: #111111 !important;
+  font-size: 17px !important;
+  line-height: 1 !important;
 }
 
-/* Notif belanja warna-warni scroll */
-.nd-buy-ticker {
-  margin: 8px 12px;
-  overflow: hidden;
-  border: 2.5px solid #111;
-  border-radius: 12px;
-  box-shadow: 4px 4px 0 #111;
-  background: #FFF5E0;
-  height: 36px;
-  display: none;
+.bottom-nav .nav-item span:not(.nav-icon-wrap),
+.bottom-nav .nav-label {
+  font-size: 9px !important;
+  font-weight: 900 !important;
+  color: #111111 !important;
+  letter-spacing: 0.2px !important;
 }
-.nd-buy-ticker.show { display: block; }
-.nd-buy-track {
-  display: inline-flex;
-  white-space: nowrap;
-  animation: ndTicker 18s linear infinite;
-  font-weight: 800;
-  font-size: 12px;
-  line-height: 36px;
-  color: #111;
+
+/* Active = bulet naik 2D neo */
+.bottom-nav .nav-item.active,
+.bottom-nav.nav-5 .nav-item.active,
+.bottom-nav.nav-float-neo .nav-item.active {
+  color: #111111 !important;
+  transform: translateY(-16px) !important;
 }
-.nd-buy-track span {
-  padding: 0 20px;
-  display: inline-block;
+
+.bottom-nav .nav-item.active .nav-icon-wrap,
+.bottom-nav.nav-5 .nav-item.active .nav-icon-wrap,
+.bottom-nav.nav-float-neo .nav-item.active .nav-icon-wrap {
+  width: 54px !important;
+  height: 54px !important;
+  background: #FF8C00 !important;
+  border: 3.5px solid #111111 !important;
+  border-radius: 50% !important;
+  box-shadow:
+    5px 5px 0 0 #111111,
+    inset 0 -3px 0 rgba(0,0,0,0.12) !important;
+  transform: scale(1.05) !important;
 }
-@keyframes ndTicker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+
+.bottom-nav .nav-item.active i {
+  font-size: 22px !important;
+  color: #111111 !important;
 }
-.banner.banner-video,
-.banner video.banner-full {
-  width: 100%;
-  display: block;
-  border-radius: 0;
+
+.bottom-nav .nav-item:active .nav-icon-wrap {
+  transform: scale(0.92) !important;
+  box-shadow: 2px 2px 0 0 #111111 !important;
+}
+
+/* Podium leaderboard top 3 */
+.lb-podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 4px 8px;
+  margin-bottom: 16px;
+}
+.lb-podium-item {
+  flex: 1;
+  max-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.lb-podium-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid #111;
   object-fit: cover;
-  max-height: 200px;
-  background: #111;
+  background: #FFE082;
+  box-shadow: 3px 3px 0 #111;
+  margin-bottom: 6px;
+}
+.lb-podium-item.rank-1 .lb-podium-avatar {
+  width: 72px;
+  height: 72px;
+  border-width: 3.5px;
+  box-shadow: 4px 4px 0 #111;
+}
+.lb-podium-item.rank-2 .lb-podium-avatar { width: 60px; height: 60px; }
+.lb-podium-item.rank-3 .lb-podium-avatar { width: 52px; height: 52px; }
+.lb-podium-name {
+  font-weight: 900;
+  font-size: 12px;
+  color: #111;
+  line-height: 1.2;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lb-podium-email {
+  font-size: 10px;
+  font-weight: 700;
+  color: #555;
+  margin-top: 2px;
+}
+.lb-podium-bar {
+  width: 100%;
+  border: 3px solid #111;
+  border-radius: 12px 12px 6px 6px;
+  box-shadow: 4px 4px 0 #111;
+  margin-top: 8px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-weight: 900;
+  color: #111;
+  padding-bottom: 8px;
+}
+.lb-podium-item.rank-1 .lb-podium-bar {
+  height: 110px;
+  background: linear-gradient(180deg, #FFD600, #FF8C00);
+}
+.lb-podium-item.rank-2 .lb-podium-bar {
+  height: 82px;
+  background: linear-gradient(180deg, #E0E0E0, #BDBDBD);
+}
+.lb-podium-item.rank-3 .lb-podium-bar {
+  height: 60px;
+  background: linear-gradient(180deg, #FFCC80, #FF8A65);
+}
+.lb-podium-rank {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+}
+.lb-podium-trx {
+  font-size: 11px;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+/* Edit profil akun */
+.edit-profil-box {
+  background: #FFF5E0;
+  border: 2.5px solid #111;
+  box-shadow: 4px 4px 0 #111;
+  border-radius: 14px;
+  padding: 14px;
+  margin: 12px 0;
+}
+.edit-profil-box label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 4px;
+}
+.edit-profil-box input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2.5px solid #111;
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 #111;
+  font-weight: 700;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+.edit-profil-box .btn-save-profil {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #FFD600;
+  border: 2.5px solid #111;
+  box-shadow: 3px 3px 0 #111;
+  border-radius: 12px;
+  font-weight: 900;
+  color: #111;
+  cursor: pointer;
+}
+.edit-limit-hint {
+  font-size: 11px;
+  font-weight: 700;
+  color: #555;
+  margin-top: 8px;
 }

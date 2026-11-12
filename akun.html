@@ -734,6 +734,24 @@
 
   <script>
   (function(){
+    var MAX_PHOTO = 5;  /* maksimal ganti foto */
+    var MAX_NAME = 3;   /* maksimal ganti nama (terpisah) */
+
+    function getLimits() {
+      try {
+        return {
+          photo: parseInt(localStorage.getItem('nailong_photo_changes') || '0', 10) || 0,
+          name: parseInt(localStorage.getItem('nailong_name_changes') || '0', 10) || 0
+        };
+      } catch(e) { return { photo: 0, name: 0 }; }
+    }
+    function setLimits(photo, name) {
+      try {
+        localStorage.setItem('nailong_photo_changes', String(photo));
+        localStorage.setItem('nailong_name_changes', String(name));
+      } catch(e) {}
+    }
+
     function applyCustomAvatar() {
       try {
         var data = localStorage.getItem('nailong_custom_avatar');
@@ -746,28 +764,94 @@
         }
       } catch(e) {}
     }
+
+    function applyCustomName() {
+      try {
+        var n = localStorage.getItem('nailong_custom_name');
+        if (!n) return;
+        var el = document.getElementById('profilName');
+        if (el) el.textContent = n;
+      } catch(e) {}
+    }
+
+    function renderEditBox() {
+      if (document.getElementById('editProfilBox')) return;
+      var card = document.querySelector('.profil-card');
+      if (!card) return;
+      var lim = getLimits();
+      var box = document.createElement('div');
+      box.id = 'editProfilBox';
+      box.className = 'edit-profil-box';
+      box.innerHTML =
+        '<label><i class="fa-solid fa-user"></i> Nama tampilan</label>' +
+        '<input type="text" id="editProfilName" placeholder="Nama kamu" maxlength="32">' +
+        '<label style="margin-top:8px"><i class="fa-solid fa-image"></i> Foto profil (dari galeri)</label>' +
+        '<label class="btn-save-profil" style="width:100%;justify-content:center;margin-bottom:10px;cursor:pointer">' +
+          '<i class="fa-solid fa-images"></i> Pilih dari galeri' +
+          '<input type="file" id="customAvatarFile" accept="image/*" capture="environment" style="display:none">' +
+        '</label>' +
+        '<button type="button" class="btn-save-profil" id="btnSaveName"><i class="fa-solid fa-check"></i> Simpan nama</button>' +
+        '<p class="edit-limit-hint" id="editLimitHint"></p>';
+      card.parentNode.insertBefore(box, card.nextSibling);
+
+      var nameInp = document.getElementById('editProfilName');
+      var cur = (document.getElementById('profilName') || {}).textContent || '';
+      try { cur = localStorage.getItem('nailong_custom_name') || cur; } catch(e) {}
+      if (nameInp) nameInp.value = cur === '—' ? '' : cur;
+
+      function updateHint() {
+        var l = getLimits();
+        var h = document.getElementById('editLimitHint');
+        if (h) h.innerHTML = 'Sisa ganti foto: <b>' + Math.max(0, MAX_PHOTO - l.photo) + '/' + MAX_PHOTO +
+          '</b> · Sisa ganti nama: <b>' + Math.max(0, MAX_NAME - l.name) + '/' + MAX_NAME +
+          '</b><br><span style="color:#888">Ganti foto saja tidak mengurangi kuota nama, dan sebaliknya.</span>';
+      }
+      updateHint();
+
+      document.getElementById('customAvatarFile').onchange = function(){
+        var f = this.files && this.files[0];
+        if (!f) return;
+        var l = getLimits();
+        if (l.photo >= MAX_PHOTO) {
+          alert('Kuota ganti foto sudah habis (' + MAX_PHOTO + 'x). Nama masih bisa diganti terpisah.');
+          this.value = '';
+          return;
+        }
+        if (f.size > 2e6) { alert('Max 2MB'); this.value = ''; return; }
+        if (!f.type || f.type.indexOf('image/') !== 0) { alert('Pilih file gambar dari galeri'); this.value = ''; return; }
+        var r = new FileReader();
+        r.onload = function(){
+          localStorage.setItem('nailong_custom_avatar', r.result);
+          setLimits(l.photo + 1, l.name); /* hanya kurangi kuota foto */
+          applyCustomAvatar();
+          updateHint();
+          alert('Foto profil berhasil diganti dari galeri');
+        };
+        r.readAsDataURL(f);
+      };
+
+      document.getElementById('btnSaveName').onclick = function(){
+        var v = (document.getElementById('editProfilName').value || '').trim();
+        if (!v || v.length < 2) { alert('Nama minimal 2 karakter'); return; }
+        var l = getLimits();
+        if (l.name >= MAX_NAME) {
+          alert('Kuota ganti nama sudah habis (' + MAX_NAME + 'x). Foto masih bisa diganti terpisah.');
+          return;
+        }
+        localStorage.setItem('nailong_custom_name', v);
+        setLimits(l.photo, l.name + 1); /* hanya kurangi kuota nama */
+        applyCustomName();
+        updateHint();
+        alert('Nama berhasil diganti');
+      };
+    }
+
     document.addEventListener('DOMContentLoaded', function(){
       setTimeout(function(){
         applyCustomAvatar();
-        var wrap = document.querySelector('.profil-avatar-wrap') || document.getElementById('profilAvatar') && document.getElementById('profilAvatar').parentNode;
-        if (!wrap || document.getElementById('customAvatarFile')) return;
-        var lab = document.createElement('label');
-        lab.style.cssText = 'display:block;margin-top:8px;font-size:12px;color:#FFC107;cursor:pointer;';
-        lab.innerHTML = '<i class="fa-solid fa-camera"></i> Ganti foto profil (upload)<input type="file" id="customAvatarFile" accept="image/*" style="display:none;">';
-        wrap.appendChild(lab);
-        document.getElementById('customAvatarFile').onchange = function(){
-          var f = this.files && this.files[0];
-          if (!f) return;
-          if (f.size > 1.5e6) { alert('Max 1.5MB'); return; }
-          var r = new FileReader();
-          r.onload = function(){
-            localStorage.setItem('nailong_custom_avatar', r.result);
-            applyCustomAvatar();
-            alert('Foto profil disimpan di perangkat ini');
-          };
-          r.readAsDataURL(f);
-        };
-      }, 800);
+        applyCustomName();
+        renderEditBox();
+      }, 600);
     });
   })();
   </script>
@@ -801,5 +885,7 @@ document.addEventListener("DOMContentLoaded", function(){
   }, 900);
 });
 </script>
+<div class="version-footer">v2.0.0</div>
+<script src="nav.js"></script>
 </body>
 </html>

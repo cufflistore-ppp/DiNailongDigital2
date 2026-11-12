@@ -9,28 +9,47 @@
   <link rel="stylesheet" href="style.css">
   <script src="theme.js"></script>
   <style>
-    .tp { padding: 12px 14px 110px; max-width: 480px; margin: 0 auto; }
-    .t-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .t-card {
-      background: #FFF5E0; border: 2.5px solid #111; box-shadow: 6px 6px 0 #111;
-      border-radius: 16px; padding: 16px 12px; text-align: center; text-decoration: none;
-      color: #111; font-weight: 900; font-size: 12px; display: flex; flex-direction: column;
-      align-items: center; gap: 8px;
+    .tools-page { padding: 12px 14px 110px; max-width: 480px; margin: 0 auto; }
+    .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+    .tool-card {
+      background: #FFF5E0 !important;
+      border: 2.5px solid #111 !important;
+      box-shadow: 5px 5px 0 #111 !important;
+      border-radius: 14px !important;
+      padding: 14px 8px !important;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none !important;
+      color: #111 !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 11px;
     }
-    .t-card i { font-size: 22px; color: #111 !important; }
-    .t-card:active { transform: translate(3px,3px); box-shadow: 3px 3px 0 #111; }
-    .t-cat { font-weight: 900; font-size: 13px; color: #111; margin: 16px 0 8px; }
-    .t-api {
-      background: #FFD600; border: 2.5px solid #111; box-shadow: 5px 5px 0 #111;
-      border-radius: 14px; padding: 12px; margin-bottom: 12px; font-size: 12px; font-weight: 700; color: #111;
+    .tool-card i { font-size: 20px !important; color: #111 !important; margin: 0 !important; }
+    .tool-card span, .tool-card b, .tool-card p { color: #111 !important; font-weight: 800; margin: 0; }
+    .tool-card:active { transform: translate(3px,3px); box-shadow: 2px 2px 0 #111 !important; }
+    .tools-cat {
+      font-size: 12px; font-weight: 900; color: #111;
+      margin: 16px 0 8px;
     }
-    .t-api a { color: #111; font-weight: 900; word-break: break-all; }
-    .back-only {
-      width: 42px; height: 42px; border: 2.5px solid #111; border-radius: 12px;
-      background: #FFF5E0; box-shadow: 3px 3px 0 #111; display: inline-flex;
-      align-items: center; justify-content: center; margin-bottom: 10px; text-decoration: none;
+    .tool-panel { display: none; margin-top: 12px; }
+    .tool-panel.active { display: block; }
+    .tool-link-big {
+      display: block;
+      background: #FFF5E0;
+      border: 2.5px solid #111;
+      box-shadow: 5px 5px 0 #111;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      color: #111;
+      font-weight: 800;
     }
-    .back-only i { color: #111 !important; font-size: 16px; }
+    .tool-link-big p { margin: 4px 0 0; font-size: 12px; color: #555 !important; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -42,38 +61,63 @@
       </div>
     </div>
   </header>
-  <div class="tp">
-    <a href="index.html" class="back-only" aria-label="Kembali"><i class="fa-solid fa-arrow-left"></i></a>
+
+  <div class="tools-page page-content">
+    <div class="badge">TOOLS</div>
     <h2 class="page-title"><i class="fa-solid fa-screwdriver-wrench"></i> Tools</h2>
-    <p class="page-desc">Tools rapi · API Siputzx & SynoxCloud</p>
-    <div class="t-api">
-      API playground:<br>
-      <a href="https://app.siputzx.my.id/playground" target="_blank" rel="noopener">app.siputzx.my.id/playground</a><br>
-      <a href="https://api.synoxcloud.xyz/" target="_blank" rel="noopener">api.synoxcloud.xyz</a>
+    <p class="page-desc">Semua tools dalam satu tempat — canvas, WA, teks, generate, dll.</p>
+
+    <a class="tool-link-big" href="foto-3d.html">
+      <i class="fa-solid fa-cube"></i> Foto 3D
+      <p>Upload foto → putar & edit di ruang 3D</p>
+    </a>
+    <a class="tool-link-big" href="tools-canvas.html">
+      <i class="fa-solid fa-image"></i> Canvas Tools
+      <p>OVO, DANA, KTP parodi, quote, sertifikat, dll.</p>
+    </a>
+
+    <div class="tools-cat">CANVAS CEPAT</div>
+    <div class="tools-grid" id="toolsCanvas">
+      <a class="tool-card" href="tools-canvas.html?t=ovo"><i class="fa-solid fa-wallet"></i><span>OVO Saldo</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=dana"><i class="fa-solid fa-wallet"></i><span>DANA Saldo</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=wa"><i class="fa-brands fa-whatsapp"></i><span>Chat WA</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=ktp"><i class="fa-solid fa-id-card"></i><span>KTP Parodi</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=ff"><i class="fa-solid fa-gamepad"></i><span>FF Rank</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=ml"><i class="fa-solid fa-gamepad"></i><span>ML Rank</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=sertifikat"><i class="fa-solid fa-certificate"></i><span>Sertifikat</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=quote"><i class="fa-solid fa-quote-left"></i><span>Quote</span></a>
+      <a class="tool-card" href="tools-canvas.html?t=tiktok"><i class="fa-brands fa-tiktok"></i><span>TikTok</span></a>
     </div>
-    <div class="t-cat">CANVAS</div>
-    <div class="t-grid">
-      <a class="t-card" href="tools-canvas.html?t=ovo"><i class="fa-solid fa-wallet"></i><span>OVO</span></a>
-      <a class="t-card" href="tools-canvas.html?t=dana"><i class="fa-solid fa-wallet"></i><span>DANA</span></a>
-      <a class="t-card" href="tools-canvas.html?t=wa"><i class="fa-brands fa-whatsapp"></i><span>Chat WA</span></a>
-      <a class="t-card" href="tools-canvas.html?t=ktp"><i class="fa-solid fa-id-card"></i><span>KTP</span></a>
-      <a class="t-card" href="tools-canvas.html?t=ff"><i class="fa-solid fa-gamepad"></i><span>FF Rank</span></a>
-      <a class="t-card" href="tools-canvas.html?t=ml"><i class="fa-solid fa-gamepad"></i><span>ML Rank</span></a>
-      <a class="t-card" href="tools-canvas.html?t=sertifikat"><i class="fa-solid fa-certificate"></i><span>Sertifikat</span></a>
-      <a class="t-card" href="tools-canvas.html?t=quote"><i class="fa-solid fa-quote-left"></i><span>Quote</span></a>
+
+    <div class="tools-cat">GENERATOR</div>
+    <div class="tools-grid" id="toolsAll">
+      <div class="tool-card" data-tool="fakedev"><i class="fa-solid fa-laptop-code"></i><span>FakeDev</span></div>
+      <div class="tool-card" data-tool="quote"><i class="fa-solid fa-quote-left"></i><span>Quote Gen</span></div>
+      <div class="tool-card" data-tool="nokia"><i class="fa-solid fa-mobile-screen"></i><span>Nokia SMS</span></div>
+      <div class="tool-card" data-tool="prompt"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Prompt Gen</span></div>
+      <div class="tool-card" data-tool="fakeid2"><i class="fa-solid fa-id-card"></i><span>Fake Data</span></div>
     </div>
-    <div class="t-cat">LAINNYA</div>
-    <div class="t-grid">
-      <a class="t-card" href="foto-3d.html"><i class="fa-solid fa-cube"></i><span>Foto 3D</span></a>
-      <a class="t-card" href="tools-canvas.html"><i class="fa-solid fa-image"></i><span>Semua Canvas</span></a>
-      <a class="t-card" href="https://app.siputzx.my.id/playground" target="_blank" rel="noopener"><i class="fa-solid fa-flask"></i><span>Siputzx API</span></a>
-      <a class="t-card" href="https://api.synoxcloud.xyz/" target="_blank" rel="noopener"><i class="fa-solid fa-cloud"></i><span>SynoxCloud</span></a>
+
+    <div class="api-form-card tool-panel" id="toolPanel">
+      <button type="button" class="btn-topup" id="toolBack" style="margin-bottom:10px;"><i class="fa-solid fa-arrow-left"></i> Kembali</button>
+      <div id="toolArea"></div>
     </div>
   </div>
+
   <nav class="bottom-nav nav-5"></nav>
-  <script src="nav.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="global-orders.js"></script>
+  <script src="auth.js"></script>
+  <script src="auth-guard.js"></script>
   <script src="header-bar.js"></script>
-  <script src="theme.js"></script>
+  <script src="nav.js"></script>
+  <script src="protect.js"></script>
+  <script src="deploy-config.js"></script>
+  <script src="deploy-system.js"></script>
+  <script src="tools-app.js"></script>
   <script src="ui-enhance.js"></script>
 </body>
 </html>

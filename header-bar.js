@@ -58,16 +58,10 @@
         '<a href="index.html"><i class="fa-solid fa-house"></i><span>Beranda</span></a>' +
         '<a href="channel.html"><i class="fa-solid fa-comments"></i><span>Channel Testimoni</span><em class="side-tag">Live</em></a>' +
         '<a href="leaderboard.html"><i class="fa-solid fa-trophy"></i><span>Leaderboard</span></a>' +
-        '<a href="tools.html"><i class="fa-solid fa-screwdriver-wrench"></i><span>Tools</span></a>' +
         '<a href="baca.html"><i class="fa-solid fa-book-open"></i><span>Baca / Anime</span></a>' +
-        '<a href="music.html"><i class="fa-solid fa-music"></i><span>Music</span></a>' +
-        '<a href="game.html"><i class="fa-solid fa-gamepad"></i><span>Game</span></a>' +
-        '<a href="youtube.html"><i class="fa-brands fa-youtube"></i><span>YouTube</span></a>' +
-        '<a href="tools-canvas.html"><i class="fa-solid fa-image"></i><span>Canvas Tools</span></a>' +
 
         '<div class="side-section">LAYANAN BOT</div>' +
         '<a href="botwa.html"><i class="fa-brands fa-whatsapp"></i><span>Sewa Bot (JPM / Jaga)</span></a>' +
-        
         '<a href="push-kontak.html"><i class="fa-solid fa-paper-plane"></i><span>Push Kontak Otomatis</span></a>' +
         '<a href="joki.html"><i class="fa-solid fa-shield-halved"></i><span>Joki Kontak</span></a>' +
 
@@ -77,7 +71,6 @@
         '<div class="side-section">PRODUK & JASA</div>' +
         '<a href="digital.html"><i class="fa-solid fa-box"></i><span>Produk Digital</span></a>' +
         '<a href="riwayat.html"><i class="fa-solid fa-clock-rotate-left"></i><span>Riwayat</span></a>' +
-        '<a href="akun-jual.html"><i class="fa-solid fa-gamepad"></i><span>Akun Game</span></a>' +
         '<a href="pesan.html?type=jaspost"><i class="fa-solid fa-pen"></i><span>Jasa Post</span></a>' +
 
         '<div class="side-section">PARTNER</div>' +'<a href="daftar-partner.html"><i class="fa-solid fa-handshake"></i><span>Daftar Partner</span></a>' +'<a href="daftar-paid-promote.html"><i class="fa-solid fa-bullhorn"></i><span>Daftar Paid Promote</span></a>' +'<a href="blacklist.html"><i class="fa-solid fa-ban"></i><span>Blacklist</span></a>' +'<a href="buyer-manen.html"><i class="fa-solid fa-book"></i><span>Buyer Manen</span></a>' +'<a href="ajukan-fitur.html"><i class="fa-solid fa-lightbulb"></i><span>Ajukan Fitur</span></a>' +'<div class="side-section">BANTUAN</div>' +
@@ -226,7 +219,12 @@
     document.body.appendChild(ov);
     ov.onclick = function (e) { if (e.target === ov) ov.remove(); };
     document.getElementById('notifClose').onclick = function () { ov.remove(); };
-    try { localStorage.setItem('nailong_chat_seen', String(Date.now())); } catch (e) {}
+    /* Saat notif dibuka → langsung normal, hilangkan merah */
+    try {
+      localStorage.setItem('nailong_chat_seen', String(Date.now()));
+      localStorage.setItem('nailong_unread_admin', '0');
+      localStorage.setItem('nailong_notif_seen', String(Date.now()));
+    } catch (e) {}
     updateBellBadge();
   }
 
