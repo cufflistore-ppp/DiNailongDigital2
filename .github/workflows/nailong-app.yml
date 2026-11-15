@@ -1,0 +1,235 @@
+
+name: Build NAILONG DIGITAL APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK
+        run: |
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Prepare Project
+        run: |
+          mkdir -p app/src/main/assets/www
+          mkdir -p app/src/main/java/com/nailong/digital
+          mkdir -p app/src/main/res/mipmap-mdpi
+          mkdir -p app/src/main/res/mipmap-hdpi
+          mkdir -p app/src/main/res/mipmap-xhdpi
+          mkdir -p app/src/main/res/mipmap-xxhdpi
+          mkdir -p app/src/main/res/mipmap-xxxhdpi
+
+          if [ ! -f index.html ]; then
+            echo "ERROR: index.html tidak ditemukan di root repository!"
+            exit 1
+          fi
+
+          if [ ! -f logo.png ]; then
+            echo "ERROR: logo.png tidak ditemukan di root repository!"
+            exit 1
+          fi
+
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='app/' \
+            --exclude='build/' \
+            --exclude='.gradle/' \
+            ./ app/src/main/assets/www/
+
+          echo "SELURUH FILE WEBSITE BERHASIL DISALIN"
+          find app/src/main/assets/www -type f
+
+      - name: Generate App Icons
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+
+          convert app/src/main/assets/www/logo.png \
+            -resize 48x48^ -gravity center -extent 48x48 \
+            app/src/main/res/mipmap-mdpi/ic_launcher.png
+
+          convert app/src/main/assets/www/logo.png \
+            -resize 72x72^ -gravity center -extent 72x72 \
+            app/src/main/res/mipmap-hdpi/ic_launcher.png
+
+          convert app/src/main/assets/www/logo.png \
+            -resize 96x96^ -gravity center -extent 96x96 \
+            app/src/main/res/mipmap-xhdpi/ic_launcher.png
+
+          convert app/src/main/assets/www/logo.png \
+            -resize 144x144^ -gravity center -extent 144x144 \
+            app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+
+          convert app/src/main/assets/www/logo.png \
+            -resize 192x192^ -gravity center -extent 192x192 \
+            app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+
+      - name: Create Gradle Configuration
+        run: |
+          cat > settings.gradle <<'EOF'
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+
+          rootProject.name = "NailongDigital"
+          include ':app'
+          EOF
+
+          cat > build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application' version '8.7.3' apply false
+          }
+          EOF
+
+          cat > app/build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application'
+          }
+
+          android {
+              namespace 'com.nailong.digital'
+              compileSdk 35
+
+              defaultConfig {
+                  applicationId 'com.nailong.digital'
+                  minSdk 23
+                  targetSdk 35
+                  versionCode 1
+                  versionName '1.0'
+              }
+          }
+          EOF
+
+      - name: Create Android Manifest
+        run: |
+          cat > app/src/main/AndroidManifest.xml <<'EOF'
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+              <uses-permission android:name="android.permission.INTERNET"/>
+
+              <application
+                  android:label="NAILONG DIGITAL"
+                  android:icon="@mipmap/ic_launcher"
+                  android:roundIcon="@mipmap/ic_launcher"
+                  android:theme="@android:style/Theme.Material.Light.NoActionBar">
+
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true">
+
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN"/>
+                          <category android:name="android.intent.category.LAUNCHER"/>
+                      </intent-filter>
+
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+
+      - name: Create MainActivity
+        run: |
+          cat > app/src/main/java/com/nailong/digital/MainActivity.java <<'EOF'
+          package com.nailong.digital;
+
+          import android.app.Activity;
+          import android.os.Bundle;
+          import android.webkit.WebView;
+          import android.webkit.WebViewClient;
+          import android.webkit.WebSettings;
+          import android.view.ViewGroup;
+
+          public class MainActivity extends Activity {
+
+              WebView webView;
+
+              @Override
+              protected void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+
+                  webView = new WebView(this);
+
+                  webView.setLayoutParams(
+                      new ViewGroup.LayoutParams(
+                          ViewGroup.LayoutParams.MATCH_PARENT,
+                          ViewGroup.LayoutParams.MATCH_PARENT
+                      )
+                  );
+
+                  WebSettings settings = webView.getSettings();
+                  settings.setJavaScriptEnabled(true);
+                  settings.setDomStorageEnabled(true);
+                  settings.setDatabaseEnabled(true);
+                  settings.setAllowFileAccess(true);
+                  settings.setAllowContentAccess(true);
+
+                  webView.setWebViewClient(new WebViewClient());
+                  setContentView(webView);
+
+                  webView.loadUrl(
+                      "file:///android_asset/www/index.html"
+                  );
+              }
+
+              @Override
+              public void onBackPressed() {
+                  if (webView.canGoBack()) {
+                      webView.goBack();
+                  } else {
+                      super.onBackPressed();
+                  }
+              }
+          }
+          EOF
+
+      - name: Build APK
+        run: gradle --no-daemon assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NAILONG-DIGITAL-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 7
+          
